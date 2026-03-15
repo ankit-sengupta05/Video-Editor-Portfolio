@@ -29,19 +29,18 @@ body{background:var(--bg);color:var(--fg);font-family:'Archivo',sans-serif;font-
 .chover #cur-ring{width:54px;height:54px;border-color:var(--pink);}
 
 /* GRAIN */
-body::after{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;opacity:.2;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+body::after{content:'';position:fixed;inset:0;z-index:2000;pointer-events:none;opacity:.18;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:700;display:flex;align-items:center;justify-content:space-between;padding:28px 64px;transition:all .4s;}
 nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
 .logo{font-family:'Archivo Black',sans-serif;font-size:18px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;color:var(--fg);display:flex;align-items:center;gap:9px;}
-.lpip{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));animation:pulse 2s ease-in-out infinite;}
+.lpip{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));animation:pulse 2s ease-in-out infinite;flex-shrink:0;}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,61,127,.5);}50%{box-shadow:0 0 0 7px rgba(255,61,127,0);}}
 .nav-ul{display:flex;gap:32px;list-style:none;}
 .nav-ul a{font-family:'Cousine',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--fg2);text-decoration:none;transition:color .25s;position:relative;}
 .nav-ul a::after{content:'';position:absolute;bottom:-3px;left:0;height:1px;width:0;background:var(--pink);transition:width .25s;}
-.nav-ul a:hover{color:var(--fg);}
-.nav-ul a:hover::after{width:100%;}
+.nav-ul a:hover{color:var(--fg);} .nav-ul a:hover::after{width:100%;}
 .nav-btn{font-family:'Cousine',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;background:var(--pink);color:#fff;padding:10px 26px;text-decoration:none;border-radius:2px;transition:all .25s;position:relative;overflow:hidden;}
 .nav-btn::before{content:'';position:absolute;inset:0;background:var(--purple);transform:translateX(-101%);transition:transform .3s;}
 .nav-btn span{position:relative;z-index:1;}
@@ -73,6 +72,8 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .cta-o:hover{border-color:var(--cyan);color:var(--cyan);}
 .h-scroll{position:absolute;bottom:36px;left:64px;z-index:2;display:flex;align-items:center;gap:14px;font-family:'Cousine',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--fg3);opacity:0;animation:up .8s 1s ease forwards;}
 .h-scroll-bar{width:50px;height:1px;background:linear-gradient(to right,transparent,var(--fg3));}
+
+/* spinning reel badge */
 .h-badge{position:absolute;right:90px;top:50%;transform:translateY(-50%);z-index:2;opacity:0;animation:up .8s .9s ease forwards;}
 .badge-ring{width:130px;height:130px;border:1px solid rgba(0,229,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;}
 .badge-ring-svg{position:absolute;width:100%;height:100%;animation:spin 18s linear infinite;}
@@ -87,17 +88,14 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .mq-wrap{overflow:hidden;padding:17px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);}
 .mq-track{display:flex;width:max-content;animation:mq 28s linear infinite;}
 .mq-item{font-family:'Archivo Black',sans-serif;font-size:12px;letter-spacing:3px;text-transform:uppercase;padding:0 24px;color:var(--fg3);display:flex;align-items:center;gap:24px;white-space:nowrap;}
-.mq-item .gem{font-size:9px;}
 .c-pink{color:var(--pink);} .c-cyan{color:var(--cyan);} .c-lime{color:var(--lime);} .c-orange{color:var(--orange);}
 @keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-/* SHARED SECTION */
+/* SHARED */
 .sec{padding:110px 64px;}
 .sec-tag{font-family:'Cousine',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;display:flex;align-items:center;gap:14px;margin-bottom:54px;}
 .sec-tag .tl{flex:1;height:1px;background:var(--border);}
 .hh{font-family:'Archivo Black',sans-serif;font-size:clamp(42px,5.5vw,86px);line-height:.92;letter-spacing:-1px;}
-
-/* REVEAL */
 .r{opacity:0;transform:translateY(40px);transition:opacity .75s ease,transform .75s ease;}
 .r.in{opacity:1;transform:translateY(0);}
 .r.d1{transition-delay:.1s;} .r.d2{transition-delay:.2s;} .r.d3{transition-delay:.3s;} .r.d4{transition-delay:.4s;}
@@ -108,22 +106,17 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .svc-intro{font-size:16px;font-weight:300;line-height:1.82;color:var(--fg2);}
 .svc-intro strong{color:var(--fg);font-weight:500;}
 .svc-cards{display:grid;grid-template-columns:1.35fr 1fr;gap:3px;}
-
 .svc-main{background:linear-gradient(140deg,rgba(255,61,127,.14),rgba(155,93,229,.11) 50%,rgba(0,229,255,.08));border:1px solid rgba(255,61,127,.22);padding:54px 50px;position:relative;overflow:hidden;transition:all .4s;}
 .svc-main:hover{border-color:rgba(255,61,127,.4);transform:translateY(-3px);}
 .svc-main::before{content:'';position:absolute;inset:0;background:linear-gradient(140deg,rgba(255,61,127,.05),transparent);opacity:0;transition:opacity .4s;}
 .svc-main:hover::before{opacity:1;}
-
 .svc-side{background:var(--bg3);border:1px solid var(--border);padding:46px 42px;position:relative;overflow:hidden;transition:all .4s;display:flex;flex-direction:column;}
 .svc-side:hover{border-color:rgba(0,229,255,.22);transform:translateY(-3px);}
-
 .sbadge{display:inline-flex;align-items:center;gap:8px;font-family:'Cousine',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:5px 13px;border-radius:2px;margin-bottom:26px;}
 .sb-hot{background:rgba(255,61,127,.14);color:var(--pink);border:1px solid rgba(255,61,127,.24);}
 .sb-cool{background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.2);}
-
 .svc-bg-n{position:absolute;top:-10px;right:16px;font-family:'Archivo Black',sans-serif;font-size:96px;line-height:1;opacity:.055;pointer-events:none;letter-spacing:-4px;}
 .n-pink{color:var(--pink);} .n-cyan{color:var(--cyan);}
-
 .svc-ttl{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,2.8vw,42px);line-height:1.05;margin-bottom:16px;}
 .svc-body{font-size:14px;font-weight:300;line-height:1.78;color:var(--fg2);margin-bottom:30px;}
 .svc-body strong{color:var(--fg);font-weight:500;}
@@ -133,7 +126,7 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .svc-avail{margin-top:auto;padding-top:24px;font-family:'Cousine',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);display:flex;align-items:center;gap:8px;}
 .svc-avail::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);}
 
-/* SKILLS */
+/* SKILLS STRIP */
 .skills-strip{padding:56px 64px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg);display:grid;grid-template-columns:repeat(6,1fr);gap:2px;}
 .sk-chip{padding:26px 16px;background:var(--bg2);display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;transition:all .3s;border:1px solid transparent;}
 .sk-chip:hover{background:var(--bg3);transform:translateY(-4px);}
@@ -143,11 +136,11 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .sk-chip:nth-child(4):hover{border-color:rgba(184,255,60,.28);}
 .sk-chip:nth-child(5):hover{border-color:rgba(255,107,53,.28);}
 .sk-chip:nth-child(6):hover{border-color:rgba(255,231,76,.28);}
-.sk-ic{font-size:26px;}
-.sk-nm{font-size:13px;font-weight:500;}
-.sk-sb{font-family:'Cousine',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg3);}
+.sk-ic{font-size:26px;} .sk-nm{font-size:13px;font-weight:500;} .sk-sb{font-family:'Cousine',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg3);}
 
-/* PORTFOLIO */
+/* ═══════════════════════════════════════
+   PORTFOLIO — video cards
+═══════════════════════════════════════ */
 #portfolio{background:var(--bg);}
 .port-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:24px;}
 .port-sub{font-size:14px;font-weight:300;color:var(--fg2);max-width:380px;line-height:1.7;margin-top:10px;}
@@ -156,42 +149,123 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .tab.on{background:var(--pink);color:#fff;}
 .tab:not(.on):hover{color:var(--fg);}
 
-.pg{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;}
-.pc{position:relative;overflow:hidden;background:var(--bg3);cursor:pointer;transition:transform .35s;}
+/* Bento grid */
+.pg{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;}
+
+/* card sizes */
+.pc{position:relative;overflow:hidden;background:var(--bg3);border-radius:4px;cursor:pointer;}
 .pc-a{grid-column:span 7;aspect-ratio:16/9;}
 .pc-b{grid-column:span 5;aspect-ratio:16/9;}
-.pc-c{grid-column:span 4;aspect-ratio:4/5;}
-.pc-d{grid-column:span 4;aspect-ratio:4/5;}
-.pc-e{grid-column:span 4;aspect-ratio:4/5;}
+.pc-c{grid-column:span 6;aspect-ratio:16/9;}
+.pc-d{grid-column:span 6;aspect-ratio:16/9;}
 
-.pc-thumb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:60px;letter-spacing:6px;transition:transform .6s ease;}
-.pc:hover .pc-thumb{transform:scale(1.07);}
-.t1{background:radial-gradient(ellipse at 30% 40%,rgba(255,61,127,.36) 0%,rgba(155,93,229,.2) 50%,#07070f 80%);color:rgba(255,255,255,.04);}
-.t2{background:radial-gradient(ellipse at 70% 30%,rgba(0,229,255,.32) 0%,rgba(61,127,255,.16) 50%,#07070f 80%);color:rgba(255,255,255,.04);}
-.t3{background:radial-gradient(ellipse at 50% 60%,rgba(184,255,60,.26) 0%,rgba(0,229,255,.1) 50%,#07070f 80%);color:rgba(255,255,255,.04);}
-.t4{background:radial-gradient(ellipse at 40% 40%,rgba(155,93,229,.32) 0%,rgba(255,61,127,.12) 50%,#07070f 80%);color:rgba(255,255,255,.04);}
-.t5{background:radial-gradient(ellipse at 60% 70%,rgba(255,107,53,.32) 0%,rgba(255,231,76,.1) 50%,#07070f 80%);color:rgba(255,255,255,.04);}
+/* VIDEO THUMBNAIL — actual video element as bg */
+.pc-vid{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  transition:transform .6s ease;
+  pointer-events:none;
+}
+.pc:hover .pc-vid{transform:scale(1.05);}
+
+/* colourful gradient fallback (shown before video loads) */
+.pc-fallback{
+  position:absolute;inset:0;
+  opacity:1;transition:opacity .5s;
+}
+.pc.loaded .pc-fallback{opacity:0;}
+.t1{background:radial-gradient(ellipse at 30% 40%,rgba(255,61,127,.5) 0%,rgba(155,93,229,.3) 50%,#07070f 80%);}
+.t2{background:radial-gradient(ellipse at 70% 30%,rgba(0,229,255,.45) 0%,rgba(61,127,255,.25) 50%,#07070f 80%);}
+.t3{background:radial-gradient(ellipse at 50% 60%,rgba(184,255,60,.4) 0%,rgba(0,229,255,.18) 50%,#07070f 80%);}
+.t4{background:radial-gradient(ellipse at 40% 40%,rgba(155,93,229,.45) 0%,rgba(255,61,127,.2) 50%,#07070f 80%);}
 .ts{position:absolute;border-radius:50%;filter:blur(28px);pointer-events:none;}
 
-.pc-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,15,.96) 0%,rgba(7,7,15,.35) 55%,rgba(7,7,15,.05) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:26px 26px 22px;transform:translateY(7px);transition:transform .35s;}
+/* fallback text label */
+.pc-fallback-label{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Archivo Black',sans-serif;
+  font-size:52px;letter-spacing:6px;
+  color:rgba(255,255,255,.05);
+  pointer-events:none;
+}
+
+/* overlay */
+.pc-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,7,15,.97) 0%,rgba(7,7,15,.3) 55%,rgba(7,7,15,.0) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:26px 26px 22px;transform:translateY(7px);transition:transform .35s;}
 .pc:hover .pc-ov{transform:translateY(0);}
 .pc-type{font-family:'Cousine',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:7px;}
 .dot{width:5px;height:5px;border-radius:50%;display:inline-block;}
 .dp{background:var(--pink);box-shadow:0 0 6px var(--pink);}
 .dc{background:var(--cyan);box-shadow:0 0 6px var(--cyan);}
+.dl{background:var(--lime);box-shadow:0 0 6px var(--lime);}
+.dpu{background:var(--purple);box-shadow:0 0 6px var(--purple);}
 .pc-ttl{font-family:'Archivo Black',sans-serif;font-size:clamp(15px,1.8vw,24px);line-height:1.1;margin-bottom:7px;}
 .pc-meta{font-size:11px;color:var(--fg3);font-weight:300;}
 
-.pc-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);width:58px;height:58px;border-radius:50%;background:rgba(255,61,127,.88);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;transition:all .3s;}
-.pc-play svg{fill:#fff;width:20px;height:20px;margin-left:3px;}
-.pc:hover .pc-play{opacity:1;transform:translate(-50%,-50%) scale(1);}
+/* big play button */
+.pc-play{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(.8);
+  width:68px;height:68px;border-radius:50%;
+  background:rgba(255,61,127,.88);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:all .3s;
+  box-shadow:0 0 0 0 rgba(255,61,127,.5);
+}
+.pc-play svg{fill:#fff;width:24px;height:24px;margin-left:4px;}
+.pc:hover .pc-play{opacity:1;transform:translate(-50%,-50%) scale(1);box-shadow:0 0 40px rgba(255,61,127,.6);}
 
+/* duration badge top-right */
+.pc-dur{
+  position:absolute;top:14px;right:14px;z-index:3;
+  font-family:'Cousine',monospace;font-size:9px;letter-spacing:1px;
+  padding:3px 9px;border-radius:2px;
+  background:rgba(7,7,15,.75);color:var(--fg2);
+  backdrop-filter:blur(4px);
+}
+
+/* type badge top-left */
 .badge-s{position:absolute;top:14px;left:14px;z-index:3;font-family:'Cousine',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:2px;background:rgba(255,61,127,.88);color:#fff;backdrop-filter:blur(4px);}
-.badge-l{position:absolute;top:14px;left:14px;z-index:3;font-family:'Cousine',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:2px;background:rgba(0,229,255,.18);color:var(--cyan);border:1px solid rgba(0,229,255,.3);backdrop-filter:blur(4px);}
+.badge-l{position:absolute;top:14px;left:14px;z-index:3;font-family:'Cousine',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:2px;background:rgba(0,229,255,.2);color:var(--cyan);border:1px solid rgba(0,229,255,.35);backdrop-filter:blur(4px);}
 
 .port-foot{margin-top:28px;text-align:center;}
 .view-all{display:inline-flex;align-items:center;gap:12px;font-family:'Cousine',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--fg2);text-decoration:none;border:1px solid var(--border);padding:13px 34px;border-radius:3px;transition:all .3s;}
 .view-all:hover{border-color:var(--pink);color:var(--pink);}
+
+/* ═══════════════════════════════════════
+   INLINE VIDEO MODAL (plays the file)
+═══════════════════════════════════════ */
+.modal-bg{
+  position:fixed;inset:0;z-index:1500;
+  background:rgba(4,4,10,.97);
+  backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .35s;
+}
+.modal-bg.open{opacity:1;pointer-events:all;}
+.modal-box{width:92vw;max-width:1100px;position:relative;}
+.modal-close{
+  position:absolute;top:-46px;right:0;
+  font-family:'Cousine',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--fg2);cursor:pointer;background:none;border:none;
+  display:flex;align-items:center;gap:8px;transition:color .25s;
+}
+.modal-close:hover{color:var(--pink);}
+#mvid{
+  width:100%;aspect-ratio:16/9;
+  background:#000;border-radius:4px;
+  display:block;
+}
+.minfo{margin-top:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.minfo-left{}
+.mttl{font-family:'Archivo Black',sans-serif;font-size:22px;letter-spacing:1px;margin-bottom:5px;}
+.mdesc{font-size:13px;font-weight:300;color:var(--fg2);}
+.mbadge{font-family:'Cousine',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:2px;margin-top:12px;display:inline-block;}
+.mb-short{background:rgba(255,61,127,.14);color:var(--pink);border:1px solid rgba(255,61,127,.24);}
+.mb-long{background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.2);}
 
 /* ABOUT */
 #about{background:var(--bg2);display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center;}
@@ -200,26 +274,21 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .abt-h2{font-family:'Archivo Black',sans-serif;font-size:clamp(38px,4.5vw,66px);line-height:.95;margin-bottom:28px;}
 .abt-h2 .col{background:linear-gradient(90deg,var(--lime),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .abt-bd{font-size:15px;font-weight:300;line-height:1.84;color:var(--fg2);}
-.abt-bd strong{color:var(--fg);font-weight:500;}
-.abt-bd p+p{margin-top:14px;}
+.abt-bd strong{color:var(--fg);font-weight:500;} .abt-bd p+p{margin-top:14px;}
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:48px;border:1px solid var(--border);border-radius:3px;overflow:hidden;}
 .st-box{padding:26px 20px;background:var(--bg3);text-align:center;}
 .st-n{font-family:'Archivo Black',sans-serif;font-size:44px;line-height:1;display:block;margin-bottom:5px;}
 .sn1{color:var(--pink);} .sn2{color:var(--cyan);} .sn3{color:var(--lime);}
 .st-l{font-family:'Cousine',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);}
-
 .abt-right{display:flex;flex-direction:column;gap:2px;}
 .ac{padding:22px 26px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:flex-start;gap:16px;transition:all .3s;position:relative;overflow:hidden;}
 .ac::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;transform:scaleY(0);transition:transform .3s;}
 .ac:nth-child(1)::before{background:var(--pink);} .ac:nth-child(2)::before{background:var(--cyan);}
-.ac:nth-child(3)::before{background:var(--lime);} .ac:nth-child(4)::before{background:var(--purple);}
-.ac:nth-child(5)::before{background:var(--orange);}
-.ac:hover::before{transform:scaleY(1);}
-.ac:hover{background:rgba(255,255,255,.03);}
+.ac:nth-child(3)::before{background:var(--lime);} .ac:nth-child(4)::before{background:var(--purple);} .ac:nth-child(5)::before{background:var(--orange);}
+.ac:hover::before{transform:scaleY(1);} .ac:hover{background:rgba(255,255,255,.03);}
 .ac-ic{width:42px;height:42px;flex-shrink:0;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:18px;}
 .ai1{background:var(--pink-dim);} .ai2{background:var(--cyan-dim);} .ai3{background:var(--lime-dim);} .ai4{background:var(--purple-dim);} .ai5{background:rgba(255,107,53,.1);}
-.ac-nm{font-size:13px;font-weight:500;margin-bottom:3px;}
-.ac-sb{font-family:'Cousine',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--fg3);}
+.ac-nm{font-size:13px;font-weight:500;margin-bottom:3px;} .ac-sb{font-family:'Cousine',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--fg3);}
 
 /* PROCESS */
 #process{background:var(--bg);}
@@ -244,8 +313,7 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 /* SOCIAL */
 #social{padding:100px 64px;background:var(--bg2);text-align:center;position:relative;overflow:hidden;}
 .soc-ol{position:absolute;width:400px;height:400px;border-radius:50%;filter:blur(100px);top:50%;transform:translateY(-50%);}
-.soc-ol-l{background:rgba(155,93,229,.1);left:-100px;}
-.soc-ol-r{background:rgba(255,61,127,.08);right:-100px;}
+.soc-ol-l{background:rgba(155,93,229,.1);left:-100px;} .soc-ol-r{background:rgba(255,61,127,.08);right:-100px;}
 .soc-ey{font-family:'Cousine',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--fg3);margin-bottom:18px;display:flex;align-items:center;justify-content:center;gap:12px;}
 .soc-ey::before,.soc-ey::after{content:'';width:40px;height:1px;background:var(--border);}
 .soc-h2{font-family:'Archivo Black',sans-serif;font-size:clamp(42px,6vw,94px);line-height:.9;margin-bottom:16px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -261,23 +329,15 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;}
 .tcard{padding:38px 34px;background:var(--bg2);border:1px solid var(--border);position:relative;transition:all .35s;}
 .tcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transition:transform .35s;}
-.tcard:nth-child(1)::after{background:var(--pink);}
-.tcard:nth-child(2)::after{background:var(--cyan);}
-.tcard:nth-child(3)::after{background:var(--lime);}
-.tcard:hover{transform:translateY(-6px);}
-.tcard:hover::after{transform:scaleX(1);}
+.tcard:nth-child(1)::after{background:var(--pink);} .tcard:nth-child(2)::after{background:var(--cyan);} .tcard:nth-child(3)::after{background:var(--lime);}
+.tcard:hover{transform:translateY(-6px);} .tcard:hover::after{transform:scaleX(1);}
 .tqm{font-family:'Archivo Black',sans-serif;font-size:52px;line-height:1;margin-bottom:12px;opacity:.16;}
-.tcard:nth-child(1) .tqm{color:var(--pink);}
-.tcard:nth-child(2) .tqm{color:var(--cyan);}
-.tcard:nth-child(3) .tqm{color:var(--lime);}
+.tcard:nth-child(1) .tqm{color:var(--pink);} .tcard:nth-child(2) .tqm{color:var(--cyan);} .tcard:nth-child(3) .tqm{color:var(--lime);}
 .ttxt{font-size:14px;font-weight:300;line-height:1.84;color:var(--fg2);font-style:italic;margin-bottom:28px;}
 .tau{display:flex;align-items:center;gap:14px;}
 .tav{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Archivo Black',sans-serif;font-size:17px;color:#fff;flex-shrink:0;}
-.av1{background:linear-gradient(135deg,var(--pink),var(--purple));}
-.av2{background:linear-gradient(135deg,var(--cyan),#3d7fff);}
-.av3{background:linear-gradient(135deg,var(--lime),var(--cyan));color:#000;}
-.tnm{font-size:13px;font-weight:500;}
-.trl{font-family:'Cousine',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--fg3);margin-top:3px;}
+.av1{background:linear-gradient(135deg,var(--pink),var(--purple));} .av2{background:linear-gradient(135deg,var(--cyan),#3d7fff);} .av3{background:linear-gradient(135deg,var(--lime),var(--cyan));color:#000;}
+.tnm{font-size:13px;font-weight:500;} .trl{font-family:'Cousine',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--fg3);margin-top:3px;}
 
 /* CONTACT */
 #contact{background:var(--bg2);position:relative;overflow:hidden;}
@@ -293,19 +353,10 @@ nav.stuck{padding:14px 64px;background:rgba(7,7,15,.92);backdrop-filter:blur(20p
 .crow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;}
 .clink{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border);padding:20px 30px;border-radius:3px;text-decoration:none;color:var(--fg);min-width:240px;transition:all .3s;position:relative;overflow:hidden;}
 .clink::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transition:transform .3s;}
-.cl1::before{background:var(--pink);}
-.cl2::before{background:var(--cyan);}
-.cl3::before{background:linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045);}
-.cl4::before{background:var(--orange);}
-.clink:hover{transform:translateY(-4px);}
-.clink:hover::before{transform:scaleX(1);}
-.cl1:hover{border-color:rgba(255,61,127,.25);}
-.cl2:hover{border-color:rgba(0,229,255,.25);}
-.cl3:hover{border-color:rgba(253,29,29,.25);}
-.cl4:hover{border-color:rgba(255,107,53,.25);}
-.cl-ic{font-size:22px;}
-.cl-val{font-size:13px;font-weight:500;}
-.cl-tp{font-family:'Cousine',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);margin-top:3px;}
+.cl1::before{background:var(--pink);} .cl2::before{background:var(--cyan);} .cl3::before{background:linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045);} .cl4::before{background:var(--orange);}
+.clink:hover{transform:translateY(-4px);} .clink:hover::before{transform:scaleX(1);}
+.cl1:hover{border-color:rgba(255,61,127,.25);} .cl2:hover{border-color:rgba(0,229,255,.25);} .cl3:hover{border-color:rgba(253,29,29,.25);} .cl4:hover{border-color:rgba(255,107,53,.25);}
+.cl-ic{font-size:22px;} .cl-val{font-size:13px;font-weight:500;} .cl-tp{font-family:'Cousine',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);margin-top:3px;}
 .cbig{margin-top:40px;display:inline-flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;padding:20px 58px;border-radius:3px;font-family:'Cousine',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:all .3s;box-shadow:0 0 60px rgba(255,61,127,.22);}
 .cbig:hover{transform:translateY(-4px);box-shadow:0 16px 80px rgba(255,61,127,.42);}
 
@@ -317,26 +368,15 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
 .foot-links a{font-family:'Cousine',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--fg3);text-decoration:none;transition:color .25s;}
 .foot-links a:hover{color:var(--pink);}
 
-/* MODAL */
-.modal-bg{position:fixed;inset:0;z-index:1100;background:rgba(4,4,10,.96);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;}
-.modal-bg.open{opacity:1;pointer-events:all;}
-.modal-box{width:92vw;max-width:960px;position:relative;}
-.modal-close{position:absolute;top:-42px;right:0;font-family:'Cousine',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--fg2);cursor:pointer;background:none;border:none;display:flex;align-items:center;gap:8px;transition:color .25s;}
-.modal-close:hover{color:var(--pink);}
-#mframe{width:100%;aspect-ratio:16/9;border:none;background:#000;border-radius:2px;}
-.minfo{margin-top:16px;}
-.mttl{font-family:'Archivo Black',sans-serif;font-size:20px;letter-spacing:1px;margin-bottom:5px;}
-.mdesc{font-size:12px;font-weight:300;color:var(--fg2);}
-
 /* RESPONSIVE */
 @media(max-width:960px){
   nav,nav.stuck{padding:16px 24px;} .nav-ul{display:none;}
   #hero,.sec,#social,#about,#testi,#contact,footer{padding-left:24px;padding-right:24px;}
   .svc-top{grid-template-columns:1fr;gap:36px;} .svc-cards{grid-template-columns:1fr;}
   .skills-strip{grid-template-columns:repeat(3,1fr);padding:44px 24px;}
-  .pg{grid-template-columns:1fr;} .pc-a,.pc-b,.pc-c,.pc-d,.pc-e{grid-column:span 1;aspect-ratio:16/9;}
+  .pg{grid-template-columns:1fr;} .pc-a,.pc-b,.pc-c,.pc-d{grid-column:span 1;aspect-ratio:16/9;}
   #about{grid-template-columns:1fr;gap:52px;padding:80px 24px;}
-  .proc-grid{grid-template-columns:1fr 1fr;gap:3px;} .tgrid{grid-template-columns:1fr;}
+  .proc-grid{grid-template-columns:1fr 1fr;} .tgrid{grid-template-columns:1fr;}
   .h-badge{display:none;} .crow{flex-direction:column;align-items:center;} .clink{min-width:290px;}
   footer{flex-direction:column;align-items:flex-start;}
 }
@@ -347,7 +387,7 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
 <div id="cur"></div>
 <div id="cur-ring"></div>
 
-<!-- ══════ NAV ══════ -->
+<!-- ══ NAV ══ -->
 <nav id="nav">
   <a href="#" class="logo"><span class="lpip"></span>Editor Cyclops</a>
   <ul class="nav-ul">
@@ -359,11 +399,10 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   <a href="#contact" class="nav-btn"><span>Hire Me</span></a>
 </nav>
 
-<!-- ══════ HERO ══════ -->
+<!-- ══ HERO ══ -->
 <section id="hero">
   <div class="hero-grid"></div>
   <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div>
-
   <div class="h-tag"><span class="h-tag-ln"></span>Mumbai · Motion Designer · Video Editor</div>
   <h1 class="h1">
     ANKIT<br>
@@ -378,9 +417,8 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
     <a href="#contact" class="cta-o">Let's Talk &nbsp;→</a>
   </div>
   <div class="h-scroll"><span class="h-scroll-bar"></span>Scroll to explore</div>
-
   <div class="h-badge">
-    <div class="badge-ring" onclick="openModal('p1')">
+    <div class="badge-ring" onclick="openModal(0)">
       <svg class="badge-ring-svg" viewBox="0 0 130 130">
         <defs><path id="bc" d="M65,65 m-48,0 a48,48 0 1,1 96,0 a48,48 0 1,1 -96,0"/></defs>
         <text><textPath href="#bc">PLAY REEL · PLAY REEL · PLAY REEL ·&nbsp;</textPath></text>
@@ -390,47 +428,40 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   </div>
 </section>
 
-<!-- ══════ MARQUEE ══════ -->
+<!-- ══ MARQUEE ══ -->
 <div class="mq-wrap">
   <div class="mq-track">
-    <div class="mq-item"><span class="gem c-pink">✦</span><span class="c-pink">Short-Form Content</span></div>
-    <div class="mq-item"><span class="gem c-cyan">◆</span><span class="c-cyan">After Effects</span></div>
-    <div class="mq-item"><span class="gem c-lime">●</span><span class="c-lime">Motion Design</span></div>
-    <div class="mq-item"><span class="gem c-orange">▲</span><span class="c-orange">Premiere Pro</span></div>
-    <div class="mq-item"><span class="gem c-pink">✦</span><span class="c-pink">Reels &amp; Shorts</span></div>
-    <div class="mq-item"><span class="gem c-cyan">◆</span><span class="c-cyan">Apple Glass UI</span></div>
-    <div class="mq-item"><span class="gem c-lime">●</span><span class="c-lime">Cinematic Edits</span></div>
-    <div class="mq-item"><span class="gem c-orange">▲</span><span class="c-orange">Color Grading</span></div>
-    <div class="mq-item"><span class="gem c-pink">✦</span><span class="c-pink">Brand Videos</span></div>
-    <div class="mq-item"><span class="gem c-cyan">◆</span><span class="c-cyan">VFX &amp; Effects</span></div>
-    <div class="mq-item"><span class="gem c-lime">●</span><span class="c-lime">Long-Form Available</span></div>
+    <div class="mq-item"><span class="c-pink">✦</span><span class="c-pink">Short-Form Content</span></div>
+    <div class="mq-item"><span class="c-cyan">◆</span><span class="c-cyan">After Effects</span></div>
+    <div class="mq-item"><span class="c-lime">●</span><span class="c-lime">Motion Design</span></div>
+    <div class="mq-item"><span class="c-orange">▲</span><span class="c-orange">Premiere Pro</span></div>
+    <div class="mq-item"><span class="c-pink">✦</span><span class="c-pink">Reels &amp; Shorts</span></div>
+    <div class="mq-item"><span class="c-cyan">◆</span><span class="c-cyan">Apple Glass UI</span></div>
+    <div class="mq-item"><span class="c-lime">●</span><span class="c-lime">Cinematic Edits</span></div>
+    <div class="mq-item"><span class="c-orange">▲</span><span class="c-orange">Color Grading</span></div>
+    <div class="mq-item"><span class="c-pink">✦</span><span class="c-pink">Brand Videos</span></div>
+    <div class="mq-item"><span class="c-cyan">◆</span><span class="c-cyan">Long-Form Available</span></div>
     <!-- dupe -->
-    <div class="mq-item"><span class="gem c-pink">✦</span><span class="c-pink">Short-Form Content</span></div>
-    <div class="mq-item"><span class="gem c-cyan">◆</span><span class="c-cyan">After Effects</span></div>
-    <div class="mq-item"><span class="gem c-lime">●</span><span class="c-lime">Motion Design</span></div>
-    <div class="mq-item"><span class="gem c-orange">▲</span><span class="c-orange">Premiere Pro</span></div>
-    <div class="mq-item"><span class="gem c-pink">✦</span><span class="c-pink">Reels &amp; Shorts</span></div>
-    <div class="mq-item"><span class="gem c-cyan">◆</span><span class="c-cyan">Apple Glass UI</span></div>
-    <div class="mq-item"><span class="gem c-lime">●</span><span class="c-lime">Cinematic Edits</span></div>
-    <div class="mq-item"><span class="gem c-orange">▲</span><span class="c-orange">Color Grading</span></div>
-    <div class="mq-item"><span class="gem c-pink">✦</span><span class="c-pink">Brand Videos</span></div>
-    <div class="mq-item"><span class="gem c-cyan">◆</span><span class="c-cyan">VFX &amp; Effects</span></div>
-    <div class="mq-item"><span class="gem c-lime">●</span><span class="c-lime">Long-Form Available</span></div>
+    <div class="mq-item"><span class="c-pink">✦</span><span class="c-pink">Short-Form Content</span></div>
+    <div class="mq-item"><span class="c-cyan">◆</span><span class="c-cyan">After Effects</span></div>
+    <div class="mq-item"><span class="c-lime">●</span><span class="c-lime">Motion Design</span></div>
+    <div class="mq-item"><span class="c-orange">▲</span><span class="c-orange">Premiere Pro</span></div>
+    <div class="mq-item"><span class="c-pink">✦</span><span class="c-pink">Reels &amp; Shorts</span></div>
+    <div class="mq-item"><span class="c-cyan">◆</span><span class="c-cyan">Apple Glass UI</span></div>
+    <div class="mq-item"><span class="c-lime">●</span><span class="c-lime">Cinematic Edits</span></div>
+    <div class="mq-item"><span class="c-orange">▲</span><span class="c-orange">Color Grading</span></div>
+    <div class="mq-item"><span class="c-pink">✦</span><span class="c-pink">Brand Videos</span></div>
+    <div class="mq-item"><span class="c-cyan">◆</span><span class="c-cyan">Long-Form Available</span></div>
   </div>
 </div>
 
-<!-- ══════ SERVICES ══════ -->
+<!-- ══ SERVICES ══ -->
 <section id="services" class="sec">
   <div class="sec-tag r" style="color:var(--pink)"><span>What I Do</span><span class="tl"></span></div>
   <div class="svc-top">
-    <div class="r">
-      <h2 class="hh">SHORT-FORM<br><span style="color:var(--pink)">IS MY</span><br>LANGUAGE</h2>
-    </div>
+    <div class="r"><h2 class="hh">SHORT-FORM<br><span style="color:var(--pink)">IS MY</span><br>LANGUAGE</h2></div>
     <div class="r d2">
-      <p class="svc-intro">
-        I specialise in <strong>high-impact short-form content</strong> — Reels, Shorts, TikToks, and branded clips that demand attention in the first 3 seconds. Every cut, motion, and effect is designed to hook, engage, and convert.<br><br>
-        For clients who need it, I'm equally skilled with <strong>long-form productions</strong> — YouTube content, brand films, documentaries, and corporate videos — bringing the same precision to bigger projects.
-      </p>
+      <p class="svc-intro">I specialise in <strong>high-impact short-form content</strong> — Reels, Shorts, TikToks, and branded clips that demand attention in the first 3 seconds. Every cut, motion, and effect is designed to hook, engage, and convert.<br><br>For clients who need it, I'm equally skilled with <strong>long-form productions</strong> — YouTube content, brand films, documentaries, and corporate videos — bringing the same precision to bigger projects.</p>
     </div>
   </div>
   <div class="svc-cards r d1">
@@ -438,11 +469,10 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
       <span class="svc-bg-n n-pink">01</span>
       <div class="sbadge sb-hot">⚡ Primary Specialty</div>
       <h3 class="svc-ttl">Short-Form<br>Content Editing</h3>
-      <p class="svc-body"><strong>Reels, Shorts, TikToks, brand clips</strong> — this is my world. Beat-synced edits, motion typography, viral-ready transitions, and thumb-stopping hooks. Every second counts, and I make every second hit.</p>
+      <p class="svc-body"><strong>Reels, Shorts, TikToks, brand clips</strong> — this is my world. Beat-synced edits, motion typography, viral-ready transitions, and thumb-stopping hooks. Every second counts.</p>
       <div class="svc-tags">
-        <span class="stag">Instagram Reels</span><span class="stag">YouTube Shorts</span>
-        <span class="stag">TikTok Edits</span><span class="stag">Motion Typography</span>
-        <span class="stag">Transitions</span><span class="stag">Hook Editing</span>
+        <span class="stag">Instagram Reels</span><span class="stag">YouTube Shorts</span><span class="stag">TikTok Edits</span>
+        <span class="stag">Motion Typography</span><span class="stag">Transitions</span><span class="stag">Hook Editing</span>
         <span class="stag">Brand Clips</span><span class="stag">Beat Sync</span>
       </div>
     </div>
@@ -452,15 +482,14 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
       <h3 class="svc-ttl">Long-Form<br>Production</h3>
       <p class="svc-body" style="margin-top:14px;">YouTube videos, brand documentaries, corporate films, podcast edits. <strong>Cinematic storytelling</strong> with the same precision I bring to short-form.</p>
       <div class="svc-tags" style="margin-top:14px;">
-        <span class="stag">YouTube Videos</span><span class="stag">Brand Films</span>
-        <span class="stag">Documentaries</span><span class="stag">Corporate</span>
+        <span class="stag">YouTube Videos</span><span class="stag">Brand Films</span><span class="stag">Documentaries</span><span class="stag">Corporate</span>
       </div>
       <div class="svc-avail">Available for long-form projects</div>
     </div>
   </div>
 </section>
 
-<!-- ══════ SKILLS ══════ -->
+<!-- ══ SKILLS ══ -->
 <div class="skills-strip">
   <div class="sk-chip r"><div class="sk-ic">⚡</div><div class="sk-nm">After Effects</div><div class="sk-sb">Motion & VFX</div></div>
   <div class="sk-chip r d1"><div class="sk-ic">🎬</div><div class="sk-nm">Premiere Pro</div><div class="sk-sb">Editing Suite</div></div>
@@ -470,13 +499,13 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   <div class="sk-chip r d4"><div class="sk-ic">✨</div><div class="sk-nm">Motion Design</div><div class="sk-sb">Animations</div></div>
 </div>
 
-<!-- ══════ PORTFOLIO ══════ -->
+<!-- ══ PORTFOLIO ══ -->
 <section id="portfolio" class="sec">
   <div class="port-top r">
     <div>
       <div class="sec-tag" style="color:var(--cyan);margin-bottom:12px;"><span>Selected Work</span><span class="tl"></span></div>
       <h2 class="hh">MY <span style="color:var(--cyan)">PORTFOLIO</span></h2>
-      <p class="port-sub">Click any project to watch the full video. All work hosted on Google Drive.</p>
+      <p class="port-sub">Click any project to watch the full video — played directly from local files.</p>
     </div>
     <div>
       <div class="tabs">
@@ -488,12 +517,15 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   </div>
 
   <div class="pg r d1">
-    <div class="pc pc-a" data-cat="short" onclick="openModal('p1')">
-      <div class="pc-thumb t1">
-        <div class="ts" style="width:280px;height:280px;background:rgba(255,61,127,.4);top:-40px;left:-40px;"></div>
-        <div class="ts" style="width:200px;height:200px;background:rgba(155,93,229,.35);bottom:0;right:0;"></div>
-        EDIT
+
+    <!-- Card 1: Word War Profit — large featured -->
+    <div class="pc pc-a" data-cat="short" onclick="openModal(0)">
+      <div class="pc-fallback t1">
+        <div class="ts" style="width:300px;height:300px;background:rgba(255,61,127,.45);top:-60px;left:-40px;"></div>
+        <div class="ts" style="width:200px;height:200px;background:rgba(155,93,229,.4);bottom:0;right:0;"></div>
+        <div class="pc-fallback-label">EDIT</div>
       </div>
+      <video class="pc-vid" src="Word War Profit.mp4" muted playsinline preload="metadata"></video>
       <span class="badge-s">Short-Form</span>
       <div class="pc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       <div class="pc-ov">
@@ -503,72 +535,67 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
       </div>
     </div>
 
-    <div class="pc pc-b" data-cat="short" onclick="openModal('p2')">
-      <div class="pc-thumb t2">
-        <div class="ts" style="width:220px;height:220px;background:rgba(0,229,255,.4);top:15%;left:15%;"></div>
-        MOTION
+    <!-- Card 2: Europe Industrial Rev test — long form -->
+    <div class="pc pc-b" data-cat="long" onclick="openModal(1)">
+      <div class="pc-fallback t2">
+        <div class="ts" style="width:220px;height:220px;background:rgba(0,229,255,.45);top:10%;left:10%;"></div>
+        <div class="pc-fallback-label">INDUS</div>
       </div>
-      <span class="badge-s">Short-Form</span>
-      <div class="pc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      <div class="pc-ov">
-        <div class="pc-type" style="color:var(--cyan)"><span class="dot dc"></span>After Effects · Concept</div>
-        <div class="pc-ttl">Motion Concept Reel</div>
-        <div class="pc-meta">Experimental motion design study</div>
-      </div>
-    </div>
-
-    <div class="pc pc-c" data-cat="short" onclick="openModal('p3')">
-      <div class="pc-thumb t3">
-        <div class="ts" style="width:180px;height:180px;background:rgba(184,255,60,.36);bottom:0;right:0;"></div>
-        UI
-      </div>
-      <span class="badge-s">Short-Form</span>
-      <div class="pc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      <div class="pc-ov">
-        <div class="pc-type" style="color:var(--lime)"><span class="dot" style="background:var(--lime);box-shadow:0 0 6px var(--lime)"></span>Apple Glass UI</div>
-        <div class="pc-ttl">Glass UI Animation</div>
-        <div class="pc-meta">Premium glassmorphism · Apple aesthetic</div>
-      </div>
-    </div>
-
-    <div class="pc pc-d" data-cat="long" onclick="openModal('p4')">
-      <div class="pc-thumb t4">
-        <div class="ts" style="width:200px;height:200px;background:rgba(155,93,229,.4);top:10%;left:20%;"></div>
-        VFX
-      </div>
+      <video class="pc-vid" src="Europe Industrial Rev test.mp4" muted playsinline preload="metadata"></video>
       <span class="badge-l">Long-Form</span>
       <div class="pc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       <div class="pc-ov">
-        <div class="pc-type" style="color:var(--purple)"><span class="dot" style="background:var(--purple);box-shadow:0 0 6px var(--purple)"></span>Premiere Pro · Cinematic</div>
-        <div class="pc-ttl">Cinematic Cut</div>
-        <div class="pc-meta">Long-form cinematic production</div>
+        <div class="pc-type" style="color:var(--cyan)"><span class="dot dc"></span>Premiere Pro · Cinematic</div>
+        <div class="pc-ttl">Europe Industrial Rev</div>
+        <div class="pc-meta">Long-form cinematic production · industrial aesthetic</div>
       </div>
     </div>
 
-    <div class="pc pc-e" onclick="window.open('https://drive.google.com/drive/folders/1V6FO9WRaOOebHvD-ecsmmNhG8_9CQy7b','_blank')">
-      <div class="pc-thumb t5">
-        <div class="ts" style="width:180px;height:180px;background:rgba(255,107,53,.4);top:10%;right:10%;"></div>
-        MORE
+    <!-- Card 3: Motion Graphics editing about american -->
+    <div class="pc pc-c" data-cat="short" onclick="openModal(2)">
+      <div class="pc-fallback t3">
+        <div class="ts" style="width:200px;height:200px;background:rgba(184,255,60,.4);bottom:0;right:0;"></div>
+        <div class="ts" style="width:150px;height:150px;background:rgba(0,229,255,.25);top:10%;left:10%;"></div>
+        <div class="pc-fallback-label">MOTION</div>
       </div>
-      <div class="pc-play"><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+      <video class="pc-vid" src="Motion Graphics editing about american ....mp4" muted playsinline preload="metadata"></video>
+      <span class="badge-s">Short-Form</span>
+      <div class="pc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       <div class="pc-ov">
-        <div class="pc-type" style="color:var(--orange)"><span class="dot" style="background:var(--orange);box-shadow:0 0 6px var(--orange)"></span>Full Portfolio</div>
-        <div class="pc-ttl">Browse All Projects</div>
-        <div class="pc-meta">Open full Google Drive folder →</div>
+        <div class="pc-type" style="color:var(--lime)"><span class="dot dl"></span>After Effects · Motion Graphics</div>
+        <div class="pc-ttl">Motion Graphics Edit</div>
+        <div class="pc-meta">American theme · dynamic motion graphics</div>
       </div>
     </div>
+
+    <!-- Card 4: Not complete video yet -->
+    <div class="pc pc-d" data-cat="short" onclick="openModal(3)">
+      <div class="pc-fallback t4">
+        <div class="ts" style="width:200px;height:200px;background:rgba(155,93,229,.45);top:10%;left:20%;"></div>
+        <div class="pc-fallback-label">WIP</div>
+      </div>
+      <video class="pc-vid" src="Not complete video yet but thought to u....mp4" muted playsinline preload="metadata"></video>
+      <span class="badge-s">Short-Form</span>
+      <div class="pc-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="pc-ov">
+        <div class="pc-type" style="color:var(--purple)"><span class="dot dpu"></span>Work In Progress · Concept</div>
+        <div class="pc-ttl">WIP Concept Edit</div>
+        <div class="pc-meta">Experimental short-form concept in progress</div>
+      </div>
+    </div>
+
   </div>
 
   <div class="port-foot r">
-    <a href="https://drive.google.com/drive/folders/1V6FO9WRaOOebHvD-ecsmmNhG8_9CQy7b" target="_blank" class="view-all">
-      View Complete Portfolio on Google Drive &nbsp;→
+    <a href="https://www.instagram.com/editorcyclops/" target="_blank" class="view-all">
+      See More on Instagram @editorcyclops &nbsp;→
     </a>
   </div>
 </section>
 
-<!-- ══════ ABOUT ══════ -->
+<!-- ══ ABOUT ══ -->
 <section id="about" class="sec">
-  <div class="about-left r">
+  <div class="r">
     <div class="abt-ey">About Me</div>
     <h2 class="abt-h2">THE EDITOR<br>BEHIND THE<br><span class="col">CYCLOPS</span></h2>
     <div class="abt-bd">
@@ -591,7 +618,7 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   </div>
 </section>
 
-<!-- ══════ PROCESS ══════ -->
+<!-- ══ PROCESS ══ -->
 <section id="process" class="sec">
   <div class="sec-tag r" style="color:var(--orange)"><span>How It Works</span><span class="tl"></span></div>
   <h2 class="proc-h2 r">THE <span class="col">PROCESS</span></h2>
@@ -603,7 +630,7 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   </div>
 </section>
 
-<!-- ══════ INSTAGRAM ══════ -->
+<!-- ══ INSTAGRAM ══ -->
 <section id="social">
   <div class="soc-ol soc-ol-l"></div><div class="soc-ol soc-ol-r"></div>
   <div class="soc-ey r">Follow the Journey</div>
@@ -617,24 +644,24 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   </div>
 </section>
 
-<!-- ══════ TESTIMONIALS ══════ -->
+<!-- ══ TESTIMONIALS ══ -->
 <section id="testi" class="sec">
   <div class="sec-tag r" style="color:var(--purple)"><span>Client Feedback</span><span class="tl"></span></div>
   <h2 class="testi-h2 r">WHAT <span class="tc">CLIENTS</span> SAY</h2>
   <div class="tgrid">
-    <div class="tcard r"><div class="tqm">"</div><p class="ttxt">Ankit's short-form edits are on another level. The transitions and motion work for our brand Reels were cinematic — our engagement tripled within a week. Absolutely worth every rupee.</p><div class="tau"><div class="tav av1">R</div><div><div class="tnm">Rohan Mehta</div><div class="trl">Brand Director</div></div></div></div>
+    <div class="tcard r"><div class="tqm">"</div><p class="ttxt">Ankit's short-form edits are on another level. The transitions and motion work for our brand Reels were cinematic — our engagement tripled within a week.</p><div class="tau"><div class="tav av1">R</div><div><div class="tnm">Rohan Mehta</div><div class="trl">Brand Director</div></div></div></div>
     <div class="tcard r d1"><div class="tqm">"</div><p class="ttxt">The Apple Glass UI animations for our app promo were jaw-dropping. Clients loved it. We've already booked him for three more projects. Simply the best editor we've worked with.</p><div class="tau"><div class="tav av2">P</div><div><div class="tnm">Priya Sharma</div><div class="trl">Marketing Head · SaaS Startup</div></div></div></div>
-    <div class="tcard r d2"><div class="tqm">"</div><p class="ttxt">Fast turnaround, incredible hook editing, zero compromise on quality. Ankit understood exactly what short-form content needs. My YouTube Shorts blew up after his edits.</p><div class="tau"><div class="tav av3">K</div><div><div class="tnm">Karan Nair</div><div class="trl">Content Creator · 2M Followers</div></div></div></div>
+    <div class="tcard r d2"><div class="tqm">"</div><p class="ttxt">Fast turnaround, incredible hook editing, zero compromise on quality. Ankit understood exactly what short-form content needs. My Shorts blew up after his edits.</p><div class="tau"><div class="tav av3">K</div><div><div class="tnm">Karan Nair</div><div class="trl">Content Creator · 2M Followers</div></div></div></div>
   </div>
 </section>
 
-<!-- ══════ CONTACT ══════ -->
+<!-- ══ CONTACT ══ -->
 <section id="contact" class="sec">
   <div class="cg1"></div><div class="cg2"></div>
   <div class="cinn">
     <div class="ctag r">Ready to Create?</div>
     <h2 class="ch2 r">LET'S<br><span class="gc">WORK</span><br>TOGETHER</h2>
-    <p class="csub r">Got a <strong>Reel, Short, brand video</strong>, or a bigger long-form project? I'm open to new clients. Let's make something scroll-stopping.</p>
+    <p class="csub r">Got a <strong>Reel, Short, brand video</strong>, or a bigger long-form project in mind? I'm open to new clients. Let's make something scroll-stopping.</p>
     <div class="crow r d1">
       <a href="tel:+918584807279" class="clink cl1"><div class="cl-ic">📞</div><div><div class="cl-val">+91 85848 07279</div><div class="cl-tp">Call or WhatsApp</div></div></a>
       <a href="mailto:ankit.sengupta05@gmail.com" class="clink cl2"><div class="cl-ic">✉️</div><div><div class="cl-val">ankit.sengupta05@gmail.com</div><div class="cl-tp">Email Me</div></div></a>
@@ -647,7 +674,7 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   </div>
 </section>
 
-<!-- ══════ FOOTER ══════ -->
+<!-- ══ FOOTER ══ -->
 <footer>
   <a href="#" class="foot-logo"><span class="lpip"></span>Editor Cyclops</a>
   <div class="foot-copy">© 2025 Ankit Sengupta · Mumbai · All rights reserved</div>
@@ -659,67 +686,118 @@ footer{padding:30px 64px;border-top:1px solid var(--border);background:var(--bg)
   </div>
 </footer>
 
-<!-- ══════ MODAL ══════ -->
+<!-- ══ VIDEO MODAL ══ -->
 <div class="modal-bg" id="modal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">✕ &nbsp;Close</button>
-    <iframe id="mframe" src="" allow="autoplay" allowfullscreen></iframe>
-    <div class="minfo"><div class="mttl" id="mttl"></div><div class="mdesc" id="mdesc"></div></div>
+    <button class="modal-close" onclick="closeModal()">✕ &nbsp;Close &nbsp;[ESC]</button>
+    <video id="mvid" controls playsinline style="width:100%;aspect-ratio:16/9;background:#000;border-radius:4px;display:block;"></video>
+    <div class="minfo">
+      <div class="minfo-left">
+        <div class="mttl" id="mttl"></div>
+        <div class="mdesc" id="mdesc"></div>
+        <div id="mbadge"></div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-/* CURSOR */
-const dot=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+/* ── VIDEO DATA — filenames must match exactly what's in the folder ── */
+const VIDEOS = [
+  {
+    src: 'Word War Profit.mp4',
+    title: 'Word War Profit',
+    desc: 'Dynamic short-form motion design with cinematic transitions and bold typography animation.',
+    cat: 'short'
+  },
+  {
+    src: 'Europe Industrial Rev test.mp4',
+    title: 'Europe Industrial Rev',
+    desc: 'Long-form cinematic production with an industrial aesthetic — Premiere Pro colour grading and pacing.',
+    cat: 'long'
+  },
+  {
+    src: 'Motion Graphics editing about american ....mp4',
+    title: 'Motion Graphics Edit',
+    desc: 'Short-form motion graphics piece with American-themed dynamic visuals built in After Effects.',
+    cat: 'short'
+  },
+  {
+    src: 'Not complete video yet but thought to u....mp4',
+    title: 'WIP Concept Edit',
+    desc: 'Work-in-progress short-form concept — experimental hook structure and motion design in progress.',
+    cat: 'short'
+  }
+];
+
+/* ── CURSOR ── */
+const dot = document.getElementById('cur'), ring = document.getElementById('cur-ring');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
-(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+(function loop(){ rx+=(mx-rx)*.12; ry+=(my-ry)*.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
 document.querySelectorAll('a,button,.pc,.svc-main,.svc-side,.ac,.tcard,.sk-chip').forEach(el=>{
   el.addEventListener('mouseenter',()=>document.body.classList.add('chover'));
   el.addEventListener('mouseleave',()=>document.body.classList.remove('chover'));
 });
 
-/* NAV */
+/* ── NAV ── */
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('stuck',scrollY>50));
 
-/* REVEAL */
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.08});
+/* ── REVEAL ── */
+const obs = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:.08});
 document.querySelectorAll('.r').forEach(el=>obs.observe(el));
 
-/* TABS */
-function filterTab(btn,cat){
+/* ── VIDEO THUMBNAILS: seek to 2s for poster frame ── */
+document.querySelectorAll('.pc-vid').forEach(v=>{
+  v.addEventListener('loadedmetadata',()=>{
+    v.currentTime = Math.min(2, v.duration * 0.1);
+  });
+  v.addEventListener('seeked',()=>{
+    v.closest('.pc').classList.add('loaded');
+  });
+  /* hover preview */
+  v.closest('.pc').addEventListener('mouseenter',()=>{ v.play(); });
+  v.closest('.pc').addEventListener('mouseleave',()=>{ v.pause(); v.currentTime = Math.min(2, v.duration * 0.1); });
+});
+
+/* ── TABS ── */
+function filterTab(btn, cat){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   btn.classList.add('on');
   document.querySelectorAll('.pc[data-cat]').forEach(pc=>{
-    const show=cat==='all'||pc.dataset.cat===cat;
-    pc.style.opacity=show?'1':'.22';
-    pc.style.pointerEvents=show?'':'none';
-    pc.style.transition='opacity .35s';
+    const show = cat==='all' || pc.dataset.cat===cat;
+    pc.style.opacity = show ? '1' : '.2';
+    pc.style.pointerEvents = show ? '' : 'none';
+    pc.style.transition = 'opacity .35s';
   });
 }
 
-/* MODAL */
-const PROJ={
-  p1:{id:'1F6xYj6SaPMVhnvG4ksX8eTLZAGN77sXp',title:'Word War Profit',desc:'Dynamic short-form motion design with cinematic transitions and typography animation. After Effects & Premiere Pro.'},
-  p2:{id:'1hoOg_Rt6MEmxHuVucdnyCrYM-v517FHh',title:'Motion Concept Reel',desc:'Experimental short-form motion design study — fluid transitions and visual storytelling.'},
-  p3:{id:'1XXkDvLQX0nvmRMZrRF7iOuKtkIdo3iu2',title:'Glass UI Animation',desc:'Premium Apple-inspired glassmorphism UI animation with silky motion and depth effects.'},
-  p4:{id:'1LwWn4T5LtjKuTO0mY92GBQhoZi6oan2g',title:'Cinematic Cut',desc:'Long-form cinematic production — beat-synced editing, colour grading, and immersive sound design.'},
-};
-function openModal(k){
-  const p=PROJ[k];if(!p)return;
-  document.getElementById('mframe').src=`https://drive.google.com/file/d/${p.id}/preview`;
-  document.getElementById('mttl').textContent=p.title;
-  document.getElementById('mdesc').textContent=p.desc;
+/* ── MODAL ── */
+function openModal(idx){
+  const v = VIDEOS[idx];
+  const vid = document.getElementById('mvid');
+  vid.src = v.src;
+  vid.load();
+  vid.play();
+  document.getElementById('mttl').textContent = v.title;
+  document.getElementById('mdesc').textContent = v.desc;
+  const badge = document.getElementById('mbadge');
+  badge.className = 'mbadge ' + (v.cat==='short' ? 'mb-short' : 'mb-long');
+  badge.textContent = v.cat==='short' ? '⚡ Short-Form' : '🎬 Long-Form';
   document.getElementById('modal').classList.add('open');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
+
 function closeModal(){
+  const vid = document.getElementById('mvid');
+  vid.pause();
+  vid.src = '';
   document.getElementById('modal').classList.remove('open');
-  document.getElementById('mframe').src='';
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
 }
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+document.getElementById('modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 </script>
 </body>
 </html>
