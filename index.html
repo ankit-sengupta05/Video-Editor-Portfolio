@@ -1543,8 +1543,31 @@ footer {
       </div>
     </div>
 
-    <!-- Card 4: Motion Graphics Edit -->
-    <div class="vcard" data-cat="short" onclick="openModal(3)">
+    <!-- Card 4: #3 Priority — featured full-width -->
+    <div class="vcard featured" data-cat="short" onclick="openModal(3)" style="border-color:rgba(255,107,53,.22);background:linear-gradient(145deg,rgba(255,107,53,.04),var(--bg3) 50%);">
+      <div class="vcard-frame-wrap">
+        <iframe
+          src="https://drive.google.com/file/d/1zt-pRELZKoZowVh1a1p_I2a9kDHPX5pn/preview"
+          loading="lazy" title="Short-Form Edit">
+        </iframe>
+        <span class="vbadge" style="background:rgba(255,107,53,.9);color:#fff;">Short-Form</span>
+        <span class="vb-hero" style="background:rgba(255,107,53,.9);color:#fff;">🔥 Must Watch</span>
+        <div class="vplay" style="background:rgba(255,107,53,.9);">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+      <div class="vcard-info" style="border-top-color:rgba(255,107,53,.2);">
+        <div class="vcard-type" style="color:var(--orange)">
+          <span class="vdot" style="background:var(--orange);box-shadow:0 0 6px var(--orange)"></span>
+          Short-Form &nbsp;·&nbsp; Cinematic Edit
+        </div>
+        <div class="vcard-title" style="background:linear-gradient(90deg,var(--orange),var(--yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Short-Form Cinematic Edit</div>
+        <div class="vcard-desc">High-energy short-form edit with precision pacing, dynamic rhythm cuts and bold cinematic colour treatment. Built to stop the scroll and hold attention.</div>
+      </div>
+    </div>
+
+    <!-- Card 5: Motion Graphics Edit -->
+    <div class="vcard" data-cat="short" onclick="openModal(4)">
       <div class="vcard-frame-wrap">
         <iframe
           src="https://drive.google.com/file/d/1XXkDvLQX0nvmRMZrRF7iOuKtkIdo3iu2/preview"
@@ -1563,8 +1586,8 @@ footer {
       </div>
     </div>
 
-    <!-- Card 5: WIP Concept -->
-    <div class="vcard" data-cat="short" onclick="openModal(4)">
+    <!-- Card 6: WIP Concept -->
+    <div class="vcard" data-cat="short" onclick="openModal(5)">
       <div class="vcard-frame-wrap">
         <iframe
           src="https://drive.google.com/file/d/1F6xYj6SaPMVhnvG4ksX8eTLZAGN77sXp/preview"
@@ -1580,26 +1603,6 @@ footer {
         </div>
         <div class="vcard-title">WIP Concept Edit</div>
         <div class="vcard-desc">Experimental short-form concept — hook structure and motion design study in progress.</div>
-      </div>
-    </div>
-
-    <!-- Card 6: New Edit -->
-    <div class="vcard" data-cat="short" onclick="openModal(5)">
-      <div class="vcard-frame-wrap">
-        <iframe
-          src="https://drive.google.com/file/d/1zt-pRELZKoZowVh1a1p_I2a9kDHPX5pn/preview"
-          loading="lazy" title="Short-Form Edit">
-        </iframe>
-        <span class="vbadge vb-short">Short-Form</span>
-        <div class="vplay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      </div>
-      <div class="vcard-info">
-        <div class="vcard-type" style="color:var(--orange)">
-          <span class="vdot" style="background:var(--orange);box-shadow:0 0 6px var(--orange)"></span>
-          After Effects &nbsp;·&nbsp; Short-Form
-        </div>
-        <div class="vcard-title">Short-Form Edit</div>
-        <div class="vcard-desc">High-energy short-form edit with precise pacing, dynamic cuts and cinematic colour treatment.</div>
       </div>
     </div>
 
@@ -1793,6 +1796,12 @@ const VIDS = [
     cat:   'long'
   },
   {
+    id:    '1zt-pRELZKoZowVh1a1p_I2a9kDHPX5pn',
+    title: 'Short-Form Cinematic Edit',
+    desc:  'High-energy short-form edit with precision pacing, dynamic rhythm cuts and bold cinematic colour treatment. Built to stop the scroll and hold attention.',
+    cat:   'short'
+  },
+  {
     id:    '1XXkDvLQX0nvmRMZrRF7iOuKtkIdo3iu2',
     title: 'Motion Graphics Edit',
     desc:  'Short-form motion graphics piece with dynamic visuals and kinetic typography built in After Effects.',
@@ -1802,12 +1811,6 @@ const VIDS = [
     id:    '1F6xYj6SaPMVhnvG4ksX8eTLZAGN77sXp',
     title: 'WIP Concept Edit',
     desc:  'Experimental short-form concept — hook structure and motion design study. Work in progress.',
-    cat:   'short'
-  },
-  {
-    id:    '1zt-pRELZKoZowVh1a1p_I2a9kDHPX5pn',
-    title: 'Short-Form Edit',
-    desc:  'High-energy short-form edit with precise pacing, dynamic cuts and cinematic colour treatment. After Effects & Premiere Pro.',
     cat:   'short'
   }
 ];
