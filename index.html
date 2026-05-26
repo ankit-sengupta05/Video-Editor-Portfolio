@@ -27,6 +27,7 @@
   --purple:  #9b5de5;
   --orange:  #ff6b35;
   --yellow:  #ffd60a;
+  --gold:    #ffbe0b;
   --border:  rgba(255,255,255,0.07);
   --border-h:rgba(255,255,255,0.14);
   --touch-target: 48px;
@@ -191,13 +192,191 @@ nav.stuck {
 .nav-mobile-menu a:hover { color: var(--pink); }
 
 /* ══════════════════════════════════════
-   HERO — with featured Drive video
+   DEVIN JATHO SPOTLIGHT — top-of-page showcase
+══════════════════════════════════════ */
+#devin-spotlight {
+  padding-top: 64px;
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* Gold/warm accent for Devin section */
+.devin-orb-l {
+  position: absolute; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; z-index: 0;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,190,11,.12) 0%, transparent 70%);
+  top: -100px; left: -150px;
+  animation: dob1 11s ease-in-out infinite;
+}
+.devin-orb-r {
+  position: absolute; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; z-index: 0;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(247,37,133,.14) 0%, transparent 70%);
+  bottom: 0; right: -80px;
+  animation: dob2 14s ease-in-out infinite;
+}
+@keyframes dob1 { 0%,100%{transform:translateY(0) scale(1);} 50%{transform:translateY(-30px) scale(1.06);} }
+@keyframes dob2 { 0%,100%{transform:translateY(0);} 50%{transform:translateY(20px) scale(.94);} }
+
+/* Big video frame */
+.devin-video-wrap {
+  position: relative; z-index: 2;
+  width: 100%;
+  aspect-ratio: 16/9;
+  max-height: 80vh;
+  background: #000;
+  overflow: hidden;
+  cursor: pointer;
+}
+.devin-video-wrap iframe {
+  width: 100%; height: 100%;
+  border: none; display: block;
+}
+/* Block iframe tap so wrapper click fires */
+.devin-video-wrap::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+}
+/* Bottom gradient */
+.devin-video-wrap::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(6,6,13,1) 0%, rgba(6,6,13,.25) 35%, transparent 65%);
+  pointer-events: none; z-index: 2;
+}
+
+/* Devin play button — gold */
+.devin-play {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) scale(.88);
+  width: 80px; height: 80px; border-radius: 50%;
+  background: rgba(255,190,11,.92);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: all .35s;
+  box-shadow: 0 0 0 0 rgba(255,190,11,.4); z-index: 3;
+}
+.devin-play svg { fill: #000; width: 26px; height: 26px; margin-left: 5px; }
+.devin-video-wrap:hover .devin-play {
+  opacity: 1;
+  transform: translate(-50%,-50%) scale(1);
+  box-shadow: 0 0 52px rgba(255,190,11,.7);
+}
+@media (hover: none) {
+  .devin-play { opacity: .8; transform: translate(-50%,-50%) scale(.92); }
+}
+
+/* Sticker badges on video */
+.devin-badge-tl {
+  position: absolute; top: 20px; left: 20px; z-index: 4;
+  font-family: 'Cousine', monospace; font-size: 10px;
+  letter-spacing: 3px; text-transform: uppercase;
+  background: rgba(255,190,11,.95); color: #000;
+  padding: 6px 14px; border-radius: 2px; font-weight: 700;
+}
+.devin-badge-tr {
+  position: absolute; top: 20px; right: 20px; z-index: 4;
+  font-family: 'Cousine', monospace; font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  background: rgba(247,37,133,.9); color: #fff;
+  padding: 6px 14px; border-radius: 2px;
+}
+
+/* Text panel below video */
+.devin-info {
+  position: relative; z-index: 2;
+  padding: 36px 48px 52px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px; align-items: center;
+}
+.devin-info-left {}
+.devin-kicker {
+  font-family: 'Cousine', monospace; font-size: 10px;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold);
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+  opacity: 0; animation: fadeUp .7s .15s ease forwards;
+}
+.devin-kicker-line { width: 28px; height: 1px; background: var(--gold); }
+.devin-title {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(36px, 5.5vw, 80px);
+  line-height: .92; letter-spacing: -2px;
+  margin-bottom: 6px;
+  opacity: 0; animation: fadeUp .8s .28s ease forwards;
+}
+.devin-title-sub {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(36px, 5.5vw, 80px);
+  line-height: .92; letter-spacing: -2px;
+  display: block;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--orange) 50%, var(--pink) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0; animation: fadeUp .8s .38s ease forwards;
+}
+.devin-meta {
+  font-family: 'Cousine', monospace; font-size: 12px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--fg2); margin-top: 18px; margin-bottom: 22px;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .7s .5s ease forwards;
+}
+.dmeta-sep { color: var(--gold); font-size: 8px; }
+.devin-desc {
+  font-size: 15px; font-weight: 300; line-height: 1.84;
+  color: var(--fg2); max-width: 580px;
+  opacity: 0; animation: fadeUp .8s .6s ease forwards;
+}
+.devin-desc strong { color: var(--fg); font-weight: 500; }
+
+/* Devin style pill tags */
+.devin-tags {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: 22px;
+  opacity: 0; animation: fadeUp .7s .72s ease forwards;
+}
+.dtag {
+  font-family: 'Cousine', monospace; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 6px 13px; border-radius: 2px;
+  border: 1px solid rgba(255,190,11,.25);
+  color: var(--gold);
+  transition: all .25s; cursor: default;
+}
+.dtag:hover { background: rgba(255,190,11,.1); border-color: var(--gold); }
+
+/* Right side — watch button */
+.devin-cta-wrap {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 14px;
+  opacity: 0; animation: fadeUp .8s .82s ease forwards;
+}
+.devin-watch-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #000; padding: 18px 40px; border-radius: 2px;
+  font-family: 'Cousine', monospace; font-size: 12px;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: all .3s;
+  box-shadow: 0 6px 40px rgba(255,190,11,.3);
+  white-space: nowrap; font-weight: 700;
+}
+.devin-watch-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 56px rgba(255,190,11,.5); }
+.devin-style-note {
+  font-family: 'Cousine', monospace; font-size: 9px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--fg3); text-align: right;
+}
+
+/* ══════════════════════════════════════
+   HERO — below spotlight, bio section
 ══════════════════════════════════════ */
 #hero {
-  min-height: 100vh;
-  padding-top: 64px;
-  display: flex; flex-direction: column;
   position: relative; overflow: hidden;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
 }
 
 .hero-orb {
@@ -221,47 +400,10 @@ nav.stuck {
   -webkit-mask-image: radial-gradient(ellipse 60% 80% at 35% 50%, black 20%, transparent 80%);
 }
 
-/* ── HERO FEATURED VIDEO (main focus) ── */
-.hero-video-banner {
-  position: relative; z-index: 2;
-  width: 100%; background: #000;
-  aspect-ratio: 16/9; max-height: 70vh;
-  overflow: hidden; cursor: pointer;
-}
-.hero-video-banner iframe {
-  width: 100%; height: 100%;
-  border: none; display: block;
-}
-/* Gradient overlay bottom */
-.hero-video-banner::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(6,6,13,1) 0%, rgba(6,6,13,.3) 30%, transparent 60%);
-  pointer-events: none;
-}
-.hero-video-label {
-  position: absolute; bottom: 28px; left: 32px; z-index: 3;
-  pointer-events: none;
-}
-.hero-video-label-badge {
-  font-family: 'Cousine', monospace; font-size: 10px;
-  letter-spacing: 3px; text-transform: uppercase;
-  background: var(--pink); color: #fff;
-  padding: 5px 13px; border-radius: 2px;
-  display: inline-block; margin-bottom: 10px;
-}
-.hero-video-label h3 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: clamp(18px, 3vw, 36px);
-  line-height: 1.1;
-}
-.hero-video-label p {
-  font-size: 13px; color: var(--fg2); margin-top: 5px; font-weight: 300;
-}
-
-/* ── HERO TEXT SECTION below video ── */
+/* ── HERO TEXT SECTION ── */
 .hero-content {
   position: relative; z-index: 2;
-  padding: 40px 48px 60px;
+  padding: 56px 48px 72px;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 48px; align-items: center;
@@ -273,7 +415,6 @@ nav.stuck {
   color: var(--pink);
   display: flex; align-items: center; gap: 14px;
   margin-bottom: 24px;
-  opacity: 0; animation: fadeUp .7s .2s ease forwards;
 }
 .hero-eyebrow-line { width: 28px; height: 1px; background: var(--pink); }
 
@@ -282,7 +423,6 @@ nav.stuck {
   font-size: clamp(48px, 7vw, 100px);
   line-height: 1; letter-spacing: -2px;
   margin-bottom: 4px;
-  opacity: 0; animation: fadeUp .8s .35s ease forwards;
 }
 .hero-name-grad {
   font-family: 'Archivo Black', sans-serif;
@@ -292,7 +432,6 @@ nav.stuck {
   background: linear-gradient(90deg, var(--cyan) 0%, var(--purple) 50%, var(--pink) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
-  opacity: 0; animation: fadeUp .8s .45s ease forwards;
 }
 .hero-role {
   font-family: 'Cousine', monospace;
@@ -300,7 +439,6 @@ nav.stuck {
   color: var(--fg2);
   margin-top: 16px; margin-bottom: 28px;
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-  opacity: 0; animation: fadeUp .7s .6s ease forwards;
 }
 .role-sep { color: var(--pink); font-size: 8px; }
 
@@ -308,13 +446,11 @@ nav.stuck {
   font-size: 15px; font-weight: 300; line-height: 1.82;
   color: var(--fg2); max-width: 500px;
   margin-bottom: 36px;
-  opacity: 0; animation: fadeUp .8s .7s ease forwards;
 }
 .hero-desc strong { color: var(--fg); font-weight: 500; }
 
 .hero-btns {
   display: flex; gap: 12px; flex-wrap: wrap;
-  opacity: 0; animation: fadeUp .8s .85s ease forwards;
 }
 
 .btn-main {
@@ -347,7 +483,6 @@ nav.stuck {
   padding: 28px 24px;
   display: flex; flex-direction: column; gap: 0;
   min-width: 200px;
-  opacity: 0; animation: fadeUp .8s 1s ease forwards;
 }
 .hstat {
   padding: 18px 0;
@@ -364,15 +499,6 @@ nav.stuck {
 .hn3{color:var(--lime);} .hn4{color:var(--yellow);}
 .hstat-label { font-size: 12px; font-weight: 500; color: var(--fg); margin-bottom: 2px; }
 .hstat-sub { font-family: 'Cousine', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--fg3); }
-
-.hero-scroll {
-  position: absolute; bottom: 24px; left: 48px; z-index: 2;
-  display: flex; align-items: center; gap: 12px;
-  font-family: 'Cousine', monospace; font-size: 10px;
-  letter-spacing: 3px; text-transform: uppercase; color: var(--fg3);
-  opacity: 0; animation: fadeUp .8s 1.2s ease forwards;
-}
-.scroll-ln { width: 44px; height: 1px; background: linear-gradient(to right, transparent, var(--fg3)); }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(28px); }
@@ -400,6 +526,7 @@ nav.stuck {
 }
 .cp{color:var(--pink);} .cc{color:var(--cyan);}
 .cl{color:var(--lime);} .co{color:var(--orange);}
+.cg{color:var(--gold);}
 @keyframes mq { from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
 /* ══════════════════════════════════════
@@ -567,6 +694,16 @@ nav.stuck {
 .vcard:hover { border-color: var(--border-h); transform: translateY(-3px); }
 .vcard.featured { grid-column: span 2; }
 
+/* Gold featured card */
+.vcard.devin-star {
+  border-color: rgba(255,190,11,.25);
+  background: linear-gradient(145deg, rgba(255,190,11,.04), var(--bg3) 50%);
+}
+.vcard.devin-star:hover {
+  border-color: rgba(255,190,11,.5);
+  box-shadow: 0 0 48px rgba(255,190,11,.12);
+}
+
 /* iframe wrapper — 16:9 */
 .vcard-frame-wrap {
   position: relative;
@@ -576,13 +713,11 @@ nav.stuck {
 .vcard-frame-wrap iframe {
   width: 100%; height: 100%;
   border: none; display: block;
-  pointer-events: none; /* so card click works */
+  pointer-events: none;
 }
-/* Block iframe tap so full-card onclick fires */
 .vcard-frame-wrap::before {
   content: ''; position: absolute; inset: 0; z-index: 1;
 }
-/* gradient */
 .vcard-frame-wrap::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(6,6,13,.8) 0%, rgba(6,6,13,.15) 40%, transparent 100%);
@@ -602,7 +737,9 @@ nav.stuck {
 }
 .vplay svg { fill: #fff; width: 22px; height: 22px; margin-left: 4px; }
 .vcard:hover .vplay { opacity: 1; transform: translate(-50%,-50%) scale(1); box-shadow: 0 0 40px rgba(247,37,133,.6); }
-/* On mobile/touch — always show play */
+.vcard.devin-star .vplay { background: rgba(255,190,11,.9); }
+.vcard.devin-star .vplay svg { fill: #000; }
+.vcard.devin-star:hover .vplay { box-shadow: 0 0 40px rgba(255,190,11,.6); }
 @media (hover: none) {
   .vplay { opacity: .75; transform: translate(-50%,-50%) scale(.9); }
 }
@@ -616,8 +753,8 @@ nav.stuck {
 }
 .vb-short { background: rgba(247,37,133,.9); color: #fff; }
 .vb-long  { background: rgba(0,229,255,.18); color: var(--cyan); border: 1px solid rgba(0,229,255,.35); }
+.vb-devin { background: rgba(255,190,11,.95); color: #000; font-weight: 700; }
 
-/* Featured badge */
 .vb-hero {
   position: absolute; top: 14px; right: 14px; z-index: 4;
   font-family: 'Cousine', monospace; font-size: 9px;
@@ -626,9 +763,18 @@ nav.stuck {
   background: rgba(255,214,10,.9); color: #000;
 }
 
+/* Devin star corner accent */
+.vcard.devin-star .vcard-frame-wrap::before {
+  background: linear-gradient(135deg, rgba(255,190,11,.06) 0%, transparent 40%);
+  z-index: 0;
+}
+
 .vcard-info {
   padding: 18px 20px 20px;
   border-top: 1px solid var(--border);
+}
+.vcard.devin-star .vcard-info {
+  border-top-color: rgba(255,190,11,.18);
 }
 .vcard-type {
   font-family: 'Cousine', monospace; font-size: 9px;
@@ -642,7 +788,24 @@ nav.stuck {
   font-size: 17px; letter-spacing: .5px;
   margin-bottom: 4px; color: var(--fg);
 }
+.vcard.devin-star .vcard-title {
+  background: linear-gradient(90deg, var(--gold), var(--orange));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 .vcard-desc { font-size: 12px; font-weight: 300; color: var(--fg3); line-height: 1.6; }
+
+/* Devin style badge inside card info */
+.devin-style-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Cousine', monospace; font-size: 8px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 2px;
+  background: rgba(255,190,11,.12);
+  border: 1px solid rgba(255,190,11,.28);
+  color: var(--gold);
+  margin-top: 10px;
+}
 
 .port-footer { margin-top: 24px; text-align: center; }
 .port-more {
@@ -709,6 +872,7 @@ nav.stuck {
 .skcard:nth-child(3)::before{background:var(--lime);}
 .skcard:nth-child(4)::before{background:var(--purple);}
 .skcard:nth-child(5)::before{background:var(--orange);}
+.skcard:nth-child(6)::before{background:var(--gold);}
 .skcard:hover::before{transform:scaleY(1);}
 .skcard:hover{background:rgba(255,255,255,.025);}
 .skcard-ic {
@@ -718,7 +882,7 @@ nav.stuck {
 }
 .i1{background:rgba(247,37,133,.12);} .i2{background:rgba(0,229,255,.1);}
 .i3{background:rgba(170,255,0,.1);} .i4{background:rgba(155,93,229,.12);}
-.i5{background:rgba(255,107,53,.1);}
+.i5{background:rgba(255,107,53,.1);} .i6{background:rgba(255,190,11,.12);}
 .skcard-name{font-size:13px;font-weight:500;margin-bottom:2px;}
 .skcard-sub{font-family:'Cousine',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--fg3);}
 
@@ -980,25 +1144,30 @@ footer {
 .modal-badge{font-family:'Cousine',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:5px 13px;border-radius:2px;}
 .mb-s{background:rgba(247,37,133,.14);color:var(--pink);border:1px solid rgba(247,37,133,.24);}
 .mb-l{background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.2);}
+.mb-d{background:rgba(255,190,11,.14);color:var(--gold);border:1px solid rgba(255,190,11,.28);}
 
 /* ══════════════════════════════════════
    RESPONSIVE — MOBILE FIRST
 ══════════════════════════════════════ */
 
-/* Tablets & small desktop */
 @media (max-width: 1024px) {
   .proc-grid { grid-template-columns: 1fr 1fr; }
 }
 
-/* Mobile & tablet */
 @media (max-width: 768px) {
   nav { padding: 0 20px; }
   .nav-links { display: none; }
   .nav-cta { display: none; }
   .nav-burger { display: flex; }
 
-  .hero-video-label { bottom: 20px; left: 20px; }
-  .hero-video-label h3 { font-size: clamp(14px, 4vw, 22px); }
+  .devin-info {
+    grid-template-columns: 1fr;
+    padding: 24px 20px 40px;
+    gap: 24px;
+  }
+  .devin-cta-wrap { align-items: flex-start; }
+  .devin-style-note { text-align: left; }
+  .devin-badge-tl, .devin-badge-tr { font-size: 8px; padding: 5px 10px; }
 
   .hero-content {
     grid-template-columns: 1fr;
@@ -1015,61 +1184,39 @@ footer {
   }
   .hstat:last-child { border-right: none; }
   .hstat-n { font-size: 28px; }
-  .hero-scroll { left: 20px; }
 
   .sec { padding: 64px 20px; }
-
   .svc-layout { grid-template-columns: 1fr; gap: 28px; }
   .svc-grid { grid-template-columns: 1fr; }
-
-  .skills-strip {
-    grid-template-columns: repeat(3, 1fr);
-    padding: 32px 20px;
-  }
-
+  .skills-strip { grid-template-columns: repeat(3, 1fr); padding: 32px 20px; }
   .vgrid { grid-template-columns: 1fr; }
   .vcard.featured { grid-column: span 1; }
   .port-header { flex-direction: column; align-items: flex-start; }
   .tab-row { width: 100%; }
   .ptab { flex: 1; text-align: center; }
-
-  #about {
-    grid-template-columns: 1fr;
-    gap: 40px; padding: 64px 20px;
-  }
-
+  #about { grid-template-columns: 1fr; gap: 40px; padding: 64px 20px; }
   .proc-grid { grid-template-columns: 1fr; }
-
   .tgrid { grid-template-columns: 1fr; }
-
   .contact-actions { grid-template-columns: 1fr; }
   .contact-secondary { grid-template-columns: 1fr; }
   .caction { padding: 20px 20px; }
-
   #social { padding: 64px 20px; }
-
-  footer {
-    flex-direction: column; align-items: flex-start;
-    padding: 24px 20px;
-  }
+  footer { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
   .foot-links { flex-wrap: wrap; gap: 16px; }
-
   .modal-close { top: -48px; }
-  .modal-iframe-wrap { border-radius: 3px; }
 }
 
-/* Very small phones */
 @media (max-width: 380px) {
-  .hero-name { font-size: 40px; }
-  .hero-name-grad { font-size: 40px; }
+  .hero-name, .hero-name-grad { font-size: 40px; }
+  .devin-title, .devin-title-sub { font-size: 36px; }
   .skills-strip { grid-template-columns: repeat(2, 1fr); }
   .hstat { min-width: 100px; }
   .btn-main, .btn-ghost { padding: 14px 24px; font-size: 10px; }
 }
 
-/* Large screens */
 @media (min-width: 1400px) {
   nav { padding: 0 72px; }
+  .devin-info { padding: 48px 72px 64px; }
   .hero-content { padding: 48px 72px 72px; }
   .sec { padding: 108px 72px; }
   .skills-strip { padding: 56px 72px; }
@@ -1109,29 +1256,96 @@ footer {
   <a href="mailto:ankit.sengupta05@gmail.com" style="color:var(--pink);">✦ Hire Me</a>
 </nav>
 
-<!-- ══════════ HERO ══════════ -->
+<!-- ══════════ DEVIN JATHO SPOTLIGHT ══════════ -->
+<section id="devin-spotlight">
+  <div class="devin-orb-l"></div>
+  <div class="devin-orb-r"></div>
+
+  <!-- The star video -->
+  <div class="devin-video-wrap" onclick="openModal(0)">
+    <iframe
+      src="https://drive.google.com/file/d/1vzexwyqV3GjlRpOYTBtrgo-Rx2bxwvvT/preview"
+      allow="autoplay"
+      loading="eager"
+      title="Devin Jatho Style Edit — Editor Cyclops">
+    </iframe>
+    <span class="devin-badge-tl">★ Signature Edit</span>
+    <span class="devin-badge-tr">⚡ Short-Form</span>
+    <div class="devin-play">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+  </div>
+
+  <!-- Info panel -->
+  <div class="devin-info">
+    <div class="devin-info-left">
+      <div class="devin-kicker">
+        <span class="devin-kicker-line"></span>
+        Signature Style Showcase
+      </div>
+      <div class="devin-title">DEVIN JATHO</div>
+      <span class="devin-title-sub">STYLE EDIT</span>
+      <div class="devin-meta">
+        <span>Short-Form</span>
+        <span class="dmeta-sep">◆</span>
+        <span>Premiere Pro</span>
+        <span class="dmeta-sep">◆</span>
+        <span>After Effects</span>
+        <span class="dmeta-sep">◆</span>
+        <span>Mumbai</span>
+      </div>
+      <p class="devin-desc">
+        A deep dive into the <strong>Devin Jatho editing language</strong> — rapid-fire cuts, deliberate colour shifts, music-locked motion, and that signature raw energy that turns a clip into a statement. This is not just an edit. It's a <strong>style study</strong>.
+      </p>
+      <div class="devin-tags">
+        <span class="dtag">Devin Jatho Style</span>
+        <span class="dtag">Rhythm Cutting</span>
+        <span class="dtag">Colour Contrast</span>
+        <span class="dtag">Beat-Locked Edits</span>
+        <span class="dtag">Cinematic Hooks</span>
+        <span class="dtag">Raw Energy</span>
+      </div>
+    </div>
+    <div class="devin-cta-wrap">
+      <button class="devin-watch-btn" onclick="openModal(0)">
+        ▶ &nbsp;Watch Full Edit
+      </button>
+      <div class="devin-style-note">Tap to open in player</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MARQUEE ══════════ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="mq-item"><span class="cg">★</span><span class="cg">Devin Jatho Style</span></div>
+    <div class="mq-item"><span class="cp">✦</span><span class="cp">Short-Form Content</span></div>
+    <div class="mq-item"><span class="cc">◆</span><span class="cc">After Effects</span></div>
+    <div class="mq-item"><span class="cl">●</span><span class="cl">Motion Design</span></div>
+    <div class="mq-item"><span class="co">▲</span><span class="co">Premiere Pro</span></div>
+    <div class="mq-item"><span class="cp">✦</span><span class="cp">Reels &amp; Shorts</span></div>
+    <div class="mq-item"><span class="cc">◆</span><span class="cc">Apple Glass UI</span></div>
+    <div class="mq-item"><span class="cl">●</span><span class="cl">Cinematic Edits</span></div>
+    <div class="mq-item"><span class="co">▲</span><span class="co">Color Grading</span></div>
+    <div class="mq-item"><span class="cg">★</span><span class="cg">Devin Jatho Style</span></div>
+    <div class="mq-item"><span class="cp">✦</span><span class="cp">Short-Form Content</span></div>
+    <div class="mq-item"><span class="cc">◆</span><span class="cc">After Effects</span></div>
+    <div class="mq-item"><span class="cl">●</span><span class="cl">Motion Design</span></div>
+    <div class="mq-item"><span class="co">▲</span><span class="co">Premiere Pro</span></div>
+    <div class="mq-item"><span class="cp">✦</span><span class="cp">Reels &amp; Shorts</span></div>
+    <div class="mq-item"><span class="cc">◆</span><span class="cc">Apple Glass UI</span></div>
+    <div class="mq-item"><span class="cl">●</span><span class="cl">Cinematic Edits</span></div>
+    <div class="mq-item"><span class="co">▲</span><span class="co">Color Grading</span></div>
+  </div>
+</div>
+
+<!-- ══════════ HERO — Identity section ══════════ -->
 <section id="hero">
   <div class="hero-grid"></div>
   <div class="hero-orb ho1"></div>
   <div class="hero-orb ho2"></div>
   <div class="hero-orb ho3"></div>
 
-  <!-- FEATURED VIDEO — main appeal piece -->
-  <div class="hero-video-banner" onclick="openModal(0)">
-    <iframe
-      src="https://drive.google.com/file/d/1EOL0p7s_Hgxd_bI40RCJ_t8ToBkrSA3Y/preview"
-      allow="autoplay"
-      loading="lazy"
-      title="Featured: Short-Form Showreel — Editor Cyclops">
-    </iframe>
-    <div class="hero-video-label">
-      <div class="hero-video-label-badge">⚡ Featured Work</div>
-      <h3>Short-Form Showreel</h3>
-      <p>Motion Design · After Effects · Premiere Pro</p>
-    </div>
-  </div>
-
-  <!-- TEXT + STATS -->
   <div class="hero-content">
     <div class="hero-left">
       <div class="hero-eyebrow">
@@ -1145,11 +1359,13 @@ footer {
       <div class="hero-role">
         <span>Short-Form Specialist</span>
         <span class="role-sep">◆</span>
+        <span>Devin Jatho Style</span>
+        <span class="role-sep">◆</span>
         <span>Long-Form Available</span>
       </div>
 
       <p class="hero-desc">
-        I craft <strong>cinematic short-form content</strong> that stops the scroll — Reels, Shorts, brand clips built to convert. Also available for <strong>long-form productions</strong> that build lasting brands. After Effects · Premiere Pro · Motion Design.
+        I craft <strong>cinematic short-form content</strong> that stops the scroll — Reels, Shorts, brand clips built to convert. Fluent in <strong>Devin Jatho-style editing</strong> with that raw, rhythm-locked energy. After Effects · Premiere Pro · Motion Design.
       </p>
 
       <div class="hero-btns">
@@ -1189,38 +1405,7 @@ footer {
       </div>
     </div>
   </div>
-
-  <div class="hero-scroll">
-    <span class="scroll-ln"></span>Scroll to explore
-  </div>
 </section>
-
-<!-- ══════════ MARQUEE ══════════ -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <div class="mq-item"><span class="cp">✦</span><span class="cp">Short-Form Content</span></div>
-    <div class="mq-item"><span class="cc">◆</span><span class="cc">After Effects</span></div>
-    <div class="mq-item"><span class="cl">●</span><span class="cl">Motion Design</span></div>
-    <div class="mq-item"><span class="co">▲</span><span class="co">Premiere Pro</span></div>
-    <div class="mq-item"><span class="cp">✦</span><span class="cp">Reels &amp; Shorts</span></div>
-    <div class="mq-item"><span class="cc">◆</span><span class="cc">Apple Glass UI</span></div>
-    <div class="mq-item"><span class="cl">●</span><span class="cl">Cinematic Edits</span></div>
-    <div class="mq-item"><span class="co">▲</span><span class="co">Color Grading</span></div>
-    <div class="mq-item"><span class="cp">✦</span><span class="cp">Brand Videos</span></div>
-    <div class="mq-item"><span class="cc">◆</span><span class="cc">Long-Form Available</span></div>
-    <!-- duplicate for seamless loop -->
-    <div class="mq-item"><span class="cp">✦</span><span class="cp">Short-Form Content</span></div>
-    <div class="mq-item"><span class="cc">◆</span><span class="cc">After Effects</span></div>
-    <div class="mq-item"><span class="cl">●</span><span class="cl">Motion Design</span></div>
-    <div class="mq-item"><span class="co">▲</span><span class="co">Premiere Pro</span></div>
-    <div class="mq-item"><span class="cp">✦</span><span class="cp">Reels &amp; Shorts</span></div>
-    <div class="mq-item"><span class="cc">◆</span><span class="cc">Apple Glass UI</span></div>
-    <div class="mq-item"><span class="cl">●</span><span class="cl">Cinematic Edits</span></div>
-    <div class="mq-item"><span class="co">▲</span><span class="co">Color Grading</span></div>
-    <div class="mq-item"><span class="cp">✦</span><span class="cp">Brand Videos</span></div>
-    <div class="mq-item"><span class="cc">◆</span><span class="cc">Long-Form Available</span></div>
-  </div>
-</div>
 
 <!-- ══════════ SERVICES ══════════ -->
 <section id="services" class="sec">
@@ -1233,8 +1418,8 @@ footer {
     </div>
     <div class="rv d2">
       <p class="svc-intro">
-        I specialise in <strong>high-impact short-form content</strong> — Reels, Shorts, TikToks, and branded clips that demand attention in the first 3 seconds. Every cut, every motion, every effect is designed to hook, engage, and convert.<br><br>
-        For clients who need it, I'm equally skilled with <strong>long-form productions</strong> — YouTube content, brand films, documentaries, and corporate videos — with the same frame-by-frame precision.
+        I specialise in <strong>high-impact short-form content</strong> — Reels, Shorts, TikToks, and branded clips that demand attention in the first 3 seconds. Fluent in the <strong>Devin Jatho editing style</strong> — rapid cuts, deliberate colour contrast, rhythm-locked motion, raw energy. Every frame is intentional.<br><br>
+        For clients who need it, I'm equally skilled with <strong>long-form productions</strong> with the same precision.
       </p>
     </div>
   </div>
@@ -1243,19 +1428,19 @@ footer {
       <span class="svc-num sn-pink">01</span>
       <div class="svc-badge sb-primary">⚡ Primary Specialty</div>
       <h3 class="svc-title">Short-Form<br>Content Editing</h3>
-      <p class="svc-body"><strong>Reels, Shorts, TikToks, brand clips</strong> — this is my world. Beat-synced edits, motion typography, viral-ready transitions, and thumb-stopping hooks. Every second counts, and I make every second hit.</p>
+      <p class="svc-body"><strong>Reels, Shorts, TikToks, brand clips</strong> — this is my world. Beat-synced edits, motion typography, viral-ready transitions, hook-first editing. Including <strong>Devin Jatho-style cutting</strong> — raw rhythm, precise colour work, and that signature energy.</p>
       <div class="svc-tags">
         <span class="stag">Instagram Reels</span><span class="stag">YouTube Shorts</span>
-        <span class="stag">TikTok Edits</span><span class="stag">Motion Typography</span>
-        <span class="stag">Transitions</span><span class="stag">Hook Editing</span>
-        <span class="stag">Brand Clips</span><span class="stag">Beat Sync</span>
+        <span class="stag">TikTok Edits</span><span class="stag">Devin Jatho Style</span>
+        <span class="stag">Motion Typography</span><span class="stag">Hook Editing</span>
+        <span class="stag">Beat Sync</span><span class="stag">Brand Clips</span>
       </div>
     </div>
     <div class="svc-card-side">
       <span class="svc-num sn-cyan">02</span>
       <div class="svc-badge sb-secondary">🎬 Also Available</div>
       <h3 class="svc-title">Long-Form<br>Production</h3>
-      <p class="svc-body" style="margin-top:12px;">YouTube videos, brand documentaries, corporate films, podcast edits. <strong>Cinematic storytelling</strong> with the same level of precision I bring to short-form.</p>
+      <p class="svc-body" style="margin-top:12px;">YouTube videos, brand documentaries, corporate films, podcast edits. <strong>Cinematic storytelling</strong> with the same level of precision.</p>
       <div class="svc-tags" style="margin-top:12px;">
         <span class="stag">YouTube Videos</span><span class="stag">Brand Films</span>
         <span class="stag">Documentaries</span><span class="stag">Corporate</span>
@@ -1283,7 +1468,7 @@ footer {
         <span>Selected Work</span><span class="el"></span>
       </div>
       <h2 class="sec-h2">MY <span style="color:var(--cyan)">PORTFOLIO</span></h2>
-      <p class="port-sub">Tap any project to watch the full video in a player.</p>
+      <p class="port-sub">Tap any project to watch the full video. The Devin Jatho edit is the feature.</p>
     </div>
     <div class="tab-row">
       <button class="ptab on" onclick="filterTab(this,'all')">All Work</button>
@@ -1294,29 +1479,52 @@ footer {
 
   <div class="vgrid rv d1">
 
-    <!-- Card 1: Featured Short-Form — main hero video -->
-    <div class="vcard featured" data-cat="short" onclick="openModal(0)">
+    <!-- Card 1: DEVIN JATHO STAR — featured, full width -->
+    <div class="vcard featured devin-star" data-cat="short" onclick="openModal(0)">
+      <div class="vcard-frame-wrap">
+        <iframe
+          src="https://drive.google.com/file/d/1vzexwyqV3GjlRpOYTBtrgo-Rx2bxwvvT/preview"
+          loading="lazy" title="Devin Jatho Style Edit">
+        </iframe>
+        <span class="vbadge vb-devin">★ Devin Jatho Style</span>
+        <span class="vb-hero">⚡ Editor's Pick</span>
+        <div class="vplay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="vcard-info">
+        <div class="vcard-type" style="color:var(--gold)">
+          <span class="vdot" style="background:var(--gold);box-shadow:0 0 6px var(--gold)"></span>
+          Short-Form &nbsp;·&nbsp; Signature Style Showcase
+        </div>
+        <div class="vcard-title">Devin Jatho Style Edit</div>
+        <div class="vcard-desc">Raw rhythm-locked cuts, deliberate colour contrast, beat-synced motion — a full Devin Jatho-inspired edit demonstrating this editor's mastery of the style. Premiere Pro & After Effects.</div>
+        <div class="devin-style-chip">
+          ★ &nbsp;Devin Jatho Style &nbsp;·&nbsp; Rhythm Cutting &nbsp;·&nbsp; Signature Edit
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Short-Form Showreel -->
+    <div class="vcard" data-cat="short" onclick="openModal(1)">
       <div class="vcard-frame-wrap">
         <iframe
           src="https://drive.google.com/file/d/1EOL0p7s_Hgxd_bI40RCJ_t8ToBkrSA3Y/preview"
           loading="lazy" title="Short-Form Showreel">
         </iframe>
         <span class="vbadge vb-short">Short-Form</span>
-        <span class="vb-hero">★ Featured</span>
         <div class="vplay"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
       </div>
       <div class="vcard-info">
         <div class="vcard-type" style="color:var(--pink)">
           <span class="vdot" style="background:var(--pink);box-shadow:0 0 6px var(--pink)"></span>
-          Motion Design &nbsp;·&nbsp; Featured Project
+          Motion Design &nbsp;·&nbsp; Showreel
         </div>
         <div class="vcard-title">Short-Form Showreel</div>
-        <div class="vcard-desc">Cinematic short-form motion design with dynamic transitions, bold typography and hook-first editing — built to convert. After Effects & Premiere Pro.</div>
+        <div class="vcard-desc">Cinematic short-form motion design with dynamic transitions, bold typography and hook-first editing — built to convert.</div>
       </div>
     </div>
 
-    <!-- Card 2: Europe Industrial (long-form) -->
-    <div class="vcard" data-cat="long" onclick="openModal(1)">
+    <!-- Card 3: Europe Industrial (long-form) -->
+    <div class="vcard" data-cat="long" onclick="openModal(2)">
       <div class="vcard-frame-wrap">
         <iframe
           src="https://drive.google.com/file/d/1LwWn4T5LtjKuTO0mY92GBQhoZi6oan2g/preview"
@@ -1335,8 +1543,8 @@ footer {
       </div>
     </div>
 
-    <!-- Card 3: Motion Graphics Edit -->
-    <div class="vcard" data-cat="short" onclick="openModal(2)">
+    <!-- Card 4: Motion Graphics Edit -->
+    <div class="vcard" data-cat="short" onclick="openModal(3)">
       <div class="vcard-frame-wrap">
         <iframe
           src="https://drive.google.com/file/d/1XXkDvLQX0nvmRMZrRF7iOuKtkIdo3iu2/preview"
@@ -1355,8 +1563,8 @@ footer {
       </div>
     </div>
 
-    <!-- Card 4: WIP Concept -->
-    <div class="vcard" data-cat="short" onclick="openModal(3)">
+    <!-- Card 5: WIP Concept -->
+    <div class="vcard" data-cat="short" onclick="openModal(4)">
       <div class="vcard-frame-wrap">
         <iframe
           src="https://drive.google.com/file/d/1F6xYj6SaPMVhnvG4ksX8eTLZAGN77sXp/preview"
@@ -1391,7 +1599,7 @@ footer {
     <h2 class="about-h2">THE EDITOR<br>BEHIND THE<br><span class="ag">CYCLOPS</span></h2>
     <div class="about-body">
       <p>I'm <strong>Ankit Sengupta</strong>, a Mumbai-based motion designer and video editor. I operate as <strong>Editor Cyclops</strong> — because I see content differently than everyone else.</p>
-      <p>My core is <strong>short-form content</strong>: Reels, Shorts, brand clips, and motion pieces built for today's platforms. Obsessed with the first 3 seconds — the hook that stops the scroll and drives action.</p>
+      <p>My core is <strong>short-form content</strong>: Reels, Shorts, brand clips, and motion pieces built for today's platforms. Fluent in <strong>Devin Jatho-style editing</strong> — the raw rhythm cuts, deliberate colour contrast, beat-locked energy that turns a clip into a cultural moment.</p>
       <p>For the right projects, I bring that same precision to <strong>long-form productions</strong> with the depth and storytelling they deserve.</p>
     </div>
     <div class="stat-grid">
@@ -1401,6 +1609,7 @@ footer {
     </div>
   </div>
   <div class="skill-cards rv d2">
+    <div class="skcard"><div class="skcard-ic i6">★</div><div><div class="skcard-name">Devin Jatho Style Editing</div><div class="skcard-sub">Rhythm Cuts · Colour Contrast · Raw Energy</div></div></div>
     <div class="skcard"><div class="skcard-ic i1">⚡</div><div><div class="skcard-name">Motion Design & Animation</div><div class="skcard-sub">After Effects · Expressions · Keyframes</div></div></div>
     <div class="skcard"><div class="skcard-ic i2">📱</div><div><div class="skcard-name">Short-Form Editing (Primary)</div><div class="skcard-sub">Reels · Shorts · Hooks · Beat Sync</div></div></div>
     <div class="skcard"><div class="skcard-ic i3">🍎</div><div><div class="skcard-name">Apple Glass UI Animation</div><div class="skcard-sub">Glassmorphism · Liquid Motion · Premium UI</div></div></div>
@@ -1414,7 +1623,7 @@ footer {
   <div class="sec-eyebrow rv" style="color:var(--orange)"><span>How It Works</span><span class="el"></span></div>
   <h2 class="process-h2 rv">THE <span class="ph-g">PROCESS</span></h2>
   <div class="proc-grid">
-    <div class="pstep rv"><span class="pstep-bg pb1">01</span><div class="pstep-ic pi1">📞</div><div class="pstep-title">Discovery Call</div><div class="pstep-body">We talk about your vision, platform, audience, and goals. Short-form or long-form — I understand your brief deeply before touching the timeline.</div></div>
+    <div class="pstep rv"><span class="pstep-bg pb1">01</span><div class="pstep-ic pi1">📞</div><div class="pstep-title">Discovery Call</div><div class="pstep-body">We talk about your vision, platform, audience, and goals. Short-form, Devin Jatho style, or long-form — I understand your brief deeply before touching the timeline.</div></div>
     <div class="pstep rv d1"><span class="pstep-bg pb2">02</span><div class="pstep-ic pi2">🧠</div><div class="pstep-title">Creative Strategy</div><div class="pstep-body">I build the edit plan — hook structure, pacing, music selection, colour treatment, and motion style. Every decision is intentional and platform-native.</div></div>
     <div class="pstep rv d2"><span class="pstep-bg pb3">03</span><div class="pstep-ic pi3">✂️</div><div class="pstep-title">Production</div><div class="pstep-body">Frame-perfect editing, motion graphics, colour grade, sound design, and VFX. A progress preview is included so there are zero surprises on delivery.</div></div>
     <div class="pstep rv d3"><span class="pstep-bg pb4">04</span><div class="pstep-ic pi4">🚀</div><div class="pstep-title">Delivery</div><div class="pstep-body">Revisions included. Final files in all platform-ready formats — vertical, horizontal, square — optimised and ready to publish and perform.</div></div>
@@ -1426,7 +1635,7 @@ footer {
   <div class="soc-gl soc-gl-l"></div><div class="soc-gl soc-gl-r"></div>
   <div class="soc-ey rv">Follow the Journey</div>
   <h2 class="soc-h2 rv">@EDITORCYCLOPS</h2>
-  <p class="soc-sub rv">Process videos, WIP edits, motion experiments and daily content. Follow the journey on Instagram.</p>
+  <p class="soc-sub rv">Process videos, WIP edits, Devin Jatho style experiments, and daily content. Follow the journey on Instagram.</p>
   <div class="rv d2">
     <a href="https://www.instagram.com/editorcyclops/" target="_blank" rel="noopener" class="soc-btn">
       <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
@@ -1453,7 +1662,7 @@ footer {
     <div class="ctag rv">Ready to Create?</div>
     <h2 class="contact-h2 rv">LET'S<br><span class="cg">WORK</span><br>TOGETHER</h2>
     <p class="contact-sub rv">
-      Got a <strong>Reel, Short, or brand video</strong> in mind? Or a bigger long-form project? Pick how you'd like to reach me — I'm responsive on both.
+      Got a <strong>Reel, Short, or brand video</strong> in mind? Want that <strong>Devin Jatho energy</strong> in your content? Or a bigger long-form project? Reach out — I'm responsive on both.
     </p>
 
     <div class="contact-actions rv d1">
@@ -1546,9 +1755,15 @@ footer {
 /* ── VIDEO DATA — Google Drive file IDs ── */
 const VIDS = [
   {
+    id:    '1vzexwyqV3GjlRpOYTBtrgo-Rx2bxwvvT',
+    title: 'Devin Jatho Style Edit',
+    desc:  'Raw rhythm-locked cuts, deliberate colour contrast, beat-synced motion — a full Devin Jatho-inspired edit. Premiere Pro & After Effects.',
+    cat:   'devin'
+  },
+  {
     id:    '1EOL0p7s_Hgxd_bI40RCJ_t8ToBkrSA3Y',
     title: 'Short-Form Showreel',
-    desc:  'Cinematic short-form motion design with dynamic transitions, bold typography, and hook-first editing — built to convert. After Effects & Premiere Pro.',
+    desc:  'Cinematic short-form motion design with dynamic transitions, bold typography, and hook-first editing — built to convert.',
     cat:   'short'
   },
   {
@@ -1586,7 +1801,7 @@ if (hasHover) {
     ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
     requestAnimationFrame(loop);
   })();
-  document.querySelectorAll('a, button, .vcard, .svc-card-main, .svc-card-side, .skcard, .tcard, .sk, .pstep, .caction, .csec').forEach(el => {
+  document.querySelectorAll('a, button, .vcard, .svc-card-main, .svc-card-side, .skcard, .tcard, .sk, .pstep, .caction, .csec, .devin-video-wrap').forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('ch'));
     el.addEventListener('mouseleave', () => document.body.classList.remove('ch'));
   });
@@ -1623,7 +1838,10 @@ function filterTab(btn, cat) {
   document.querySelectorAll('.ptab').forEach(t => t.classList.remove('on'));
   btn.classList.add('on');
   document.querySelectorAll('.vcard[data-cat]').forEach(c => {
-    const show = cat === 'all' || c.dataset.cat === cat;
+    let show = false;
+    if (cat === 'all') show = true;
+    else if (cat === 'short') show = c.dataset.cat === 'short' || c.dataset.cat === 'devin';
+    else show = c.dataset.cat === cat;
     c.style.opacity       = show ? '1'  : '.18';
     c.style.pointerEvents = show ? ''   : 'none';
     c.style.transition    = 'opacity .35s';
@@ -1638,13 +1856,20 @@ function openModal(idx) {
   document.getElementById('mtitle').textContent = v.title;
   document.getElementById('mdesc').textContent  = v.desc;
   const b = document.getElementById('mbadge');
-  b.textContent = v.cat === 'short' ? '⚡ Short-Form' : '🎬 Long-Form';
-  b.className   = 'modal-badge ' + (v.cat === 'short' ? 'mb-s' : 'mb-l');
+  if (v.cat === 'devin') {
+    b.textContent = '★ Devin Jatho Style';
+    b.className   = 'modal-badge mb-d';
+  } else if (v.cat === 'short') {
+    b.textContent = '⚡ Short-Form';
+    b.className   = 'modal-badge mb-s';
+  } else {
+    b.textContent = '🎬 Long-Form';
+    b.className   = 'modal-badge mb-l';
+  }
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function closeModal() {
-  /* Unload iframe to stop playback */
   document.getElementById('mframe').src = '';
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
