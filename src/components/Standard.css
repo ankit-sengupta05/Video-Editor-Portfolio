@@ -1,0 +1,65 @@
+/* ── Standard Section ── */
+.standard { background: var(--bg-primary); position: relative; overflow: hidden; }
+
+.standard__bg-text {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(100px, 22vw, 280px);
+  font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase;
+  color: transparent; -webkit-text-stroke: 1px rgba(0,229,255,0.04);
+  pointer-events: none; white-space: nowrap; user-select: none;
+  z-index: 0;
+}
+.standard__content { position: relative; z-index: 1; }
+.standard__title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 9rem);
+  font-weight: 400; text-transform: uppercase; line-height: 0.9;
+  margin-bottom: 64px; letter-spacing: 0.02em;
+}
+.standard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%,300px), 1fr));
+  gap: 2px;
+}
+.standard__card {
+  padding: clamp(28px, 5vw, 48px);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  position: relative; overflow: hidden;
+  transition: border-color 0.4s, background 0.4s;
+}
+.standard__card:hover {
+  border-color: var(--border-mid);
+  background: var(--bg-glass);
+}
+.standard__card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  transform: scaleX(0); transition: transform 0.5s ease;
+}
+.standard__card:hover::before { transform: scaleX(1); }
+
+.standard__num {
+  font-family: var(--font-display);
+  font-size: 5rem; font-weight: 400; letter-spacing: 0.02em;
+  color: transparent; -webkit-text-stroke: 1px rgba(0,229,255,0.15);
+  line-height: 1; margin-bottom: 20px; display: block;
+}
+.standard__icon {
+  width: 52px; height: 52px; border-radius: var(--radius-md);
+  background: var(--cyan-dim); border: 1px solid var(--border-mid);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px; transition: var(--transition);
+}
+.standard__card:hover .standard__icon {
+  background: rgba(0,229,255,0.2); box-shadow: 0 0 24px var(--cyan-glow);
+}
+.standard__card-title {
+  font-size: 1.3rem; font-weight: 700; color: var(--text-primary);
+  margin-bottom: 16px; letter-spacing: -0.01em;
+}
+.standard__card-desc {
+  font-size: 0.95rem; color: var(--text-muted); line-height: 1.72;
+}

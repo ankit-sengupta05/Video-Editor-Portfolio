@@ -1,0 +1,54 @@
+/* ── Contact ── */
+.contact { background: var(--bg-primary); position: relative; overflow: hidden; }
+.contact__orb {
+  position: absolute; border-radius: 50%; pointer-events: none; filter: blur(120px);
+  width: 60vw; height: 60vw; max-width: 800px; max-height: 800px;
+  background: var(--cyan-dim); left: 50%; top: 50%; transform: translate(-50%,-50%);
+  z-index: 0;
+}
+.contact__inner { position: relative; z-index: 1; text-align: center; max-width: 860px; margin: 0 auto; }
+.contact__eyebrow { justify-content: center; margin-bottom: 20px; }
+.contact__title {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 11vw, 11rem);
+  font-weight: 400; text-transform: uppercase; line-height: 0.88;
+  letter-spacing: 0.02em; margin-bottom: 24px;
+}
+.contact__sub {
+  font-size: 1.1rem; color: var(--text-secondary);
+  max-width: 520px; margin: 0 auto 56px; line-height: 1.8;
+}
+.contact__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%,280px),1fr));
+  gap: 16px; text-align: left;
+}
+.contact__card {
+  display: flex; align-items: center; gap: 20px;
+  padding: clamp(20px,4vw,32px);
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg); color: var(--text-primary);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  text-decoration: none;
+}
+.contact__card:hover {
+  border-color: var(--border-mid);
+  box-shadow: 0 0 40px var(--cyan-dim);
+  transform: translateY(-4px);
+}
+.contact__icon {
+  width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+  background: var(--cyan-dim); border: 1px solid var(--border-mid);
+  display: flex; align-items: center; justify-content: center;
+}
+.contact__label {
+  font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;
+}
+.contact__value { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+.contact__hint  { font-size: 0.82rem; color: var(--text-muted); margin-top: 3px; }
+.contact__arrow {
+  margin-left: auto; font-size: 1.2rem; color: var(--text-muted);
+  transition: transform 0.3s, color 0.3s;
+}
+.contact__card:hover .contact__arrow { transform: translateX(4px); color: var(--cyan); }
