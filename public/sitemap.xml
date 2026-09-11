@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+          http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- Homepage / Hero -->
+  <url>
+    <loc>https://editorcyclops.vercel.app/</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Work / Featured Videos -->
+  <url>
+    <loc>https://editorcyclops.vercel.app/#work</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <video:video>
+      <video:thumbnail_loc>https://drive.google.com/thumbnail?id=1tl2M-sRxM8EKM3FT3B8m_K0wS1iTaO_p&amp;sz=w800</video:thumbnail_loc>
+      <video:title>The Cyclops Standard — Ankit Sengupta Editor Cyclops</video:title>
+      <video:description>Cinematic short-form storytelling with razor-sharp cuts and precision colour grading — the signature style of Editor Cyclops by Ankit Sengupta, Mumbai-based motion designer.</video:description>
+      <video:player_loc>https://drive.google.com/file/d/1tl2M-sRxM8EKM3FT3B8m_K0wS1iTaO_p/preview</video:player_loc>
+      <video:duration>70</video:duration>
+      <video:publication_date>2025-12-01T00:00:00+05:30</video:publication_date>
+      <video:tag>video editor</video:tag>
+      <video:tag>motion design</video:tag>
+      <video:tag>short-form content</video:tag>
+      <video:tag>Ankit Sengupta</video:tag>
+      <video:tag>Editor Cyclops</video:tag>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://drive.google.com/thumbnail?id=1vzexwyqV3GjlRpOYTBtrgo-Rx2bxwvvT&amp;sz=w800</video:thumbnail_loc>
+      <video:title>Devin Jatho Style Edit — Editor Cyclops</video:title>
+      <video:description>Raw rhythm-locked cuts, deliberate colour contrast, beat-synced motion. Premiere Pro and After Effects. Devin Jatho style video editing by Ankit Sengupta.</video:description>
+      <video:player_loc>https://drive.google.com/file/d/1vzexwyqV3GjlRpOYTBtrgo-Rx2bxwvvT/preview</video:player_loc>
+      <video:duration>90</video:duration>
+      <video:publication_date>2025-10-15T00:00:00+05:30</video:publication_date>
+      <video:tag>Devin Jatho style</video:tag>
+      <video:tag>video editing</video:tag>
+      <video:tag>Premiere Pro</video:tag>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://drive.google.com/thumbnail?id=1EOL0p7s_Hgxd_bI40RCJ_t8ToBkrSA3Y&amp;sz=w800</video:thumbnail_loc>
+      <video:title>Short-Form Showreel — Editor Cyclops</video:title>
+      <video:description>Cinematic short-form motion design with dynamic transitions and hook-first editing — built to convert. Mumbai video editor showreel.</video:description>
+      <video:player_loc>https://drive.google.com/file/d/1EOL0p7s_Hgxd_bI40RCJ_t8ToBkrSA3Y/preview</video:player_loc>
+      <video:duration>59</video:duration>
+      <video:publication_date>2025-09-01T00:00:00+05:30</video:publication_date>
+      <video:tag>short-form showreel</video:tag>
+      <video:tag>Reels editor</video:tag>
+    </video:video>
+  </url>
+
+  <!-- The Cyclops Standard / Methodology -->
+  <url>
+    <loc>https://editorcyclops.vercel.app/#standard</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- About -->
+  <url>
+    <loc>https://editorcyclops.vercel.app/#about</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://editorcyclops.vercel.app/#contact</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+</urlset>

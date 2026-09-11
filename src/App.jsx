@@ -1,7 +1,7 @@
-import { Helmet } from 'react-helmet-async';
+import { SEO } from './components/SEO';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { Work, videoSchemas } from './components/Work';
+import { Work } from './components/Work';
 import { Standard } from './components/Standard';
 import { About } from './components/About';
 
@@ -70,45 +70,7 @@ function Footer() {
 export default function App() {
   return (
     <>
-      <Helmet>
-        <html lang="en" />
-        <title>Editor Cyclops — Ankit Sengupta | Motion Designer & Video Editor</title>
-        <meta name="description" content="Ankit Sengupta is a Mumbai-based motion designer and video editor specializing in Devin Jatho style short-form content, cinematic brand videos, and high-retention edits." />
-        <meta name="keywords" content="Video Editor, Motion Designer, Devin Jatho style, Premiere Pro, After Effects, Mumbai, Short-form editor, Cinematic Editing" />
-        <link rel="canonical" href="https://editorcyclops.vercel.app/" />
-        
-        {/* Open Graph / Social */}
-        <meta property="og:title" content="Editor Cyclops — Premium Motion Design & Editing" />
-        <meta property="og:description" content="Cinematic video editing and motion design by Ankit Sengupta. Specializing in high-retention short-form content." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://editorcyclops.vercel.app/" />
-        <meta name="twitter:card" content="summary_large_image" />
-        
-        {/* Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "Person",
-                "name": "Ankit Sengupta",
-                "alternateName": "Editor Cyclops",
-                "url": "https://editorcyclops.vercel.app/",
-                "jobTitle": "Motion Designer & Video Editor",
-                "knowsAbout": ["Video Editing", "Motion Graphics", "Adobe Premiere Pro", "Adobe After Effects", "Devin Jatho Style", "Short-Form Content", "Cinematic Editing"],
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": "Mumbai",
-                  "addressCountry": "IN"
-                },
-                "email": "mailto:ankit.sengupta05@gmail.com",
-                "sameAs": ["https://www.instagram.com/editorcyclops/", "https://github.com/ankit-sengupta05"]
-              },
-              ...videoSchemas
-            ]
-          })}
-        </script>
-      </Helmet>
+      <SEO />
 
       <Navbar />
       <Hero />
