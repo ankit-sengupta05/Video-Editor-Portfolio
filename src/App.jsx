@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Mail, Instagram, Play, ArrowRight, MousePointer2 } from 'lucide-react';
+import { Mail, Instagram, Play, ArrowRight, Menu, X, Scissors, MonitorPlay, Zap } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 const VIDS = [
@@ -16,38 +16,37 @@ const VIDS = [
 const CustomCursor = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    const updateMousePosition = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+      setIsTouch(true);
+      return;
+    }
+    const updateMousePosition = (e) => setMousePosition({ x: e.clientX, y: e.clientY });
     const handleMouseOver = (e) => {
       if (e.target.closest('a, button, .hover-target')) setIsHovering(true);
       else setIsHovering(false);
     };
-
     window.addEventListener('mousemove', updateMousePosition);
     window.addEventListener('mouseover', handleMouseOver);
-
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', handleMouseOver);
     };
   }, []);
 
+  if (isTouch) return null;
+
   return (
     <motion.div
       style={{
-        position: 'fixed', top: 0, left: 0,
-        width: 32, height: 32, borderRadius: '50%',
-        border: '2px solid var(--cyan)',
-        pointerEvents: 'none', zIndex: 9999,
-        mixBlendMode: 'difference'
+        position: 'fixed', top: 0, left: 0, width: 32, height: 32, borderRadius: '50%',
+        border: '2px solid var(--cyan)', pointerEvents: 'none', zIndex: 9999, mixBlendMode: 'difference'
       }}
       animate={{
         x: mousePosition.x - 16, y: mousePosition.y - 16,
-        scale: isHovering ? 2.5 : 1,
-        backgroundColor: isHovering ? 'var(--cyan)' : 'transparent',
+        scale: isHovering ? 2.5 : 1, backgroundColor: isHovering ? 'var(--cyan)' : 'transparent',
       }}
       transition={{ type: 'spring', stiffness: 500, damping: 28, mass: 0.5 }}
     />
@@ -55,41 +54,37 @@ const CustomCursor = () => {
 };
 
 /* Magnetic Button Component */
-const MagneticButton = ({ children, style, href, target, rel, ariaLabel }) => {
+const MagneticButton = ({ children, style, href, target, rel, ariaLabel, onClick }) => {
   const ref = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleMouse = (e) => {
+    if (window.matchMedia("(hover: none)").matches) return;
     const { clientX, clientY } = e;
     const { height, width, left, top } = ref.current.getBoundingClientRect();
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
     setPosition({ x: middleX * 0.3, y: middleY * 0.3 });
   };
+  const reset = () => setPosition({ x: 0, y: 0 });
 
-  const reset = () => {
-    setPosition({ x: 0, y: 0 });
-  };
-
-  const { x, y } = position;
+  const Wrapper = href ? motion.a : motion.button;
   return (
-    <motion.a
-      href={href} target={target} rel={rel} aria-label={ariaLabel}
-      ref={ref}
-      onMouseMove={handleMouse}
-      onMouseLeave={reset}
-      animate={{ x, y }}
+    <Wrapper
+      href={href} target={target} rel={rel} aria-label={ariaLabel} onClick={onClick}
+      ref={ref} onMouseMove={handleMouse} onMouseLeave={reset}
+      animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      style={{ ...style, display: 'inline-flex' }}
+      style={{ ...style, display: 'inline-flex', cursor: 'none', border: href ? style.border : 'none', background: href ? style.background : 'transparent' }}
       className="hover-target"
     >
       {children}
-    </motion.a>
+    </Wrapper>
   );
 };
 
 /* Staggered Text Component */
-const StaggeredText = ({ text, style }) => {
+const StaggeredText = ({ text, style, delay = 0 }) => {
   const words = text.split(" ");
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25em', ...style }}>
@@ -100,7 +95,7 @@ const StaggeredText = ({ text, style }) => {
           initial={{ y: '100%', opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.5, delay: i * 0.05, ease: [0.33, 1, 0.68, 1] }}
+          transition={{ duration: 0.6, delay: delay + i * 0.05, ease: [0.33, 1, 0.68, 1] }}
         >
           {word}
         </motion.span>
@@ -109,11 +104,46 @@ const StaggeredText = ({ text, style }) => {
   );
 };
 
+/* Mobile Menu Component */
+const MobileMenu = ({ isOpen, toggleMenu }) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '100%' }}
+          transition={{ type: 'tween', duration: 0.4, ease: 'circOut' }}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 800, background: 'var(--bg2)',
+            display: 'flex', flexDirection: 'column', padding: '100px 48px', gap: 32
+          }}
+        >
+          <a href="#work" onClick={toggleMenu} style={styles.mobileNavLink}>Work</a>
+          <a href="#standard" onClick={toggleMenu} style={styles.mobileNavLink}>The Standard</a>
+          <a href="#contact" onClick={toggleMenu} style={styles.mobileNavLink}>Contact</a>
+          <a href="mailto:ankit.sengupta05@gmail.com" onClick={toggleMenu} style={{ ...styles.mobileNavLink, color: 'var(--cyan)' }}>Hire Me</a>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 export default function App() {
   const { scrollYProgress } = useScroll();
   const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const yOrb = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+  
   const [modalVideo, setModalVideo] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const carouselRef = useRef(null);
+  const [carouselWidth, setCarouselWidth] = useState(0);
+
+  useEffect(() => {
+    if (carouselRef.current) {
+      setCarouselWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
+    }
+  }, []);
 
   // Generate VideoObject schemas
   const videoSchemas = VIDS.map(v => ({
@@ -172,24 +202,25 @@ export default function App() {
       <CustomCursor />
 
       {/* Navigation */}
-      <motion.nav 
-        style={styles.nav}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
+      <motion.nav style={styles.nav} initial={{ y: -100 }} animate={{ y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
         <a href="#" style={styles.navLogo} aria-label="Home" className="hover-target">
           <span style={styles.navPip}></span>
           Editor Cyclops
         </a>
-        <div style={styles.navLinks}>
+        <div style={styles.navLinks} className="hide-mobile">
           <a href="#work" style={styles.navLink} className="hover-target">Work</a>
+          <a href="#standard" style={styles.navLink} className="hover-target">The Standard</a>
           <a href="#contact" style={styles.navLink} className="hover-target">Contact</a>
         </div>
         <MagneticButton href="mailto:ankit.sengupta05@gmail.com" style={styles.navCta} ariaLabel="Hire Me via Email">
           Hire Me
         </MagneticButton>
+        <button className="hover-target" style={styles.burgerBtn} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Menu">
+          {isMobileMenuOpen ? <X size={28} color="var(--fg)" /> : <Menu size={28} color="var(--fg)" />}
+        </button>
       </motion.nav>
+      
+      <MobileMenu isOpen={isMobileMenuOpen} toggleMenu={() => setIsMobileMenuOpen(false)} />
 
       {/* Hero Section */}
       <section style={styles.hero}>
@@ -204,20 +235,14 @@ export default function App() {
           
           <h1 style={styles.heroName}>
             <StaggeredText text="ANKIT SENGUPTA" style={{ color: 'var(--fg)' }} />
-            <StaggeredText text="EDITOR CYCLOPS" style={{ color: 'var(--cyan)', textShadow: '0 0 30px var(--cyan-glow)' }} />
+            <StaggeredText text="EDITOR CYCLOPS" style={{ color: 'var(--cyan)', textShadow: '0 0 30px var(--cyan-glow)' }} delay={0.2} />
           </h1>
           
-          <motion.p 
-            style={styles.heroDesc}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 1 }}
-          >
+          <motion.p style={styles.heroDesc} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 1 }}>
             I craft <strong>high-retention short-form content</strong> and premium motion graphics. Specialized in raw rhythm cuts, deep contrast, and beat-locked energy.
           </motion.p>
           
-          <motion.div 
-            style={styles.heroBtns}
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.8 }}
-          >
+          <motion.div style={styles.heroBtns} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.8 }}>
             <MagneticButton href="#work" style={styles.btnMain} ariaLabel="View Projects">
               View Projects <ArrowRight size={14} />
             </MagneticButton>
@@ -225,42 +250,76 @@ export default function App() {
         </div>
       </section>
 
-      {/* Portfolio Showcase */}
-      <section id="work" className="sec" style={{ background: 'var(--bg2)', position: 'relative', zIndex: 10 }}>
+      {/* The Cyclops Standard Section */}
+      <section id="standard" className="sec" style={{ position: 'relative', zIndex: 10, background: 'var(--bg)' }}>
+        <div className="sec-eyebrow">
+          <span>Methodology</span><span className="el"></span>
+        </div>
+        
+        <StaggeredText text="THE CYCLOPS STANDARD" style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(32px, 5vw, 72px)', marginBottom: 64, textTransform: 'uppercase', color: 'var(--fg)' }} />
+        
+        <div style={styles.standardGrid}>
+          <motion.div style={styles.standardCard} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <div style={styles.standardIcon}><Scissors size={32} color="var(--cyan)" /></div>
+            <h3 style={styles.standardTitle}>Raw Rhythm Cuts</h3>
+            <p style={styles.standardDesc}>Every cut is intentional. I edit to the exact frequency of the audio, ensuring the visual pacing locks perfectly with the beat, forcing the viewer to keep watching.</p>
+          </motion.div>
+
+          <motion.div style={styles.standardCard} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
+            <div style={styles.standardIcon}><MonitorPlay size={32} color="var(--cyan)" /></div>
+            <h3 style={styles.standardTitle}>Deliberate Contrast</h3>
+            <p style={styles.standardDesc}>I don't just color grade; I engineer visual hierarchy. Deep blacks and vibrant highlights pull the viewer's eye exactly where it needs to be every single frame.</p>
+          </motion.div>
+
+          <motion.div style={styles.standardCard} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.4 }}>
+            <div style={styles.standardIcon}><Zap size={32} color="var(--cyan)" /></div>
+            <h3 style={styles.standardTitle}>Beat-Synced Motion</h3>
+            <p style={styles.standardDesc}>Typography and motion graphics aren't afterthoughts. They are built into the edit dynamically to emphasize hooks and boost audience retention organically.</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Portfolio Showcase - DRAG CAROUSEL */}
+      <section id="work" className="sec" style={{ background: 'var(--bg2)', position: 'relative', zIndex: 10, overflow: 'hidden' }}>
         <div className="sec-eyebrow">
           <span>Selected Work</span><span className="el"></span>
         </div>
         
-        <StaggeredText text="FEATURED EDITS" style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(40px, 6vw, 84px)', marginBottom: 64, textTransform: 'uppercase' }} />
+        <StaggeredText text="FEATURED EDITS" style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(40px, 6vw, 84px)', marginBottom: 24, textTransform: 'uppercase' }} />
+        <p style={{ color: 'var(--fg2)', marginBottom: 48, fontSize: 14 }}>&lt; Drag to explore &gt;</p>
 
-        <div style={styles.vgrid}>
-          {VIDS.map((v, i) => (
-            <motion.div 
-              key={v.id} 
-              style={styles.vcard} 
-              className="hover-target"
-              onClick={() => setModalVideo(v)}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              whileHover={{ y: -8, borderColor: 'var(--cyan)' }}
-            >
-              <div style={styles.vcardFrameWrap}>
-                <iframe src={`https://drive.google.com/file/d/${v.id}/preview`} style={styles.iframe} title={v.title} loading="lazy" aria-label={`Preview of ${v.title}`}></iframe>
-                <div style={styles.vplayOverlay}></div>
-                <div style={styles.vplay}><Play fill="#000" size={24} /></div>
-                <div style={styles.vbadge}>
-                  {v.cat === 'devin' ? '★ Devin Style' : v.cat === 'new' ? '★ Featured' : '⚡ Edit'}
+        <motion.div ref={carouselRef} style={styles.carouselContainer} whileTap={{ cursor: "grabbing" }}>
+          <motion.div 
+            drag="x" 
+            dragConstraints={{ right: 0, left: -carouselWidth }} 
+            style={styles.carouselInner}
+          >
+            {VIDS.map((v, i) => (
+              <motion.div 
+                key={v.id} 
+                style={styles.vcard} 
+                className="hover-target"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                whileHover={{ y: -8, borderColor: 'var(--cyan)' }}
+              >
+                <div style={styles.vcardFrameWrap}>
+                  <div style={styles.clickShield} onClick={() => setModalVideo(v)}></div>
+                  <iframe src={`https://drive.google.com/file/d/${v.id}/preview?autoplay=1&mute=1`} style={styles.iframe} title={v.title} loading="lazy" aria-label={`Preview of ${v.title}`}></iframe>
+                  <div style={styles.vbadge}>
+                    {v.cat === 'devin' ? '★ Devin Style' : v.cat === 'new' ? '★ Featured' : '⚡ Edit'}
+                  </div>
                 </div>
-              </div>
-              <div style={styles.vcardInfo}>
-                <h3 style={styles.vcardTitle}>{v.title}</h3>
-                <p style={styles.vcardDesc}>{v.desc}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                <div style={styles.vcardInfo}>
+                  <h3 style={styles.vcardTitle}>{v.title}</h3>
+                  <p style={styles.vcardDesc}>{v.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Contact Section */}
@@ -269,26 +328,20 @@ export default function App() {
         
         <div style={styles.contactInner}>
           <div className="sec-eyebrow" style={{ justifyContent: 'center' }}>
-            <span className="el" style={{ flex: 'none', width: 40 }}></span>
+            <span className="el" style={{ flex: 'none', width: '10%' }}></span>
             <span>Ready to Create?</span>
-            <span className="el" style={{ flex: 'none', width: 40 }}></span>
+            <span className="el" style={{ flex: 'none', width: '10%' }}></span>
           </div>
           
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
-            <StaggeredText text="LET'S WORK TOGETHER" style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(36px, 6vw, 84px)', textAlign: 'center', color: 'var(--cyan)' }} />
+            <StaggeredText text="LET'S WORK TOGETHER" style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(32px, 6vw, 84px)', textAlign: 'center', color: 'var(--cyan)' }} />
           </div>
           
-          <motion.p 
-            style={styles.contactSub}
-            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
-          >
+          <motion.p style={styles.contactSub} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
             Got a Reel, Short, or brand video in mind? Reach out and let's craft something that stands out.
           </motion.p>
           
-          <motion.div 
-            style={styles.contactActions}
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          <motion.div style={styles.contactActions} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}>
             <MagneticButton href="mailto:ankit.sengupta05@gmail.com" style={styles.caction} ariaLabel="Send an Email">
               <div style={styles.cactionIcon}><Mail size={24} color="var(--cyan)" /></div>
               <div>
@@ -317,16 +370,10 @@ export default function App() {
       {/* Video Modal */}
       <AnimatePresence>
         {modalVideo && (
-          <motion.div 
-            style={styles.modalBg} 
-            onClick={() => setModalVideo(null)}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          >
+          <motion.div style={styles.modalBg} onClick={() => setModalVideo(null)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <motion.div 
               style={styles.modalBox}
-              initial={{ scale: 0.95, y: 20, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.95, y: 20, opacity: 0 }}
+              initial={{ scale: 0.95, y: 20, opacity: 0 }} animate={{ scale: 1, y: 0, opacity: 1 }} exit={{ scale: 0.95, y: 20, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
             >
@@ -335,7 +382,7 @@ export default function App() {
                 <iframe src={`https://drive.google.com/file/d/${modalVideo.id}/preview?autoplay=1`} allow="autoplay; fullscreen" style={styles.iframeFull} title={modalVideo.title} aria-label={`Watching ${modalVideo.title}`}></iframe>
               </div>
               <div style={styles.modalInfo}>
-                <h3 style={{ ...styles.vcardTitle, fontSize: 24 }}>{modalVideo.title}</h3>
+                <h3 style={{ ...styles.vcardTitle, fontSize: 'clamp(18px, 4vw, 24px)' }}>{modalVideo.title}</h3>
                 <p style={{ ...styles.vcardDesc, fontSize: 15, marginTop: 8 }}>{modalVideo.desc}</p>
               </div>
             </motion.div>
@@ -349,115 +396,69 @@ export default function App() {
 const styles = {
   nav: {
     position: 'fixed', top: 0, left: 0, right: 0, zIndex: 900, height: 72, 
-    display: 'flex', alignItems: 'center', padding: '0 48px',
+    display: 'flex', alignItems: 'center', padding: '0 5%',
     background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)'
   },
-  navLogo: {
-    fontFamily: "'Archivo Black', sans-serif", fontSize: 14, letterSpacing: 3, textTransform: 'uppercase',
-    color: 'var(--fg)', display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none'
-  },
-  navPip: {
-    width: 8, height: 8, borderRadius: '50%', background: 'var(--cyan)',
-    boxShadow: '0 0 12px var(--cyan)'
-  },
-  navLinks: {
-    display: 'flex', gap: 40, position: 'absolute', left: '50%', transform: 'translateX(-50%)'
-  },
-  navLink: {
-    fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
-    color: 'var(--fg2)', textDecoration: 'none', transition: 'color 0.3s'
-  },
-  navCta: {
-    fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase',
-    background: 'var(--cyan)', color: '#000', padding: '12px 28px', borderRadius: 2, marginLeft: 'auto',
-    textDecoration: 'none', fontWeight: 'bold'
-  },
-  hero: {
-    position: 'relative', overflow: 'hidden', background: 'var(--bg)', minHeight: '100vh', 
-    display: 'flex', alignItems: 'center', padding: '120px 48px 0'
-  },
-  heroGrid: {
-    position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1,
-    backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)',
-    backgroundSize: '80px 80px',
-    maskImage: 'radial-gradient(ellipse 80% 100% at 50% 40%, black 20%, transparent 80%)',
-    WebkitMaskImage: 'radial-gradient(ellipse 80% 100% at 50% 40%, black 20%, transparent 80%)'
-  },
-  heroOrb: {
-    position: 'absolute', width: 600, height: 600, background: 'var(--cyan-dim)',
-    borderRadius: '50%', filter: 'blur(120px)', pointerEvents: 'none', mixBlendMode: 'screen',
-    top: '20%', left: '30%'
-  },
-  heroContent: {
-    position: 'relative', zIndex: 2, display: 'grid', gridTemplateColumns: '1fr', gap: 32, width: '100%', maxWidth: 1200, margin: '0 auto'
-  },
-  heroEyebrow: {
-    fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 5, textTransform: 'uppercase',
-    color: 'var(--cyan)', display: 'flex', alignItems: 'center', gap: 16
-  },
+  navLogo: { fontFamily: "'Archivo Black', sans-serif", fontSize: 14, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--fg)', display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none' },
+  navPip: { width: 8, height: 8, borderRadius: '50%', background: 'var(--cyan)', boxShadow: '0 0 12px var(--cyan)' },
+  navLinks: { display: 'flex', gap: 40, position: 'absolute', left: '50%', transform: 'translateX(-50%)' },
+  navLink: { fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--fg2)', textDecoration: 'none', transition: 'color 0.3s' },
+  navCta: { fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase', background: 'var(--cyan)', color: '#000', padding: '12px 28px', borderRadius: 2, marginLeft: 'auto', textDecoration: 'none', fontWeight: 'bold' },
+  burgerBtn: { background: 'none', border: 'none', marginLeft: 'auto', display: 'none', zIndex: 901 }, // Display logic handled via CSS classes conceptually or media queries (in index.css we hide-mobile on desktop and show burger on mobile)
+  mobileNavLink: { fontFamily: "'Archivo Black', sans-serif", fontSize: 32, color: 'var(--fg)', textTransform: 'uppercase', textDecoration: 'none' },
+  hero: { position: 'relative', overflow: 'hidden', background: 'var(--bg)', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '120px 5% 0' },
+  heroGrid: { position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1, backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)', backgroundSize: '80px 80px', maskImage: 'radial-gradient(ellipse 80% 100% at 50% 40%, black 20%, transparent 80%)', WebkitMaskImage: 'radial-gradient(ellipse 80% 100% at 50% 40%, black 20%, transparent 80%)' },
+  heroOrb: { position: 'absolute', width: '50vw', height: '50vw', maxWidth: 600, maxHeight: 600, background: 'var(--cyan-dim)', borderRadius: '50%', filter: 'blur(120px)', pointerEvents: 'none', mixBlendMode: 'screen', top: '20%', left: '30%' },
+  heroContent: { position: 'relative', zIndex: 2, display: 'grid', gridTemplateColumns: '1fr', gap: 'clamp(20px, 4vw, 32px)', width: '100%', maxWidth: 1200, margin: '0 auto' },
+  heroEyebrow: { fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 5, textTransform: 'uppercase', color: 'var(--cyan)', display: 'flex', alignItems: 'center', gap: 16 },
   heroEyebrowLine: { width: 40, height: 1, background: 'var(--cyan)' },
-  heroName: {
-    fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(50px, 8vw, 120px)', lineHeight: 0.95, 
-    letterSpacing: -3, marginBottom: 8, display: 'flex', flexDirection: 'column'
-  },
-  heroDesc: {
-    fontSize: 18, fontWeight: 300, lineHeight: 1.8, color: 'var(--fg2)', maxWidth: 640
-  },
-  heroBtns: { display: 'flex', gap: 20, marginTop: 24 },
-  btnMain: {
-    alignItems: 'center', gap: 12, background: 'var(--cyan)',
-    color: '#000', padding: '18px 42px', borderRadius: 2, fontFamily: "'Cousine', monospace", fontSize: 12,
-    letterSpacing: 2.5, textTransform: 'uppercase', fontWeight: 'bold'
-  },
-  vgrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: 24 },
-  vcard: {
-    background: 'var(--bg2)', borderRadius: 4, overflow: 'hidden',
-    border: '1px solid var(--border)', display: 'flex', flexDirection: 'column'
-  },
+  heroName: { fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(40px, 8vw, 120px)', lineHeight: 0.95, letterSpacing: -2, marginBottom: 8, display: 'flex', flexDirection: 'column' },
+  heroDesc: { fontSize: 'clamp(14px, 2vw, 18px)', fontWeight: 300, lineHeight: 1.8, color: 'var(--fg2)', maxWidth: 640 },
+  heroBtns: { display: 'flex', gap: 20, marginTop: 24, flexWrap: 'wrap' },
+  btnMain: { alignItems: 'center', gap: 12, background: 'var(--cyan)', color: '#000', padding: '16px 36px', borderRadius: 2, fontFamily: "'Cousine', monospace", fontSize: 12, letterSpacing: 2.5, textTransform: 'uppercase', fontWeight: 'bold' },
+  standardGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 24 },
+  standardCard: { padding: 40, background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 4 },
+  standardIcon: { marginBottom: 24, padding: 16, background: 'var(--cyan-dim)', display: 'inline-flex', borderRadius: 8 },
+  standardTitle: { fontFamily: "'Archivo Black', sans-serif", fontSize: 24, marginBottom: 16, color: 'var(--fg)' },
+  standardDesc: { fontSize: 15, color: 'var(--fg2)', lineHeight: 1.7 },
+  carouselContainer: { width: '100%', overflow: 'hidden', cursor: 'grab' },
+  carouselInner: { display: 'flex', gap: 24, width: 'max-content' },
+  vcard: { background: 'var(--bg)', borderRadius: 4, overflow: 'hidden', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', width: 'clamp(300px, 80vw, 450px)', flexShrink: 0 },
   vcardFrameWrap: { position: 'relative', width: '100%', aspectRatio: '16/9', background: '#000', overflow: 'hidden' },
-  iframe: { width: '100%', height: '100%', border: 'none', pointerEvents: 'none' },
-  vplayOverlay: { position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)' },
-  vplay: {
-    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 72, height: 72,
-    borderRadius: '50%', background: 'var(--cyan)', display: 'flex', alignItems: 'center', justifyContent: 'center'
-  },
-  vbadge: {
-    position: 'absolute', top: 16, left: 16, fontFamily: "'Cousine', monospace", fontSize: 10, letterSpacing: 2.5,
-    textTransform: 'uppercase', padding: '6px 14px', borderRadius: 2, background: 'rgba(0,0,0,0.8)', border: '1px solid var(--cyan)', color: 'var(--cyan)'
-  },
+  clickShield: { position: 'absolute', inset: 0, zIndex: 5, cursor: 'pointer' },
+  iframe: { width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }, // Pointer events none so it doesn't trap drag
+  vbadge: { position: 'absolute', top: 16, left: 16, fontFamily: "'Cousine', monospace", fontSize: 10, letterSpacing: 2.5, textTransform: 'uppercase', padding: '6px 14px', borderRadius: 2, background: 'rgba(0,0,0,0.8)', border: '1px solid var(--cyan)', color: 'var(--cyan)', zIndex: 4 },
   vcardInfo: { padding: '24px', borderTop: '1px solid var(--border)' },
   vcardTitle: { fontFamily: "'Archivo Black', sans-serif", fontSize: 20, marginBottom: 10, color: 'var(--fg)', letterSpacing: -0.5 },
   vcardDesc: { fontSize: 14, color: 'var(--fg2)', lineHeight: 1.7 },
-  cg1: {
-    position: 'absolute', width: 800, height: 800, borderRadius: '50%', filter: 'blur(150px)',
-    background: 'var(--cyan-dim)', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none'
-  },
+  cg1: { position: 'absolute', width: '60vw', height: '60vw', maxWidth: 800, maxHeight: 800, borderRadius: '50%', filter: 'blur(150px)', background: 'var(--cyan-dim)', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none' },
   contactInner: { maxWidth: 860, margin: '0 auto', textAlign: 'center', zIndex: 2, position: 'relative' },
-  contactSub: { fontSize: 18, color: 'var(--fg2)', maxWidth: 540, margin: '0 auto 56px', lineHeight: 1.8 },
-  contactActions: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 },
-  caction: {
-    alignItems: 'center', gap: 20, padding: '32px', color: 'var(--fg)', textAlign: 'left',
-    border: '1px solid var(--border)', borderRadius: 4, background: 'var(--bg3)'
-  },
-  cactionIcon: { width: 56, height: 56, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--cyan-dim)' },
-  cactionLabel: { fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--fg3)', marginBottom: 6 },
-  cactionValue: { fontSize: 16, fontWeight: 500, color: 'var(--fg)' },
-  footer: {
-    padding: '32px 48px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between',
-    alignItems: 'center', background: 'var(--bg2)'
-  },
+  contactSub: { fontSize: 'clamp(15px, 2.5vw, 18px)', color: 'var(--fg2)', maxWidth: 540, margin: '0 auto 56px', lineHeight: 1.8 },
+  contactActions: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 },
+  caction: { alignItems: 'center', gap: 20, padding: 'clamp(20px, 4vw, 32px)', color: 'var(--fg)', textAlign: 'left', border: '1px solid var(--border)', borderRadius: 4, background: 'var(--bg3)', width: '100%' },
+  cactionIcon: { width: 56, height: 56, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--cyan-dim)', flexShrink: 0 },
+  cactionLabel: { fontFamily: "'Cousine', monospace", fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--fg3)', marginBottom: 6 },
+  cactionValue: { fontSize: 'clamp(13px, 2vw, 16px)', fontWeight: 500, color: 'var(--fg)' },
+  footer: { padding: '32px 5%', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg2)', flexWrap: 'wrap', gap: 16 },
   footLogo: { fontFamily: "'Archivo Black', sans-serif", fontSize: 13, letterSpacing: 2.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 10 },
   footCopy: { fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 1, color: 'var(--fg3)' },
-  modalBg: {
-    position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(10px)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24
-  },
+  modalBg: { position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' },
   modalBox: { width: '100%', maxWidth: 1200, position: 'relative', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 4, overflow: 'hidden' },
-  modalClose: {
-    position: 'absolute', top: 20, right: 20, zIndex: 10, background: 'rgba(0,0,0,0.7)', border: '1px solid var(--border)',
-    color: 'var(--fg)', padding: '10px 20px', borderRadius: 2, fontFamily: "'Cousine', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: 2
-  },
+  modalClose: { position: 'absolute', top: 10, right: 10, zIndex: 10, background: 'rgba(0,0,0,0.7)', border: '1px solid var(--border)', color: 'var(--fg)', padding: '8px 16px', borderRadius: 2, fontFamily: "'Cousine', monospace", fontSize: 10, textTransform: 'uppercase', letterSpacing: 2 },
   modalIframeWrap: { width: '100%', aspectRatio: '16/9', background: '#000' },
   iframeFull: { width: '100%', height: '100%', border: 'none' },
-  modalInfo: { padding: 32, borderTop: '1px solid var(--border)' }
+  modalInfo: { padding: 'clamp(16px, 4vw, 32px)', borderTop: '1px solid var(--border)' }
 };
+
+/* Handle dynamic mobile menu styles inject */
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @media (max-width: 900px) {
+      .hide-mobile { display: none !important; }
+      nav button { display: block !important; }
+      nav > a.hover-target[href^="mailto"] { display: none !important; }
+    }
+  `;
+  document.head.appendChild(style);
+}

@@ -12,7 +12,6 @@
   
   --border: rgba(255, 255, 255, 0.1);
   --border-h: rgba(0, 229, 255, 0.4);
-  --touch-target: 48px;
 }
 
 *, *::before, *::after {
@@ -33,12 +32,16 @@ body {
   font-weight: 400;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  /* Hide default cursor on desktop for custom cursor */
-  cursor: none;
 }
 
-a, button, iframe {
-  cursor: none; /* Let custom cursor handle it */
+/* Custom Cursor - Desktop Only */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  a, button, iframe, .hover-target {
+    cursor: none !important;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -75,20 +78,30 @@ a, button, iframe {
   background: var(--cyan-dim);
 }
 
-.sec-h2 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: clamp(40px, 6vw, 84px);
-  line-height: 0.92;
-  letter-spacing: -1px;
-  text-transform: uppercase;
-}
-
 a {
   text-decoration: none;
 }
 
-/* Selection */
 ::selection {
   background: var(--cyan);
   color: #000;
+}
+
+/* Hide scrollbar for carousel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .sec {
+    padding: 80px 24px;
+  }
+  .hide-mobile {
+    display: none !important;
+  }
 }
