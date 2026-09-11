@@ -1,0 +1,84 @@
+:root {
+  --bg: #06060d;
+  --bg2: #0b0b17;
+  --bg3: #10101e;
+  --bg4: #161625;
+  --fg: #f0ece2;
+  --fg2: #8a8680;
+  --fg3: #404040;
+  --pink: #f72585;
+  --cyan: #00e5ff;
+  --lime: #aaff00;
+  --purple: #9b5de5;
+  --orange: #ff6b35;
+  --yellow: #ffd60a;
+  --gold: #ffbe0b;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-h: rgba(255, 255, 255, 0.14);
+  --touch-target: 48px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Archivo', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pink);
+}
+
+/* Base Utility Classes */
+.sec {
+  padding: 96px 48px;
+}
+
+.sec-eyebrow {
+  font-family: 'Cousine', monospace;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 48px;
+}
+
+.sec-eyebrow .el {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.sec-h2 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(36px, 5vw, 76px);
+  line-height: 0.92;
+  letter-spacing: -1px;
+}
+
+a {
+  text-decoration: none;
+}
