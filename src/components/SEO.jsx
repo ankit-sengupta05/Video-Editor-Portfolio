@@ -4,20 +4,20 @@ const SITE_URL     = 'https://editorcyclops.vercel.app';
 const SITE_NAME    = 'Editor Cyclops — Ankit Sengupta';
 const GITHUB_IMG   = 'https://github.com/ankit-sengupta05.png';
 
-const TITLE       = 'Editor Cyclops — Ankit Sengupta | Video Editor & Motion Designer Mumbai';
-const DESCRIPTION = 'Ankit Sengupta (Editor Cyclops) is a Mumbai-based video editor and motion designer specializing in Devin Jatho style short-form content, high-retention Reels and Shorts, cinematic brand videos, After Effects motion graphics, and Premiere Pro color grading. Hire a top freelance video editor in Mumbai, India.';
+const TITLE       = 'Editor Cyclops — Ankit Sengupta | Video Editor & Motion Designer New Delhi';
+const DESCRIPTION = 'Ankit Sengupta (Editor Cyclops) is a New Delhi-based video editor and motion designer specializing in Devin Jatho style short-form content, high-retention Reels and Shorts, cinematic brand videos, After Effects motion graphics, and Premiere Pro color grading. Hire a top freelance video editor in New Delhi, India.';
 
 const KEYWORDS = [
   /* Brand */
   'Editor Cyclops', 'Ankit Sengupta', 'ankit.sengupta05',
-  'editorcyclops', 'Editor Cyclops Mumbai',
+  'editorcyclops', 'Editor Cyclops New Delhi',
   /* Role */
-  'Video Editor Mumbai', 'Motion Designer Mumbai', 'Freelance Video Editor India',
+  'Video Editor New Delhi', 'Motion Designer New Delhi', 'Freelance Video Editor India',
   'Video Editor India', 'Motion Designer India', 'Video Editor for Hire',
-  'Best Video Editor Mumbai', 'Professional Video Editor',
+  'Best Video Editor New Delhi', 'Professional Video Editor',
   /* Style-specific — high-intent queries */
   'Devin Jatho Style Editor', 'Devin Jatho Video Editor', 'Devin Jatho Edit',
-  'Short-Form Video Editor', 'Reels Editor Mumbai', 'YouTube Shorts Editor India',
+  'Short-Form Video Editor', 'Reels Editor New Delhi', 'YouTube Shorts Editor India',
   'High Retention Video Editor', 'Hook First Editing', 'Beat Sync Video Editor',
   /* Tools */
   'Premiere Pro Editor India', 'After Effects Motion Designer India',
@@ -26,8 +26,8 @@ const KEYWORDS = [
   'Cinematic Video Editor', 'Brand Video Editor', 'Social Media Video Editor',
   'Showreel Editor', 'Motion Graphics Designer India',
   /* Local / GEO */
-  'Video Editor in Mumbai', 'Freelance Editor Maharashtra',
-  'Video Production Services Mumbai', 'Hire Video Editor Online India',
+  'Video Editor in New Delhi', 'Freelance Editor Delhi',
+  'Video Production Services New Delhi', 'Hire Video Editor Online India',
   /* Related searches */
   'Best Reels Editor 2025', 'YouTube Shorts Specialist India',
   'Content Creator Editor', 'Instagram Reels Editor',
@@ -51,7 +51,7 @@ const SCHEMA = {
       '@id':         `${SITE_URL}/#person`,
       name:          'Ankit Sengupta',
       alternateName: ['Editor Cyclops', 'editorcyclops', 'ankit-sengupta05'],
-      description:   'Mumbai-based freelance video editor and motion designer. Specializes in Devin Jatho style short-form content, high-retention Reels, brand videos, and After Effects motion graphics.',
+      description:   'New Delhi-based freelance video editor and motion designer. Specializes in Devin Jatho style short-form content, high-retention Reels, brand videos, and After Effects motion graphics.',
       url:           SITE_URL,
       email:         'ankit.sengupta05@gmail.com',
       image:         GITHUB_IMG,
@@ -65,8 +65,8 @@ const SCHEMA = {
       ],
       address: {
         '@type':           'PostalAddress',
-        addressLocality:   'Mumbai',
-        addressRegion:     'Maharashtra',
+        addressLocality:   'New Delhi',
+        addressRegion:     'Delhi',
         addressCountry:    'IN',
         postalCode:        '400001',
       },
@@ -101,13 +101,13 @@ const SCHEMA = {
       image:             GITHUB_IMG,
       url:               SITE_URL,
       email:             'ankit.sengupta05@gmail.com',
-      description:       'Premium freelance video editing and motion design services in Mumbai, India. Specializing in Devin Jatho style short-form content, brand videos, Reels, and cinematic productions.',
+      description:       'Premium freelance video editing and motion design services in New Delhi, India. Specializing in Devin Jatho style short-form content, brand videos, Reels, and cinematic productions.',
       priceRange:        '₹₹',
       currenciesAccepted:'INR, USD',
       paymentAccepted:   'UPI, Bank Transfer, PayPal',
       areaServed:        [
-        { '@type': 'City', name: 'Mumbai' },
-        { '@type': 'AdministrativeArea', name: 'Maharashtra' },
+        { '@type': 'City', name: 'New Delhi' },
+        { '@type': 'AdministrativeArea', name: 'Delhi' },
         { '@type': 'Country', name: 'India' },
         { '@type': 'Country', name: 'United States' },
       ],
@@ -118,14 +118,14 @@ const SCHEMA = {
       ],
       address: {
         '@type':           'PostalAddress',
-        addressLocality:   'Mumbai',
-        addressRegion:     'Maharashtra',
+        addressLocality:   'New Delhi',
+        addressRegion:     'Delhi',
         addressCountry:    'IN',
       },
       geo: {
         '@type':    'GeoCoordinates',
-        latitude:   19.0760,
-        longitude:  72.8777,
+        latitude:   28.6139,
+        longitude:  77.2090,
       },
       openingHoursSpecification: {
         '@type':     'OpeningHoursSpecification',
@@ -157,7 +157,7 @@ const SCHEMA = {
           name:    'Who is Editor Cyclops?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'Editor Cyclops is the professional alias of Ankit Sengupta, a Mumbai-based freelance video editor and motion designer. He specializes in high-retention short-form content, Devin Jatho style editing, Reels, YouTube Shorts, brand videos, and After Effects motion graphics.',
+            text: 'Editor Cyclops is the professional alias of Ankit Sengupta, a New Delhi-based freelance video editor and motion designer. He specializes in high-retention short-form content, Devin Jatho style editing, Reels, YouTube Shorts, brand videos, and After Effects motion graphics.',
           },
         },
         {
@@ -170,10 +170,10 @@ const SCHEMA = {
         },
         {
           '@type': 'Question',
-          name:    'How do I hire a video editor in Mumbai?',
+          name:    'How do I hire a video editor in New Delhi?',
           acceptedAnswer: {
             '@type': 'Answer',
-            text: 'You can hire Ankit Sengupta (Editor Cyclops), a professional freelance video editor based in Mumbai, India, by emailing ankit.sengupta05@gmail.com or DMing @editorcyclops on Instagram. He is available for short-form, long-form, brand videos, motion graphics, and Reels editing projects.',
+            text: 'You can hire Ankit Sengupta (Editor Cyclops), a professional freelance video editor based in New Delhi, India, by emailing ankit.sengupta05@gmail.com or DMing @editorcyclops on Instagram. He is available for short-form, long-form, brand videos, motion graphics, and Reels editing projects.',
           },
         },
         {
@@ -200,7 +200,7 @@ const SCHEMA = {
       '@type':           'VideoObject',
       '@id':             `${SITE_URL}/#video-${v.id}`,
       name:              `${v.name} — Editor Cyclops`,
-      description:       `${v.desc} Created by Ankit Sengupta (Editor Cyclops), Mumbai-based video editor and motion designer.`,
+      description:       `${v.desc} Created by Ankit Sengupta (Editor Cyclops), New Delhi-based video editor and motion designer.`,
       thumbnailUrl:      `https://drive.google.com/thumbnail?id=${v.id}&sz=w800`,
       uploadDate:        v.date,
       duration:          v.duration,
@@ -209,7 +209,7 @@ const SCHEMA = {
       publisher:         { '@id': `${SITE_URL}/#person` },
       creator:           { '@id': `${SITE_URL}/#person` },
       inLanguage:        'en',
-      keywords:          'video editing, motion design, Devin Jatho style, Mumbai video editor, Editor Cyclops',
+      keywords:          'video editing, motion design, Devin Jatho style, New Delhi video editor, Editor Cyclops',
     })),
   ],
 };
@@ -261,16 +261,16 @@ export function SEO() {
       <meta name="twitter:image:alt"   content="Editor Cyclops — Ankit Sengupta" />
 
       {/* ── GEO / Local SEO tags ── */}
-      <meta name="geo.region"    content="IN-MH" />
-      <meta name="geo.placename" content="Mumbai, Maharashtra, India" />
-      <meta name="geo.position"  content="19.0760;72.8777" />
-      <meta name="ICBM"          content="19.0760, 72.8777" />
+      <meta name="geo.region"    content="IN-DL" />
+      <meta name="geo.placename" content="New Delhi, Delhi, India" />
+      <meta name="geo.position"  content="28.6139;77.2090" />
+      <meta name="ICBM"          content="28.6139, 77.2090" />
       <meta name="DC.title"      content={TITLE} />
       <meta name="DC.creator"    content="Ankit Sengupta" />
-      <meta name="DC.subject"    content="Video Editing, Motion Design, Mumbai" />
+      <meta name="DC.subject"    content="Video Editing, Motion Design, New Delhi" />
       <meta name="DC.description" content={DESCRIPTION} />
       <meta name="DC.language"   content="en-IN" />
-      <meta name="DC.coverage"   content="Mumbai, Maharashtra, India, Worldwide" />
+      <meta name="DC.coverage"   content="New Delhi, Delhi, India, Worldwide" />
 
       {/* ── PWA / App ── */}
       <meta name="theme-color"            content="#000000" />
@@ -294,7 +294,7 @@ export function SEO() {
       <meta property="article:modified_time"  content="2026-09-12T00:00:00+05:30" />
       <meta property="article:tag" content="video editor" />
       <meta property="article:tag" content="motion designer" />
-      <meta property="article:tag" content="Mumbai" />
+      <meta property="article:tag" content="New Delhi" />
 
       {/* ── Full JSON-LD structured data graph ── */}
       <script type="application/ld+json">{JSON.stringify(SCHEMA)}</script>

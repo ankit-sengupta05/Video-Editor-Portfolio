@@ -29,7 +29,7 @@ export function About() {
             </h2>
             <div className="about__body">
               <p>
-                I'm <strong>Ankit Sengupta</strong>, a Mumbai-based motion designer and video editor
+                I'm <strong>Ankit Sengupta</strong>, a New Delhi-based motion designer and video editor
                 operating as <strong>Editor Cyclops</strong> — because I see content differently than
                 everyone else. I engineer attention, not just edits.
               </p>

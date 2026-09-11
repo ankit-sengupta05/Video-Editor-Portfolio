@@ -12,7 +12,7 @@ const SOCIALS = [
 ];
 
 const STATS = [
-  { value: '50+', label: 'Projects'    },
+  { value: '5+',  label: 'Key Clients' },
   { value: '3+',  label: 'Yrs Editing' },
   { value: '100%',label: 'Satisfied'   },
 ];
@@ -138,7 +138,7 @@ export function Hero() {
         </motion.div>
 
         <motion.p className="hero__bio" {...fadeUp(0.5)}>
-          Based in <strong>Mumbai, India</strong> — I operate as <strong>Editor Cyclops</strong>{' '}
+          Based in <strong>New Delhi, India</strong> — I operate as <strong>Editor Cyclops</strong>{' '}
           crafting cinematic short-form content, high-retention edits, and premium motion graphics
           for brands and creators who demand the best. I see content differently.
         </motion.p>
