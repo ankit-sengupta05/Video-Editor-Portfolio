@@ -1,201 +1,311 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { Mail, Instagram, Play, ArrowRight, Video, Film, CheckCircle2 } from 'lucide-react';
-import { useState } from 'react';
+import { Mail, Instagram, Play, ArrowRight, MousePointer2 } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 
 const VIDS = [
-  {id:'1vzexwyqV3GjlRpOYTBtrgo-Rx2bxwvvT',title:'Devin Jatho Style Edit',desc:'Raw rhythm-locked cuts, deliberate colour contrast, beat-synced motion — a full Devin Jatho-inspired edit. Premiere Pro & After Effects.',cat:'devin'},
-  {id:'1EOL0p7s_Hgxd_bI40RCJ_t8ToBkrSA3Y',title:'Short-Form Showreel',desc:'Cinematic short-form motion design with dynamic transitions, bold typography, and hook-first editing — built to convert.',cat:'short'},
-  {id:'1LwWn4T5LtjKuTO0mY92GBQhoZi6oan2g',title:'Europe Industrial Rev',desc:'Long-form cinematic production with an industrial aesthetic — precise colour grading and rhythmic pacing.',cat:'long'},
-  {id:'1zt-pRELZKoZowVh1a1p_I2a9kDHPX5pn',title:'Short-Form Cinematic Edit',desc:'High-energy short-form edit with precision pacing, dynamic rhythm cuts and bold cinematic colour treatment.',cat:'short'},
-  {id:'1XXkDvLQX0nvmRMZrRF7iOuKtkIdo3iu2',title:'Motion Graphics Edit',desc:'Short-form motion graphics piece with dynamic visuals and kinetic typography built in After Effects.',cat:'short'},
-  {id:'1F6xYj6SaPMVhnvG4ksX8eTLZAGN77sXp',title:'WIP Concept Edit',desc:'Experimental short-form concept — hook structure and motion design study. Work in progress.',cat:'short'},
-  {id:'1tl2M-sRxM8EKM3FT3B8m_K0wS1iTaO_p',title:'Featured Cinematic Edit',desc:'The newest and finest from Editor Cyclops — cinematic short-form storytelling with razor-sharp cuts, precision colour grading, and hook-first structure built to stop the scroll.',cat:'new'}
+  { id: '1vzexwyqV3GjlRpOYTBtrgo-Rx2bxwvvT', title: 'Devin Jatho Style Edit', desc: 'Raw rhythm-locked cuts, deliberate colour contrast, beat-synced motion.', cat: 'devin', date: '2025-10-15', duration: 'PT1M30S' },
+  { id: '1EOL0p7s_Hgxd_bI40RCJ_t8ToBkrSA3Y', title: 'Short-Form Showreel', desc: 'Cinematic short-form motion design with dynamic transitions and hook-first editing.', cat: 'short', date: '2025-09-01', duration: 'PT0M59S' },
+  { id: '1LwWn4T5LtjKuTO0mY92GBQhoZi6oan2g', title: 'Europe Industrial Rev', desc: 'Long-form cinematic production with an industrial aesthetic and precise pacing.', cat: 'long', date: '2025-08-20', duration: 'PT3M15S' },
+  { id: '1zt-pRELZKoZowVh1a1p_I2a9kDHPX5pn', title: 'Cinematic Precision Edit', desc: 'High-energy short-form edit with dynamic rhythm cuts and bold cinematic color.', cat: 'short', date: '2025-11-05', duration: 'PT0M45S' },
+  { id: '1XXkDvLQX0nvmRMZrRF7iOuKtkIdo3iu2', title: 'Motion Graphics Suite', desc: 'Dynamic visuals and kinetic typography built in After Effects.', cat: 'short', date: '2025-07-12', duration: 'PT0M30S' },
+  { id: '1tl2M-sRxM8EKM3FT3B8m_K0wS1iTaO_p', title: 'The Cyclops Standard', desc: 'Cinematic short-form storytelling with razor-sharp cuts and precision color grading.', cat: 'new', date: '2025-12-01', duration: 'PT1M10S' }
 ];
+
+/* Custom Cursor Component */
+const CustomCursor = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    const updateMousePosition = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    const handleMouseOver = (e) => {
+      if (e.target.closest('a, button, .hover-target')) setIsHovering(true);
+      else setIsHovering(false);
+    };
+
+    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener('mouseover', handleMouseOver);
+
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('mouseover', handleMouseOver);
+    };
+  }, []);
+
+  return (
+    <motion.div
+      style={{
+        position: 'fixed', top: 0, left: 0,
+        width: 32, height: 32, borderRadius: '50%',
+        border: '2px solid var(--cyan)',
+        pointerEvents: 'none', zIndex: 9999,
+        mixBlendMode: 'difference'
+      }}
+      animate={{
+        x: mousePosition.x - 16, y: mousePosition.y - 16,
+        scale: isHovering ? 2.5 : 1,
+        backgroundColor: isHovering ? 'var(--cyan)' : 'transparent',
+      }}
+      transition={{ type: 'spring', stiffness: 500, damping: 28, mass: 0.5 }}
+    />
+  );
+};
+
+/* Magnetic Button Component */
+const MagneticButton = ({ children, style, href, target, rel, ariaLabel }) => {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouse = (e) => {
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX * 0.3, y: middleY * 0.3 });
+  };
+
+  const reset = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  const { x, y } = position;
+  return (
+    <motion.a
+      href={href} target={target} rel={rel} aria-label={ariaLabel}
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      animate={{ x, y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      style={{ ...style, display: 'inline-flex' }}
+      className="hover-target"
+    >
+      {children}
+    </motion.a>
+  );
+};
+
+/* Staggered Text Component */
+const StaggeredText = ({ text, style }) => {
+  const words = text.split(" ");
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.25em', ...style }}>
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          style={{ overflow: 'hidden', display: 'inline-block' }}
+          initial={{ y: '100%', opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, delay: i * 0.05, ease: [0.33, 1, 0.68, 1] }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
 
 export default function App() {
   const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const yOrb = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
   const [modalVideo, setModalVideo] = useState(null);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  };
+  // Generate VideoObject schemas
+  const videoSchemas = VIDS.map(v => ({
+    "@type": "VideoObject",
+    "name": v.title,
+    "description": v.desc,
+    "thumbnailUrl": "https://editorcyclops.vercel.app/thumbnail.jpg",
+    "uploadDate": v.date,
+    "duration": v.duration,
+    "contentUrl": `https://drive.google.com/file/d/${v.id}/preview`,
+    "embedUrl": `https://drive.google.com/file/d/${v.id}/preview`
+  }));
 
   return (
     <>
       <Helmet>
+        <html lang="en" />
         <title>Editor Cyclops — Ankit Sengupta | Motion Designer & Video Editor</title>
-        <meta name="description" content="I'm Ankit Sengupta, a Mumbai-based motion designer and video editor specializing in Devin Jatho style short-form content, Reels, Shorts, and cinematic brand videos." />
-        <meta name="keywords" content="Video Editor, Motion Designer, Devin Jatho style, Premiere Pro, After Effects, Mumbai, Short-form editor, Reels editor, Freelance Video Editor" />
-        <meta property="og:title" content="Editor Cyclops — Ankit Sengupta" />
-        <meta property="og:description" content="Premium motion design and video editing services in Mumbai. Specialized in high-retention short-form and cinematic edits." />
-        <meta property="og:type" content="profile" />
+        <meta name="description" content="Ankit Sengupta is a Mumbai-based motion designer and video editor specializing in Devin Jatho style short-form content, cinematic brand videos, and high-retention edits." />
+        <meta name="keywords" content="Video Editor, Motion Designer, Devin Jatho style, Premiere Pro, After Effects, Mumbai, Short-form editor, Cinematic Editing" />
+        <link rel="canonical" href="https://editorcyclops.vercel.app/" />
+        
+        {/* Open Graph / Social */}
+        <meta property="og:title" content="Editor Cyclops — Premium Motion Design & Editing" />
+        <meta property="og:description" content="Cinematic video editing and motion design by Ankit Sengupta. Specializing in high-retention short-form content." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://editorcyclops.vercel.app/" />
+        <meta name="twitter:card" content="summary_large_image" />
+        
+        {/* Structured Data */}
         <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Ankit Sengupta",
-              "alternateName": "Editor Cyclops",
-              "url": "https://github.com/ankit-sengupta05",
-              "jobTitle": "Motion Designer & Video Editor",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Mumbai",
-                "addressCountry": "IN"
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "Person",
+                "name": "Ankit Sengupta",
+                "alternateName": "Editor Cyclops",
+                "url": "https://editorcyclops.vercel.app/",
+                "jobTitle": "Motion Designer & Video Editor",
+                "knowsAbout": ["Video Editing", "Motion Graphics", "Adobe Premiere Pro", "Adobe After Effects", "Devin Jatho Style", "Short-Form Content", "Cinematic Editing"],
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": "Mumbai",
+                  "addressCountry": "IN"
+                },
+                "email": "mailto:ankit.sengupta05@gmail.com",
+                "sameAs": ["https://www.instagram.com/editorcyclops/", "https://github.com/ankit-sengupta05"]
               },
-              "email": "mailto:ankit.sengupta05@gmail.com",
-              "sameAs": [
-                "https://www.instagram.com/editorcyclops/"
-              ]
-            }
-          `}
+              ...videoSchemas
+            ]
+          })}
         </script>
       </Helmet>
 
+      <CustomCursor />
+
       {/* Navigation */}
-      <nav style={styles.nav}>
-        <a href="#" style={styles.navLogo}>
+      <motion.nav 
+        style={styles.nav}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <a href="#" style={styles.navLogo} aria-label="Home" className="hover-target">
           <span style={styles.navPip}></span>
           Editor Cyclops
         </a>
         <div style={styles.navLinks}>
-          <a href="#work" style={styles.navLink}>Work</a>
-          <a href="#about" style={styles.navLink}>About</a>
-          <a href="#contact" style={styles.navLink}>Contact</a>
+          <a href="#work" style={styles.navLink} className="hover-target">Work</a>
+          <a href="#contact" style={styles.navLink} className="hover-target">Contact</a>
         </div>
-        <a href="mailto:ankit.sengupta05@gmail.com" style={styles.navCta}>
-          <span>Hire Me</span>
-        </a>
-      </nav>
+        <MagneticButton href="mailto:ankit.sengupta05@gmail.com" style={styles.navCta} ariaLabel="Hire Me via Email">
+          Hire Me
+        </MagneticButton>
+      </motion.nav>
 
       {/* Hero Section */}
       <section style={styles.hero}>
-        <motion.div style={{ ...styles.heroOrb, ...styles.ho1, y }} />
-        <motion.div style={{ ...styles.heroOrb, ...styles.ho2, y }} />
-        <motion.div style={{ ...styles.heroOrb, ...styles.ho3, y }} />
+        <motion.div style={{ ...styles.heroOrb, y: yOrb }} />
+        <motion.div style={{ ...styles.heroGrid, y: yBg }} />
         
-        <div style={styles.heroGrid}></div>
-        
-        <motion.div 
-          style={styles.heroContent}
-          initial="hidden"
-          animate="show"
-          variants={containerVariants}
-        >
-          <div style={styles.heroText}>
-            <motion.div variants={itemVariants} style={styles.heroEyebrow}>
-              <div style={styles.heroEyebrowLine}></div>
-              Motion Designer & Video Editor
-            </motion.div>
-            
-            <motion.h1 variants={itemVariants} style={styles.heroName}>
-              ANKIT SENGUPTA
-              <span style={styles.heroNameGrad}>EDITOR CYCLOPS</span>
-            </motion.h1>
-            
-            <motion.p variants={itemVariants} style={styles.heroDesc}>
-              I craft <strong>high-retention short-form content</strong>, cinematic long-form videos, and premium motion graphics. Specialized in the <strong>Devin Jatho style</strong>—raw rhythm cuts, deep contrast, and beat-locked energy.
-            </motion.p>
-            
-            <motion.div variants={itemVariants} style={styles.heroBtns}>
-              <a href="#work" style={styles.btnMain}>View Projects <ArrowRight size={14} /></a>
-              <a href="mailto:ankit.sengupta05@gmail.com" style={styles.btnGhost}>Hire Me</a>
-            </motion.div>
+        <div style={styles.heroContent}>
+          <div style={styles.heroEyebrow}>
+            <div style={styles.heroEyebrowLine}></div>
+            Motion Designer & Video Editor
           </div>
-        </motion.div>
+          
+          <h1 style={styles.heroName}>
+            <StaggeredText text="ANKIT SENGUPTA" style={{ color: 'var(--fg)' }} />
+            <StaggeredText text="EDITOR CYCLOPS" style={{ color: 'var(--cyan)', textShadow: '0 0 30px var(--cyan-glow)' }} />
+          </h1>
+          
+          <motion.p 
+            style={styles.heroDesc}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 1 }}
+          >
+            I craft <strong>high-retention short-form content</strong> and premium motion graphics. Specialized in raw rhythm cuts, deep contrast, and beat-locked energy.
+          </motion.p>
+          
+          <motion.div 
+            style={styles.heroBtns}
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.8 }}
+          >
+            <MagneticButton href="#work" style={styles.btnMain} ariaLabel="View Projects">
+              View Projects <ArrowRight size={14} />
+            </MagneticButton>
+          </motion.div>
+        </div>
       </section>
 
       {/* Portfolio Showcase */}
-      <section id="work" className="sec" style={{ background: 'var(--bg2)' }}>
-        <motion.div 
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-        >
-          <motion.div variants={itemVariants} className="sec-eyebrow" style={{ color: 'var(--pink)' }}>
-            <span>Selected Work</span><span className="el"></span>
-          </motion.div>
-          <motion.h2 variants={itemVariants} className="sec-h2" style={{ marginBottom: 48 }}>
-            FEATURED <span style={{ color: 'var(--pink)' }}>EDITS</span>
-          </motion.h2>
+      <section id="work" className="sec" style={{ background: 'var(--bg2)', position: 'relative', zIndex: 10 }}>
+        <div className="sec-eyebrow">
+          <span>Selected Work</span><span className="el"></span>
+        </div>
+        
+        <StaggeredText text="FEATURED EDITS" style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(40px, 6vw, 84px)', marginBottom: 64, textTransform: 'uppercase' }} />
 
-          <motion.div variants={itemVariants} style={styles.vgrid}>
-            {VIDS.map((v, i) => (
-              <motion.div 
-                key={v.id} 
-                style={styles.vcard} 
-                onClick={() => setModalVideo(v)}
-                whileHover={{ y: -5, borderColor: 'var(--pink)', scale: 1.01 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div style={styles.vcardFrameWrap}>
-                  <iframe src={`https://drive.google.com/file/d/${v.id}/preview`} style={styles.iframe} title={v.title} loading="lazy"></iframe>
-                  <div style={styles.vplayOverlay}></div>
-                  <div style={styles.vplay}><Play fill="white" size={24} /></div>
-                  <div style={{...styles.vbadge, ...(v.cat === 'new' ? styles.vbNew : v.cat === 'devin' ? styles.vbDevin : styles.vbShort)}}>
-                    {v.cat === 'devin' ? '★ Devin Style' : v.cat === 'new' ? '★ Featured' : '⚡ Edit'}
-                  </div>
+        <div style={styles.vgrid}>
+          {VIDS.map((v, i) => (
+            <motion.div 
+              key={v.id} 
+              style={styles.vcard} 
+              className="hover-target"
+              onClick={() => setModalVideo(v)}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              whileHover={{ y: -8, borderColor: 'var(--cyan)' }}
+            >
+              <div style={styles.vcardFrameWrap}>
+                <iframe src={`https://drive.google.com/file/d/${v.id}/preview`} style={styles.iframe} title={v.title} loading="lazy" aria-label={`Preview of ${v.title}`}></iframe>
+                <div style={styles.vplayOverlay}></div>
+                <div style={styles.vplay}><Play fill="#000" size={24} /></div>
+                <div style={styles.vbadge}>
+                  {v.cat === 'devin' ? '★ Devin Style' : v.cat === 'new' ? '★ Featured' : '⚡ Edit'}
                 </div>
-                <div style={styles.vcardInfo}>
-                  <h3 style={styles.vcardTitle}>{v.title}</h3>
-                  <p style={styles.vcardDesc}>{v.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
+              </div>
+              <div style={styles.vcardInfo}>
+                <h3 style={styles.vcardTitle}>{v.title}</h3>
+                <p style={styles.vcardDesc}>{v.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </section>
 
       {/* Contact Section */}
       <section id="contact" className="sec" style={{ position: 'relative', overflow: 'hidden' }}>
-        <motion.div 
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={containerVariants}
-          style={styles.contactInner}
-        >
-          <motion.div variants={itemVariants} style={styles.ctag}>
-            Ready to Create?
-          </motion.div>
-          <motion.h2 variants={itemVariants} style={styles.contactH2}>
-            LET'S <span style={styles.cg}>WORK</span> TOGETHER
-          </motion.h2>
-          <motion.p variants={itemVariants} style={styles.contactSub}>
+        <motion.div style={{ ...styles.cg1, y: yOrb }} />
+        
+        <div style={styles.contactInner}>
+          <div className="sec-eyebrow" style={{ justifyContent: 'center' }}>
+            <span className="el" style={{ flex: 'none', width: 40 }}></span>
+            <span>Ready to Create?</span>
+            <span className="el" style={{ flex: 'none', width: 40 }}></span>
+          </div>
+          
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
+            <StaggeredText text="LET'S WORK TOGETHER" style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(36px, 6vw, 84px)', textAlign: 'center', color: 'var(--cyan)' }} />
+          </div>
+          
+          <motion.p 
+            style={styles.contactSub}
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
+          >
             Got a Reel, Short, or brand video in mind? Reach out and let's craft something that stands out.
           </motion.p>
           
-          <motion.div variants={itemVariants} style={styles.contactActions}>
-            <a href="mailto:ankit.sengupta05@gmail.com" style={{...styles.caction, borderImage: 'linear-gradient(90deg, var(--pink), var(--purple)) 1'}}>
-              <div style={styles.cactionIcon}><Mail size={24} color="var(--pink)" /></div>
+          <motion.div 
+            style={styles.contactActions}
+            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <MagneticButton href="mailto:ankit.sengupta05@gmail.com" style={styles.caction} ariaLabel="Send an Email">
+              <div style={styles.cactionIcon}><Mail size={24} color="var(--cyan)" /></div>
               <div>
                 <div style={styles.cactionLabel}>Send an Email</div>
                 <div style={styles.cactionValue}>ankit.sengupta05@gmail.com</div>
               </div>
-            </a>
-            <a href="https://www.instagram.com/editorcyclops/" target="_blank" rel="noopener noreferrer" style={styles.caction}>
-              <div style={{...styles.cactionIcon, background: 'rgba(253,29,29,0.1)'}}><Instagram size={24} color="#fd1d1d" /></div>
+            </MagneticButton>
+            
+            <MagneticButton href="https://www.instagram.com/editorcyclops/" target="_blank" rel="noopener noreferrer" style={styles.caction} ariaLabel="DM on Instagram">
+              <div style={styles.cactionIcon}><Instagram size={24} color="var(--cyan)" /></div>
               <div>
                 <div style={styles.cactionLabel}>DM on Instagram</div>
                 <div style={styles.cactionValue}>@editorcyclops</div>
               </div>
-            </a>
+            </MagneticButton>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Footer */}
@@ -205,146 +315,149 @@ export default function App() {
       </footer>
 
       {/* Video Modal */}
-      {modalVideo && (
-        <div style={styles.modalBg} onClick={() => setModalVideo(null)}>
+      <AnimatePresence>
+        {modalVideo && (
           <motion.div 
-            style={styles.modalBox}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            onClick={(e) => e.stopPropagation()}
+            style={styles.modalBg} 
+            onClick={() => setModalVideo(null)}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           >
-            <button style={styles.modalClose} onClick={() => setModalVideo(null)}>✕ Close</button>
-            <div style={styles.modalIframeWrap}>
-              <iframe src={`https://drive.google.com/file/d/${modalVideo.id}/preview?autoplay=1`} allow="autoplay; fullscreen" style={styles.iframeFull}></iframe>
-            </div>
-            <div style={styles.modalInfo}>
-              <h3 style={styles.vcardTitle}>{modalVideo.title}</h3>
-              <p style={styles.vcardDesc}>{modalVideo.desc}</p>
-            </div>
+            <motion.div 
+              style={styles.modalBox}
+              initial={{ scale: 0.95, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.95, y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button style={styles.modalClose} className="hover-target" onClick={() => setModalVideo(null)} aria-label="Close Modal">✕ Close</button>
+              <div style={styles.modalIframeWrap}>
+                <iframe src={`https://drive.google.com/file/d/${modalVideo.id}/preview?autoplay=1`} allow="autoplay; fullscreen" style={styles.iframeFull} title={modalVideo.title} aria-label={`Watching ${modalVideo.title}`}></iframe>
+              </div>
+              <div style={styles.modalInfo}>
+                <h3 style={{ ...styles.vcardTitle, fontSize: 24 }}>{modalVideo.title}</h3>
+                <p style={{ ...styles.vcardDesc, fontSize: 15, marginTop: 8 }}>{modalVideo.desc}</p>
+              </div>
+            </motion.div>
           </motion.div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 }
 
 const styles = {
   nav: {
-    position: 'fixed', top: 0, left: 0, right: 0, zIndex: 900, height: 64, 
+    position: 'fixed', top: 0, left: 0, right: 0, zIndex: 900, height: 72, 
     display: 'flex', alignItems: 'center', padding: '0 48px',
-    background: 'rgba(6,6,13,0.96)', backdropFilter: 'blur(24px)', borderBottom: '1px solid var(--border)'
+    background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)'
   },
   navLogo: {
     fontFamily: "'Archivo Black', sans-serif", fontSize: 14, letterSpacing: 3, textTransform: 'uppercase',
-    color: 'var(--fg)', display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none'
+    color: 'var(--fg)', display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none'
   },
   navPip: {
-    width: 9, height: 9, borderRadius: '50%', background: 'linear-gradient(135deg, var(--pink), var(--purple))',
-    boxShadow: '0 0 10px var(--pink)'
+    width: 8, height: 8, borderRadius: '50%', background: 'var(--cyan)',
+    boxShadow: '0 0 12px var(--cyan)'
   },
   navLinks: {
-    display: 'flex', gap: 32, position: 'absolute', left: '50%', transform: 'translateX(-50%)'
+    display: 'flex', gap: 40, position: 'absolute', left: '50%', transform: 'translateX(-50%)'
   },
   navLink: {
-    fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase',
-    color: 'var(--fg2)', textDecoration: 'none'
+    fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 3, textTransform: 'uppercase',
+    color: 'var(--fg2)', textDecoration: 'none', transition: 'color 0.3s'
   },
   navCta: {
     fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 2.5, textTransform: 'uppercase',
-    background: 'var(--pink)', color: '#fff', padding: '10px 24px', borderRadius: 2, marginLeft: 'auto',
-    textDecoration: 'none', transition: 'box-shadow 0.3s'
+    background: 'var(--cyan)', color: '#000', padding: '12px 28px', borderRadius: 2, marginLeft: 'auto',
+    textDecoration: 'none', fontWeight: 'bold'
   },
   hero: {
     position: 'relative', overflow: 'hidden', background: 'var(--bg)', minHeight: '100vh', 
-    display: 'flex', alignItems: 'center', padding: '100px 48px 0'
+    display: 'flex', alignItems: 'center', padding: '120px 48px 0'
+  },
+  heroGrid: {
+    position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1,
+    backgroundImage: 'linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)',
+    backgroundSize: '80px 80px',
+    maskImage: 'radial-gradient(ellipse 80% 100% at 50% 40%, black 20%, transparent 80%)',
+    WebkitMaskImage: 'radial-gradient(ellipse 80% 100% at 50% 40%, black 20%, transparent 80%)'
   },
   heroOrb: {
-    position: 'absolute', borderRadius: '50%', filter: 'blur(100px)', pointerEvents: 'none', mixBlendMode: 'screen'
+    position: 'absolute', width: 600, height: 600, background: 'var(--cyan-dim)',
+    borderRadius: '50%', filter: 'blur(120px)', pointerEvents: 'none', mixBlendMode: 'screen',
+    top: '20%', left: '30%'
   },
-  ho1: { width: 560, height: 560, background: 'rgba(247,37,133,0.16)', top: -80, right: -60 },
-  ho2: { width: 360, height: 360, background: 'rgba(0,229,255,0.12)', bottom: 60, right: 220 },
-  ho3: { width: 280, height: 280, background: 'rgba(155,93,229,0.14)', top: '50%', left: '52%' },
   heroContent: {
-    position: 'relative', zIndex: 2, display: 'grid', gridTemplateColumns: '1fr', gap: 48, width: '100%'
+    position: 'relative', zIndex: 2, display: 'grid', gridTemplateColumns: '1fr', gap: 32, width: '100%', maxWidth: 1200, margin: '0 auto'
   },
   heroEyebrow: {
-    fontFamily: "'Cousine', monospace", fontSize: 10, letterSpacing: 4, textTransform: 'uppercase',
-    color: 'var(--pink)', display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24
+    fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 5, textTransform: 'uppercase',
+    color: 'var(--cyan)', display: 'flex', alignItems: 'center', gap: 16
   },
-  heroEyebrowLine: { width: 28, height: 1, background: 'var(--pink)' },
+  heroEyebrowLine: { width: 40, height: 1, background: 'var(--cyan)' },
   heroName: {
-    fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(48px, 7vw, 100px)', lineHeight: 1, 
-    letterSpacing: -2, marginBottom: 16
-  },
-  heroNameGrad: {
-    display: 'block', background: 'linear-gradient(90deg, var(--cyan) 0%, var(--purple) 50%, var(--pink) 100%)',
-    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
+    fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(50px, 8vw, 120px)', lineHeight: 0.95, 
+    letterSpacing: -3, marginBottom: 8, display: 'flex', flexDirection: 'column'
   },
   heroDesc: {
-    fontSize: 16, fontWeight: 300, lineHeight: 1.82, color: 'var(--fg2)', maxWidth: 600, marginBottom: 36
+    fontSize: 18, fontWeight: 300, lineHeight: 1.8, color: 'var(--fg2)', maxWidth: 640
   },
-  heroBtns: { display: 'flex', gap: 16 },
+  heroBtns: { display: 'flex', gap: 20, marginTop: 24 },
   btnMain: {
-    display: 'inline-flex', alignItems: 'center', gap: 10, background: 'linear-gradient(135deg, var(--pink), var(--purple))',
-    color: '#fff', padding: '16px 36px', borderRadius: 2, fontFamily: "'Cousine', monospace", fontSize: 11,
-    letterSpacing: 2, textTransform: 'uppercase', textDecoration: 'none', boxShadow: '0 4px 32px rgba(247,37,133,0.3)'
+    alignItems: 'center', gap: 12, background: 'var(--cyan)',
+    color: '#000', padding: '18px 42px', borderRadius: 2, fontFamily: "'Cousine', monospace", fontSize: 12,
+    letterSpacing: 2.5, textTransform: 'uppercase', fontWeight: 'bold'
   },
-  btnGhost: {
-    display: 'inline-flex', alignItems: 'center', gap: 10, border: '1px solid rgba(255,255,255,0.15)',
-    color: 'var(--fg)', padding: '16px 36px', borderRadius: 2, fontFamily: "'Cousine', monospace", fontSize: 11,
-    letterSpacing: 2, textTransform: 'uppercase', textDecoration: 'none'
-  },
-  vgrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 16 },
+  vgrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: 24 },
   vcard: {
-    background: 'var(--bg3)', borderRadius: 4, overflow: 'hidden', cursor: 'pointer',
+    background: 'var(--bg2)', borderRadius: 4, overflow: 'hidden',
     border: '1px solid var(--border)', display: 'flex', flexDirection: 'column'
   },
   vcardFrameWrap: { position: 'relative', width: '100%', aspectRatio: '16/9', background: '#000', overflow: 'hidden' },
   iframe: { width: '100%', height: '100%', border: 'none', pointerEvents: 'none' },
-  vplayOverlay: { position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(6,6,13,0.8) 0%, transparent 100%)' },
+  vplayOverlay: { position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)' },
   vplay: {
-    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 64, height: 64,
-    borderRadius: '50%', background: 'rgba(247,37,133,0.88)', display: 'flex', alignItems: 'center', justifyContent: 'center'
+    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 72, height: 72,
+    borderRadius: '50%', background: 'var(--cyan)', display: 'flex', alignItems: 'center', justifyContent: 'center'
   },
   vbadge: {
-    position: 'absolute', top: 14, left: 14, fontFamily: "'Cousine', monospace", fontSize: 9, letterSpacing: 2,
-    textTransform: 'uppercase', padding: '4px 10px', borderRadius: 2, backdropFilter: 'blur(6px)'
+    position: 'absolute', top: 16, left: 16, fontFamily: "'Cousine', monospace", fontSize: 10, letterSpacing: 2.5,
+    textTransform: 'uppercase', padding: '6px 14px', borderRadius: 2, background: 'rgba(0,0,0,0.8)', border: '1px solid var(--cyan)', color: 'var(--cyan)'
   },
-  vbShort: { background: 'rgba(247,37,133,0.9)', color: '#fff' },
-  vbNew: { background: 'linear-gradient(135deg, var(--pink), var(--purple))', color: '#fff' },
-  vbDevin: { background: 'rgba(255,190,11,0.95)', color: '#000' },
-  vcardInfo: { padding: '18px 20px', borderTop: '1px solid var(--border)' },
-  vcardTitle: { fontFamily: "'Archivo Black', sans-serif", fontSize: 17, marginBottom: 8, color: 'var(--fg)' },
-  vcardDesc: { fontSize: 13, color: 'var(--fg3)', lineHeight: 1.6 },
-  contactInner: { maxWidth: 820, margin: '0 auto', textAlign: 'center', zIndex: 2, position: 'relative' },
-  ctag: { fontFamily: "'Cousine', monospace", fontSize: 10, letterSpacing: 4, textTransform: 'uppercase', color: 'var(--fg3)', marginBottom: 14 },
-  contactH2: { fontFamily: "'Archivo Black', sans-serif", fontSize: 'clamp(44px, 7vw, 108px)', lineHeight: 0.88, marginBottom: 14 },
-  cg: { background: 'linear-gradient(90deg, var(--pink), var(--orange), var(--yellow), var(--lime))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' },
-  contactSub: { fontSize: 16, color: 'var(--fg2)', maxWidth: 500, margin: '0 auto 48px' },
-  contactActions: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 },
+  vcardInfo: { padding: '24px', borderTop: '1px solid var(--border)' },
+  vcardTitle: { fontFamily: "'Archivo Black', sans-serif", fontSize: 20, marginBottom: 10, color: 'var(--fg)', letterSpacing: -0.5 },
+  vcardDesc: { fontSize: 14, color: 'var(--fg2)', lineHeight: 1.7 },
+  cg1: {
+    position: 'absolute', width: 800, height: 800, borderRadius: '50%', filter: 'blur(150px)',
+    background: 'var(--cyan-dim)', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none'
+  },
+  contactInner: { maxWidth: 860, margin: '0 auto', textAlign: 'center', zIndex: 2, position: 'relative' },
+  contactSub: { fontSize: 18, color: 'var(--fg2)', maxWidth: 540, margin: '0 auto 56px', lineHeight: 1.8 },
+  contactActions: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 },
   caction: {
-    display: 'flex', alignItems: 'center', gap: 18, padding: '28px 32px', textDecoration: 'none', color: 'var(--fg)',
-    border: '1px solid var(--border)', borderRadius: 4, background: 'var(--bg3)', transition: 'all 0.3s'
+    alignItems: 'center', gap: 20, padding: '32px', color: 'var(--fg)', textAlign: 'left',
+    border: '1px solid var(--border)', borderRadius: 4, background: 'var(--bg3)'
   },
-  cactionIcon: { width: 52, height: 52, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(247,37,133,0.1)' },
-  cactionLabel: { fontFamily: "'Cousine', monospace", fontSize: 10, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--fg3)', marginBottom: 4 },
-  cactionValue: { fontSize: 15, fontWeight: 500 },
+  cactionIcon: { width: 56, height: 56, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--cyan-dim)' },
+  cactionLabel: { fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 3, textTransform: 'uppercase', color: 'var(--fg3)', marginBottom: 6 },
+  cactionValue: { fontSize: 16, fontWeight: 500, color: 'var(--fg)' },
   footer: {
-    padding: '26px 48px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between',
-    alignItems: 'center', background: 'var(--bg)'
+    padding: '32px 48px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between',
+    alignItems: 'center', background: 'var(--bg2)'
   },
-  footLogo: { fontFamily: "'Archivo Black', sans-serif", fontSize: 13, letterSpacing: 2.5, textTransform: 'uppercase' },
-  footCopy: { fontFamily: "'Cousine', monospace", fontSize: 10, letterSpacing: 1, color: 'var(--fg3)' },
+  footLogo: { fontFamily: "'Archivo Black', sans-serif", fontSize: 13, letterSpacing: 2.5, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 10 },
+  footCopy: { fontFamily: "'Cousine', monospace", fontSize: 11, letterSpacing: 1, color: 'var(--fg3)' },
   modalBg: {
-    position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(3,3,10,0.97)', backdropFilter: 'blur(20px)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16
+    position: 'fixed', inset: 0, zIndex: 2000, background: 'rgba(0,0,0,0.95)', backdropFilter: 'blur(10px)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24
   },
-  modalBox: { width: '100%', maxWidth: 1100, position: 'relative', background: 'var(--bg2)', borderRadius: 8, overflow: 'hidden' },
+  modalBox: { width: '100%', maxWidth: 1200, position: 'relative', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 4, overflow: 'hidden' },
   modalClose: {
-    position: 'absolute', top: 16, right: 16, zIndex: 10, background: 'rgba(0,0,0,0.5)', border: 'none',
-    color: 'white', padding: '8px 16px', borderRadius: 4, cursor: 'pointer', fontFamily: "'Cousine', monospace"
+    position: 'absolute', top: 20, right: 20, zIndex: 10, background: 'rgba(0,0,0,0.7)', border: '1px solid var(--border)',
+    color: 'var(--fg)', padding: '10px 20px', borderRadius: 2, fontFamily: "'Cousine', monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: 2
   },
   modalIframeWrap: { width: '100%', aspectRatio: '16/9', background: '#000' },
   iframeFull: { width: '100%', height: '100%', border: 'none' },
-  modalInfo: { padding: 24 }
+  modalInfo: { padding: 32, borderTop: '1px solid var(--border)' }
 };

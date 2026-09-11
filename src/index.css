@@ -1,20 +1,17 @@
 :root {
-  --bg: #06060d;
-  --bg2: #0b0b17;
-  --bg3: #10101e;
-  --bg4: #161625;
-  --fg: #f0ece2;
-  --fg2: #8a8680;
-  --fg3: #404040;
-  --pink: #f72585;
+  /* Ultra-Premium Black/Cyan Palette */
+  --bg: #000000;
+  --bg2: #050505;
+  --bg3: #0a0a0a;
+  --fg: #ffffff;
+  --fg2: #a0a0a0;
+  --fg3: #666666;
   --cyan: #00e5ff;
-  --lime: #aaff00;
-  --purple: #9b5de5;
-  --orange: #ff6b35;
-  --yellow: #ffd60a;
-  --gold: #ffbe0b;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-h: rgba(255, 255, 255, 0.14);
+  --cyan-dim: rgba(0, 229, 255, 0.15);
+  --cyan-glow: rgba(0, 229, 255, 0.5);
+  
+  --border: rgba(255, 255, 255, 0.1);
+  --border-h: rgba(0, 229, 255, 0.4);
   --touch-target: 48px;
 }
 
@@ -36,49 +33,62 @@ body {
   font-weight: 400;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  /* Hide default cursor on desktop for custom cursor */
+  cursor: none;
+}
+
+a, button, iframe {
+  cursor: none; /* Let custom cursor handle it */
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
 }
-
 ::-webkit-scrollbar-track {
   background: var(--bg);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--pink);
+  background: var(--cyan);
+  border-radius: 4px;
 }
 
 /* Base Utility Classes */
 .sec {
-  padding: 96px 48px;
+  padding: 120px 48px;
 }
 
 .sec-eyebrow {
   font-family: 'Cousine', monospace;
-  font-size: 10px;
-  letter-spacing: 4px;
+  font-size: 11px;
+  letter-spacing: 5px;
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   margin-bottom: 48px;
+  color: var(--cyan);
 }
 
 .sec-eyebrow .el {
   flex: 1;
   height: 1px;
-  background: var(--border);
+  background: var(--cyan-dim);
 }
 
 .sec-h2 {
   font-family: 'Archivo Black', sans-serif;
-  font-size: clamp(36px, 5vw, 76px);
+  font-size: clamp(40px, 6vw, 84px);
   line-height: 0.92;
   letter-spacing: -1px;
+  text-transform: uppercase;
 }
 
 a {
   text-decoration: none;
+}
+
+/* Selection */
+::selection {
+  background: var(--cyan);
+  color: #000;
 }
