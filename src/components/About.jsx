@@ -6,7 +6,7 @@ const SKILLS = [
   { label: 'Adobe After Effects', pct: 90 },
   { label: 'Color Grading',       pct: 88 },
   { label: 'Motion Graphics',     pct: 85 },
-  { label: 'DaVinci Resolve',     pct: 78 },
+  { label: 'DaVinci Resolve',     pct: 45 },
   { label: 'Sound Design',        pct: 75 },
 ];
 
