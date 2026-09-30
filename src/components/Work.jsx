@@ -43,10 +43,10 @@ const SHORT_VIDS = [
 
 const LONG_VIDS = [
   {
-    id: '1LwWn4T5LtjKuTO0mY92GBQhoZi6oan2g',
-    title: 'Long-Form Placeholder',
-    desc: 'This is a placeholder for your long-form cinematic content. Update with real video IDs.',
-    cat: 'long', date: '2025-10-01', duration: 'PT5M00S', format: 'landscape'
+    id: '1-y5B4JkjhcRauKmw3fgp8uphxvpjhT_3',
+    title: 'Editing Workflow Explainer',
+    desc: 'A comprehensive breakdown showcasing how I professionally edit videos, from raw cuts to the final cinematic polish.',
+    cat: 'featured', date: '2026-10-01', duration: 'PT5M00S', format: 'landscape'
   }
 ];
 

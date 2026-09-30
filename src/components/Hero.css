@@ -5,7 +5,22 @@
   background: var(--bg-primary);
 }
 .hero__canvas {
-  position: absolute; inset: 0; pointer-events: none; opacity: 0.55;
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.35; z-index: 1;
+}
+.hero__bg-video-wrapper {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  overflow: hidden; z-index: 0; pointer-events: none;
+}
+.hero__bg-video {
+  position: absolute; top: 50%; left: 50%;
+  width: 150vw; height: 150vh;
+  transform: translate(-50%, -50%);
+  border: none; pointer-events: none; opacity: 0.25;
+}
+.hero__bg-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.4), var(--bg-primary));
+  z-index: 1;
 }
 .hero__orb {
   position: absolute; border-radius: 50%; pointer-events: none; filter: blur(90px);
