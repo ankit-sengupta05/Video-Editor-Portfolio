@@ -7,37 +7,37 @@ const VIDS = [
     id: '1tl2M-sRxM8EKM3FT3B8m_K0wS1iTaO_p',
     title: 'The Cyclops Standard',
     desc: 'Cinematic short-form storytelling with razor-sharp cuts and precision colour grading — the signature style.',
-    cat: 'featured', date: '2025-12-01', duration: 'PT1M10S',
+    cat: 'featured', date: '2025-12-01', duration: 'PT1M10S', format: 'portrait'
   },
   {
     id: '1vzexwyqV3GjlRpOYTBtrgo-Rx2bxwvvT',
     title: 'Devin Jatho Style Edit',
     desc: 'Raw rhythm-locked cuts, deliberate colour contrast, beat-synced motion. Premiere Pro & After Effects.',
-    cat: 'devin', date: '2025-10-15', duration: 'PT1M30S',
+    cat: 'devin', date: '2025-10-15', duration: 'PT1M30S', format: 'portrait'
   },
   {
     id: '1EOL0p7s_Hgxd_bI40RCJ_t8ToBkrSA3Y',
     title: 'Short-Form Showreel',
     desc: 'Cinematic short-form motion design with dynamic transitions and hook-first editing — built to convert.',
-    cat: 'short', date: '2025-09-01', duration: 'PT0M59S',
+    cat: 'short', date: '2025-09-01', duration: 'PT0M59S', format: 'portrait'
   },
   {
     id: '1LwWn4T5LtjKuTO0mY92GBQhoZi6oan2g',
     title: 'Europe Industrial Rev',
     desc: 'Long-form cinematic production with an industrial aesthetic and precise rhythmic pacing.',
-    cat: 'long', date: '2025-08-20', duration: 'PT3M15S',
+    cat: 'long', date: '2025-08-20', duration: 'PT3M15S', format: 'landscape'
   },
   {
     id: '1zt-pRELZKoZowVh1a1p_I2a9kDHPX5pn',
     title: 'Cinematic Precision Edit',
     desc: 'High-energy short-form edit with dynamic rhythm cuts and bold cinematic colour treatment.',
-    cat: 'short', date: '2025-11-05', duration: 'PT0M45S',
+    cat: 'short', date: '2025-11-05', duration: 'PT0M45S', format: 'portrait'
   },
   {
     id: '1XXkDvLQX0nvmRMZrRF7iOuKtkIdo3iu2',
     title: 'Motion Graphics Suite',
     desc: 'Dynamic visuals and kinetic typography built entirely in After Effects.',
-    cat: 'short', date: '2025-07-12', duration: 'PT0M30S',
+    cat: 'short', date: '2025-07-12', duration: 'PT0M30S', format: 'landscape'
   },
 ];
 
@@ -50,11 +50,12 @@ export const videoSchemas = VIDS.map(v => ({
   "embedUrl":    `https://drive.google.com/file/d/${v.id}/preview`,
 }));
 
-function getCardClass(index, activeIndex, total) {
+function getCardClass(index, activeIndex, format) {
   const diff = index - activeIndex;
-  if (diff === 0)       return 'vcard vcard--active';
-  if (Math.abs(diff) === 1) return 'vcard vcard--side';
-  return 'vcard vcard--far';
+  let baseClass = `vcard vcard--${format}`;
+  if (diff === 0)       return `${baseClass} vcard--active`;
+  if (Math.abs(diff) === 1) return `${baseClass} vcard--side`;
+  return `${baseClass} vcard--far`;
 }
 
 export function Work() {
@@ -186,7 +187,7 @@ export function Work() {
               {VIDS.map((v, i) => (
                 <motion.div
                   key={v.id}
-                  className={getCardClass(i, activeIndex, VIDS.length)}
+                  className={getCardClass(i, activeIndex, v.format)}
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true, amount: 0.2 }}
@@ -194,7 +195,7 @@ export function Work() {
                   aria-label={v.title}
                   aria-current={i === activeIndex ? 'true' : undefined}
                 >
-                  <div className="vcard__frame">
+                  <div className={`vcard__frame vcard__frame--${v.format}`}>
                     {/* Shield catches clicks without blocking drag */}
                     <div
                       className="vcard__shield"
@@ -256,7 +257,7 @@ export function Work() {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           >
             <motion.div
-              className="modal-box"
+              className={`modal-box modal-box--${modalVideo.format}`}
               initial={{ scale: 0.94, y: 24, opacity: 0 }}
               animate={{ scale: 1,    y: 0,  opacity: 1 }}
               exit={{ scale: 0.94, y: 24, opacity: 0 }}
@@ -266,7 +267,7 @@ export function Work() {
               <button className="modal-close" onClick={() => setModalVideo(null)} aria-label="Close modal">
                 ✕ Close
               </button>
-              <div className="modal-iframe-wrap">
+              <div className={`modal-iframe-wrap modal-iframe-wrap--${modalVideo.format}`}>
                 <iframe
                   className="modal-iframe"
                   src={`https://drive.google.com/file/d/${modalVideo.id}/preview?autoplay=1`}

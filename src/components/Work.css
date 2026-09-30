@@ -82,7 +82,6 @@
 /* ── Video Card ── */
 .vcard {
   flex-shrink: 0;
-  width: clamp(300px, 72vw, 460px);
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -90,6 +89,12 @@
   display: flex; flex-direction: column;
   transition: border-color 0.4s, box-shadow 0.5s, transform 0.5s;
   will-change: transform;
+}
+.vcard--landscape {
+  width: clamp(300px, 72vw, 460px);
+}
+.vcard--portrait {
+  width: clamp(240px, 45vw, 320px);
 }
 .vcard--active {
   border-color: var(--border-mid);
@@ -108,8 +113,14 @@
 }
 
 .vcard__frame {
-  position: relative; width: 100%; aspect-ratio: 16/9;
+  position: relative; width: 100%;
   background: #000; overflow: hidden; flex-shrink: 0;
+}
+.vcard__frame--landscape {
+  aspect-ratio: 16/9;
+}
+.vcard__frame--portrait {
+  aspect-ratio: 9/16;
 }
 
 /* Thumbnail image — visible by default */
@@ -191,10 +202,12 @@
   padding: clamp(12px,4vw,32px);
 }
 .modal-box {
-  width: 100%; max-width: 1200px; background: var(--bg-card);
+  width: 100%; background: var(--bg-card);
   border: 1px solid var(--border-mid); border-radius: var(--radius-lg); overflow: hidden;
   position: relative;
 }
+.modal-box--landscape { max-width: 1200px; }
+.modal-box--portrait { max-width: 500px; margin: 0 auto; }
 .modal-close {
   position: absolute; top: 16px; right: 16px; z-index: 10;
   background: rgba(0,0,0,0.7); border: 1px solid var(--border-subtle);
@@ -204,7 +217,9 @@
   transition: var(--transition);
 }
 .modal-close:hover { border-color: var(--cyan); color: var(--cyan); }
-.modal-iframe-wrap { width: 100%; aspect-ratio: 16/9; background: #000; }
+.modal-iframe-wrap { width: 100%; background: #000; }
+.modal-iframe-wrap--landscape { aspect-ratio: 16/9; }
+.modal-iframe-wrap--portrait { aspect-ratio: 9/16; }
 .modal-iframe { width: 100%; height: 100%; border: none; display: block; }
 .modal-info { padding: clamp(16px,4vw,32px); border-top: 1px solid var(--border-subtle); }
 .modal-title { font-size: clamp(1.2rem,3vw,1.8rem); font-weight: 700; margin-bottom: 8px; }
