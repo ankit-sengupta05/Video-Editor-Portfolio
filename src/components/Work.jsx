@@ -37,7 +37,7 @@ const VIDS = [
     id: '1XXkDvLQX0nvmRMZrRF7iOuKtkIdo3iu2',
     title: 'Motion Graphics Suite',
     desc: 'Dynamic visuals and kinetic typography built entirely in After Effects.',
-    cat: 'short', date: '2025-07-12', duration: 'PT0M30S', format: 'landscape'
+    cat: 'short', date: '2025-07-12', duration: 'PT0M30S', format: 'portrait'
   },
 ];
 
