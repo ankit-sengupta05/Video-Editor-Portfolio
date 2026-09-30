@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Work.css';
 
-const VIDS = [
+const SHORT_VIDS = [
   {
     id: '1tl2M-sRxM8EKM3FT3B8m_K0wS1iTaO_p',
     title: 'The Cyclops Standard',
@@ -41,7 +41,16 @@ const VIDS = [
   },
 ];
 
-export const videoSchemas = VIDS.map(v => ({
+const LONG_VIDS = [
+  {
+    id: '1LwWn4T5LtjKuTO0mY92GBQhoZi6oan2g',
+    title: 'Long-Form Placeholder',
+    desc: 'This is a placeholder for your long-form cinematic content. Update with real video IDs.',
+    cat: 'long', date: '2025-10-01', duration: 'PT5M00S', format: 'landscape'
+  }
+];
+
+export const videoSchemas = [...SHORT_VIDS, ...LONG_VIDS].map(v => ({
   "@type": "VideoObject",
   "name": v.title, "description": v.desc,
   "thumbnailUrl": `https://drive.google.com/thumbnail?id=${v.id}&sz=w800`,
@@ -58,15 +67,12 @@ function getCardClass(index, activeIndex, format) {
   return `${baseClass} vcard--far`;
 }
 
-export function Work() {
+function VideoCarousel({ vids, title, outlineTitle, setModalVideo }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [modalVideo, setModalVideo]   = useState(null);
   const trackRef    = useRef(null);
   const dragStart   = useRef(null);
   const isDragging  = useRef(false);
-  const CARD_W      = 484; // approx card + gap
 
-  // Scroll track to center active card
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -79,19 +85,8 @@ export function Work() {
   }, [activeIndex]);
 
   const prev = useCallback(() => setActiveIndex(i => Math.max(0, i - 1)), []);
-  const next = useCallback(() => setActiveIndex(i => Math.min(VIDS.length - 1, i + 1)), []);
+  const next = useCallback(() => setActiveIndex(i => Math.min(vids.length - 1, i + 1)), [vids.length]);
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.key === 'ArrowLeft') prev();
-      if (e.key === 'ArrowRight') next();
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [prev, next]);
-
-  // Drag to navigate
   const onDragStart = (e) => {
     dragStart.current  = e.touches ? e.touches[0].clientX : e.clientX;
     isDragging.current = false;
@@ -112,6 +107,123 @@ export function Work() {
   };
 
   return (
+    <div className="carousel-section" style={{ marginBottom: '80px' }}>
+      <div className="work__header">
+        <motion.h2
+          className="work__title"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: [0.16,1,0.3,1] }}
+        >
+          {title}<br />
+          <span className="work__title-outline">{outlineTitle}</span>
+        </motion.h2>
+      </div>
+
+      <div className="carousel-nav">
+        <div className="carousel-dots" role="tablist" aria-label="Video navigation">
+          {vids.map((v, i) => (
+            <button
+              key={v.id}
+              className={`carousel-dot ${i === activeIndex ? 'carousel-dot--active' : ''}`}
+              onClick={() => setActiveIndex(i)}
+              aria-label={`Go to ${v.title}`}
+              role="tab"
+              aria-selected={i === activeIndex}
+            />
+          ))}
+        </div>
+        <div className="carousel-nav-hint">Drag to browse</div>
+        <div className="carousel-arrows">
+          <button className="carousel-arrow" onClick={prev} disabled={activeIndex === 0} aria-label="Previous video">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button className="carousel-arrow" onClick={next} disabled={activeIndex === vids.length - 1} aria-label="Next video">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div className="carousel-outer">
+        <div className="carousel-viewport" role="region" aria-label="Video carousel" aria-live="polite">
+          <div
+            ref={trackRef}
+            className="carousel-track-3d"
+            style={{ overflowX: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            onMouseDown={onDragStart}
+            onMouseMove={onDragMove}
+            onMouseUp={onDragEnd}
+            onMouseLeave={onDragEnd}
+            onTouchStart={onDragStart}
+            onTouchMove={onDragMove}
+            onTouchEnd={onDragEnd}
+          >
+            {vids.map((v, i) => (
+              <motion.div
+                key={v.id}
+                className={getCardClass(i, activeIndex, v.format)}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+                aria-label={v.title}
+                aria-current={i === activeIndex ? 'true' : undefined}
+              >
+                <div className={`vcard__frame vcard__frame--${v.format}`}>
+                  <div
+                    className="vcard__shield"
+                    onClick={() => { if (!isDragging.current) { setActiveIndex(i); setModalVideo(v); } }}
+                    role="button"
+                    aria-label={`Play ${v.title}`}
+                    tabIndex={0}
+                    onKeyDown={e => e.key === 'Enter' && setModalVideo(v)}
+                  />
+                  <iframe
+                    className="vcard__iframe"
+                    src={`https://drive.google.com/file/d/${v.id}/preview?autoplay=1&mute=1`}
+                    allow="autoplay; encrypted-media"
+                    title={v.title}
+                    aria-label={`Preview of ${v.title}`}
+                    loading={i < 2 ? 'eager' : 'lazy'}
+                  />
+                  <img
+                    className="vcard__thumb"
+                    src={`https://drive.google.com/thumbnail?id=${v.id}&sz=w800`}
+                    alt={`Thumbnail for ${v.title}`}
+                    loading={i < 2 ? 'eager' : 'lazy'}
+                    draggable="false"
+                  />
+                  <div className="vcard__overlay" />
+                  <div className="vcard__play" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#000"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                  <div className={`vcard__badge ${v.cat === 'featured' ? 'vcard__badge--featured' : ''}`}>
+                    {v.cat === 'featured' ? '★ Featured' : v.cat === 'devin' ? '★ Devin Style' : v.cat === 'long' ? '🎬 Long-Form' : '⚡ Short-Form'}
+                  </div>
+                </div>
+                <div className="vcard__info">
+                  <div className="vcard__type">{v.cat.toUpperCase()}</div>
+                  <h3 className="vcard__title">{v.title}</h3>
+                  <p className="vcard__desc">{v.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Work() {
+  const [modalVideo, setModalVideo] = useState(null);
+
+  return (
     <section id="work" className="section work" aria-label="Featured work">
       <div className="container">
         <motion.span
@@ -122,133 +234,21 @@ export function Work() {
           Selected Work
         </motion.span>
 
-        <div className="work__header">
-          <motion.h2
-            className="work__title"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.9, ease: [0.16,1,0.3,1] }}
-          >
-            Featured<br />
-            <span className="work__title-outline">Edits</span>
-          </motion.h2>
-        </div>
+        <VideoCarousel
+          vids={SHORT_VIDS}
+          title="Short-Form"
+          outlineTitle="Edits"
+          setModalVideo={setModalVideo}
+        />
 
-        {/* Navigation bar */}
-        <div className="carousel-nav">
-          <div className="carousel-dots" role="tablist" aria-label="Video navigation">
-            {VIDS.map((v, i) => (
-              <button
-                key={v.id}
-                className={`carousel-dot ${i === activeIndex ? 'carousel-dot--active' : ''}`}
-                onClick={() => setActiveIndex(i)}
-                aria-label={`Go to ${v.title}`}
-                role="tab"
-                aria-selected={i === activeIndex}
-              />
-            ))}
-          </div>
-          <div className="carousel-nav-hint">Drag or use arrows</div>
-          <div className="carousel-arrows">
-            <button className="carousel-arrow" onClick={prev} disabled={activeIndex === 0} aria-label="Previous video">
-              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button className="carousel-arrow" onClick={next} disabled={activeIndex === VIDS.length - 1} aria-label="Next video">
-              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* 3D Carousel */}
-        <div className="carousel-outer">
-          <div
-            className="carousel-viewport"
-            role="region"
-            aria-label="Video carousel"
-            aria-live="polite"
-          >
-            <div
-              ref={trackRef}
-              className="carousel-track-3d"
-              style={{ overflowX: 'scroll', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              onMouseDown={onDragStart}
-              onMouseMove={onDragMove}
-              onMouseUp={onDragEnd}
-              onMouseLeave={onDragEnd}
-              onTouchStart={onDragStart}
-              onTouchMove={onDragMove}
-              onTouchEnd={onDragEnd}
-            >
-              {VIDS.map((v, i) => (
-                <motion.div
-                  key={v.id}
-                  className={getCardClass(i, activeIndex, v.format)}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.5, delay: i * 0.06 }}
-                  aria-label={v.title}
-                  aria-current={i === activeIndex ? 'true' : undefined}
-                >
-                  <div className={`vcard__frame vcard__frame--${v.format}`}>
-                    {/* Shield catches clicks without blocking drag */}
-                    <div
-                      className="vcard__shield"
-                      onClick={() => { if (!isDragging.current) { setActiveIndex(i); setModalVideo(v); } }}
-                      role="button"
-                      aria-label={`Play ${v.title}`}
-                      tabIndex={0}
-                      onKeyDown={e => e.key === 'Enter' && setModalVideo(v)}
-                    />
-
-                    {/* Drive embed — autoplays (muted) once the iframe loads */}
-                    <iframe
-                      className="vcard__iframe"
-                      src={`https://drive.google.com/file/d/${v.id}/preview?autoplay=1&mute=1`}
-                      allow="autoplay; encrypted-media"
-                      title={v.title}
-                      aria-label={`Preview of ${v.title}`}
-                      loading={i < 2 ? 'eager' : 'lazy'}
-                    />
-
-                    {/* Thumbnail sits on top; fades out for the active card */}
-                    <img
-                      className="vcard__thumb"
-                      src={`https://drive.google.com/thumbnail?id=${v.id}&sz=w800`}
-                      alt={`Thumbnail for ${v.title}`}
-                      loading={i < 2 ? 'eager' : 'lazy'}
-                      draggable="false"
-                    />
-
-                    <div className="vcard__overlay" />
-
-                    <div className="vcard__play" aria-hidden="true">
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="#000"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-
-                    <div className={`vcard__badge ${v.cat === 'featured' ? 'vcard__badge--featured' : ''}`}>
-                      {v.cat === 'featured' ? '★ Featured' : v.cat === 'devin' ? '★ Devin Style' : v.cat === 'long' ? '🎬 Long-Form' : '⚡ Short-Form'}
-                    </div>
-                  </div>
-
-                  <div className="vcard__info">
-                    <div className="vcard__type">{v.cat.toUpperCase()}</div>
-                    <h3 className="vcard__title">{v.title}</h3>
-                    <p className="vcard__desc">{v.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <VideoCarousel
+          vids={LONG_VIDS}
+          title="Long-Form"
+          outlineTitle="Edits"
+          setModalVideo={setModalVideo}
+        />
       </div>
 
-      {/* Full-screen Modal */}
       <AnimatePresence>
         {modalVideo && (
           <motion.div
