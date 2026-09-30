@@ -24,8 +24,8 @@ const VIDS = [
   {
     id: '1LwWn4T5LtjKuTO0mY92GBQhoZi6oan2g',
     title: 'Europe Industrial Rev',
-    desc: 'Long-form cinematic production with an industrial aesthetic and precise rhythmic pacing.',
-    cat: 'long', date: '2025-08-20', duration: 'PT3M15S', format: 'landscape'
+    desc: 'Short-form cinematic production with an industrial aesthetic and precise rhythmic pacing.',
+    cat: 'short', date: '2025-08-20', duration: 'PT3M15S', format: 'portrait'
   },
   {
     id: '1zt-pRELZKoZowVh1a1p_I2a9kDHPX5pn',
