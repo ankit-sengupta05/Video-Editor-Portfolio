@@ -97,12 +97,13 @@ export function Hero() {
   return (
     <section id="top" className="hero" aria-label="Editor Cyclops — Ankit Sengupta">
       <div className="hero__bg-video-wrapper">
-        <iframe
+        <video
           className="hero__bg-video"
-          src="https://drive.google.com/file/d/1-y5B4JkjhcRauKmw3fgp8uphxvpjhT_3/preview?autoplay=1&mute=1&loop=1&controls=0"
-          allow="autoplay; encrypted-media"
-          title="Background Video"
-          aria-hidden="true"
+          src="https://drive.google.com/uc?export=download&id=1-y5B4JkjhcRauKmw3fgp8uphxvpjhT_3"
+          autoPlay
+          loop
+          muted
+          playsInline
         />
         <div className="hero__bg-overlay" />
       </div>

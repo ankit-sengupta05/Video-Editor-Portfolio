@@ -183,13 +183,15 @@ function VideoCarousel({ vids, title, outlineTitle, setModalVideo, unmutedId, se
                     tabIndex={0}
                     onKeyDown={e => e.key === 'Enter' && setModalVideo(v)}
                   />
-                  <iframe
+                  <video
                     className="vcard__iframe"
-                    src={`https://drive.google.com/file/d/${v.id}/preview?autoplay=1&mute=${unmutedId === v.id ? '0' : '1'}`}
-                    allow="autoplay; encrypted-media"
+                    src={`https://drive.google.com/uc?export=download&id=${v.id}`}
+                    autoPlay
+                    loop
+                    muted={unmutedId !== v.id}
+                    playsInline
                     title={v.title}
-                    aria-label={`Preview of ${v.title}`}
-                    loading={i < 2 ? 'eager' : 'lazy'}
+                    poster={`https://drive.google.com/thumbnail?id=${v.id}&sz=w800`}
                   />
                   <img
                     className="vcard__thumb"
@@ -291,12 +293,13 @@ export function Work() {
                 ✕ Close
               </button>
               <div className={`modal-iframe-wrap modal-iframe-wrap--${modalVideo.format}`}>
-                <iframe
+                <video
                   className="modal-iframe"
-                  src={`https://drive.google.com/file/d/${modalVideo.id}/preview?autoplay=1`}
-                  allow="autoplay; fullscreen; encrypted-media"
+                  src={`https://drive.google.com/uc?export=download&id=${modalVideo.id}`}
+                  autoPlay
+                  controls
+                  playsInline
                   title={modalVideo.title}
-                  aria-label={`Playing ${modalVideo.title}`}
                 />
               </div>
               <div className="modal-info">

@@ -139,6 +139,7 @@
   pointer-events: none;
   z-index: 1;
   transform: scale(1.04);
+  object-fit: cover;
 }
 
 /* When card is active, hide thumbnail to reveal video */
