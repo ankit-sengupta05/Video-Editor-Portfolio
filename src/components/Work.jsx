@@ -67,7 +67,7 @@ function getCardClass(index, activeIndex, format) {
   return `${baseClass} vcard--far`;
 }
 
-function VideoCarousel({ vids, title, outlineTitle, setModalVideo }) {
+function VideoCarousel({ vids, title, outlineTitle, setModalVideo, unmutedId, setUnmutedId }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const trackRef    = useRef(null);
   const dragStart   = useRef(null);
@@ -185,7 +185,7 @@ function VideoCarousel({ vids, title, outlineTitle, setModalVideo }) {
                   />
                   <iframe
                     className="vcard__iframe"
-                    src={`https://drive.google.com/file/d/${v.id}/preview?autoplay=1&mute=1`}
+                    src={`https://drive.google.com/file/d/${v.id}/preview?autoplay=1&mute=${unmutedId === v.id ? '0' : '1'}`}
                     allow="autoplay; encrypted-media"
                     title={v.title}
                     aria-label={`Preview of ${v.title}`}
@@ -205,6 +205,20 @@ function VideoCarousel({ vids, title, outlineTitle, setModalVideo }) {
                   <div className={`vcard__badge ${v.cat === 'featured' ? 'vcard__badge--featured' : ''}`}>
                     {v.cat === 'featured' ? '★ Featured' : v.cat === 'devin' ? '★ Devin Style' : v.cat === 'long' ? '🎬 Long-Form' : '⚡ Short-Form'}
                   </div>
+                  <button 
+                    className="vcard__unmute-btn" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setUnmutedId(unmutedId === v.id ? null : v.id);
+                    }}
+                    aria-label={unmutedId === v.id ? "Mute video" : "Unmute video"}
+                  >
+                    {unmutedId === v.id ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+                    )}
+                  </button>
                 </div>
                 <div className="vcard__info">
                   <div className="vcard__type">{v.cat.toUpperCase()}</div>
@@ -222,6 +236,11 @@ function VideoCarousel({ vids, title, outlineTitle, setModalVideo }) {
 
 export function Work() {
   const [modalVideo, setModalVideo] = useState(null);
+  const [unmutedId, setUnmutedId] = useState(null);
+
+  useEffect(() => {
+    if (modalVideo) setUnmutedId(null);
+  }, [modalVideo]);
 
   return (
     <section id="work" className="section work" aria-label="Featured work">
@@ -239,6 +258,8 @@ export function Work() {
           title="Short-Form"
           outlineTitle="Edits"
           setModalVideo={setModalVideo}
+          unmutedId={unmutedId}
+          setUnmutedId={setUnmutedId}
         />
 
         <VideoCarousel
@@ -246,6 +267,8 @@ export function Work() {
           title="Long-Form"
           outlineTitle="Edits"
           setModalVideo={setModalVideo}
+          unmutedId={unmutedId}
+          setUnmutedId={setUnmutedId}
         />
       </div>
 
