@@ -5,7 +5,7 @@
   background: var(--bg-primary);
 }
 .hero__canvas {
-  position: absolute; inset: 0; pointer-events: none; opacity: 0.35; z-index: 1;
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.55; z-index: 1;
 }
 .hero__bg-video-wrapper {
   position: absolute; inset: 0; width: 100%; height: 100%;

@@ -131,7 +131,7 @@
   z-index: 2;
 }
 
-/* Drive iframe — always autoplaying behind */
+/* Direct video element — active when custom video is provided */
 .vcard__iframe {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -142,8 +142,8 @@
   object-fit: cover;
 }
 
-/* When card is active, hide thumbnail to reveal video */
-.vcard--active .vcard__thumb {
+/* When card has direct video and is active, hide thumbnail to reveal video */
+.vcard--has-video.vcard--active .vcard__thumb {
   opacity: 0;
 }
 
@@ -157,16 +157,21 @@
 }
 .vcard__play {
   position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%) scale(0.8);
+  transform: translate(-50%,-50%) scale(0.85);
   width: 72px; height: 72px; border-radius: 50%;
   background: var(--cyan);
   display: flex; align-items: center; justify-content: center;
-  opacity: 0; transition: opacity 0.3s, transform 0.3s;
+  opacity: 0.85; transition: opacity 0.3s, transform 0.3s, box-shadow 0.3s;
   z-index: 4; pointer-events: none;
+  box-shadow: 0 0 30px var(--cyan-glow);
+}
+.vcard--active .vcard__play {
+  opacity: 0.95;
+  transform: translate(-50%,-50%) scale(1);
 }
 .vcard--active:hover .vcard__play,
 .vcard__frame:hover .vcard__play {
-  opacity: 1; transform: translate(-50%,-50%) scale(1);
+  opacity: 1; transform: translate(-50%,-50%) scale(1.08);
   box-shadow: 0 0 60px var(--cyan-glow);
 }
 .vcard__badge {
@@ -188,9 +193,13 @@
 }
 .vcard__badge--featured {
   background: var(--cyan); color: #000; border-color: var(--cyan);
-  box-shadow: 0 0 20px var(--cyan-glow);
 }
-.vcard__info { padding: 22px 24px; flex: 1; }
+
+.vcard__info {
+  padding: 20px 22px 24px;
+  background: var(--bg-card);
+  flex: 1; display: flex; flex-direction: column;
+}
 .vcard__type {
   font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;

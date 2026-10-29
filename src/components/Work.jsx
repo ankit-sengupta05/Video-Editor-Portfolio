@@ -53,15 +53,16 @@ const LONG_VIDS = [
 export const videoSchemas = [...SHORT_VIDS, ...LONG_VIDS].map(v => ({
   "@type": "VideoObject",
   "name": v.title, "description": v.desc,
-  "thumbnailUrl": `https://drive.google.com/thumbnail?id=${v.id}&sz=w800`,
+  "thumbnailUrl": v.thumbnail || `https://drive.google.com/thumbnail?id=${v.id}&sz=w800`,
   "uploadDate": v.date, "duration": v.duration,
   "contentUrl":  `https://drive.google.com/file/d/${v.id}/view`,
   "embedUrl":    `https://drive.google.com/file/d/${v.id}/preview`,
 }));
 
-function getCardClass(index, activeIndex, format) {
+function getCardClass(index, activeIndex, format, hasVideo) {
   const diff = index - activeIndex;
   let baseClass = `vcard vcard--${format}`;
+  if (hasVideo)         baseClass += ' vcard--has-video';
   if (diff === 0)       return `${baseClass} vcard--active`;
   if (Math.abs(diff) === 1) return `${baseClass} vcard--side`;
   return `${baseClass} vcard--far`;
@@ -166,7 +167,7 @@ function VideoCarousel({ vids, title, outlineTitle, setModalVideo, unmutedId, se
             {vids.map((v, i) => (
               <motion.div
                 key={v.id}
-                className={getCardClass(i, activeIndex, v.format)}
+                className={getCardClass(i, activeIndex, v.format, Boolean(v.videoSrc))}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
@@ -183,19 +184,21 @@ function VideoCarousel({ vids, title, outlineTitle, setModalVideo, unmutedId, se
                     tabIndex={0}
                     onKeyDown={e => e.key === 'Enter' && setModalVideo(v)}
                   />
-                  <video
-                    className="vcard__iframe"
-                    src={`https://drive.google.com/uc?export=download&id=${v.id}`}
-                    autoPlay
-                    loop
-                    muted={unmutedId !== v.id}
-                    playsInline
-                    title={v.title}
-                    poster={`https://drive.google.com/thumbnail?id=${v.id}&sz=w800`}
-                  />
+                  {v.videoSrc && (
+                    <video
+                      className="vcard__iframe"
+                      src={v.videoSrc}
+                      autoPlay
+                      loop
+                      muted={unmutedId !== v.id}
+                      playsInline
+                      title={v.title}
+                      poster={v.thumbnail || `https://drive.google.com/thumbnail?id=${v.id}&sz=w800`}
+                    />
+                  )}
                   <img
                     className="vcard__thumb"
-                    src={`https://drive.google.com/thumbnail?id=${v.id}&sz=w800`}
+                    src={v.thumbnail || `https://drive.google.com/thumbnail?id=${v.id}&sz=w800`}
                     alt={`Thumbnail for ${v.title}`}
                     loading={i < 2 ? 'eager' : 'lazy'}
                     draggable="false"
@@ -207,20 +210,22 @@ function VideoCarousel({ vids, title, outlineTitle, setModalVideo, unmutedId, se
                   <div className={`vcard__badge ${v.cat === 'featured' ? 'vcard__badge--featured' : ''}`}>
                     {v.cat === 'featured' ? '★ Featured' : v.cat === 'devin' ? '★ Devin Style' : v.cat === 'long' ? '🎬 Long-Form' : '⚡ Short-Form'}
                   </div>
-                  <button 
-                    className="vcard__unmute-btn" 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setUnmutedId(unmutedId === v.id ? null : v.id);
-                    }}
-                    aria-label={unmutedId === v.id ? "Mute video" : "Unmute video"}
-                  >
-                    {unmutedId === v.id ? (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                    ) : (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
-                    )}
-                  </button>
+                  {v.videoSrc && (
+                    <button 
+                      className="vcard__unmute-btn" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setUnmutedId(unmutedId === v.id ? null : v.id);
+                      }}
+                      aria-label={unmutedId === v.id ? "Mute video" : "Unmute video"}
+                    >
+                      {unmutedId === v.id ? (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                      ) : (
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+                      )}
+                    </button>
+                  )}
                 </div>
                 <div className="vcard__info">
                   <div className="vcard__type">{v.cat.toUpperCase()}</div>
@@ -293,14 +298,24 @@ export function Work() {
                 ✕ Close
               </button>
               <div className={`modal-iframe-wrap modal-iframe-wrap--${modalVideo.format}`}>
-                <video
-                  className="modal-iframe"
-                  src={`https://drive.google.com/uc?export=download&id=${modalVideo.id}`}
-                  autoPlay
-                  controls
-                  playsInline
-                  title={modalVideo.title}
-                />
+                {modalVideo.videoSrc ? (
+                  <video
+                    className="modal-iframe"
+                    src={modalVideo.videoSrc}
+                    autoPlay
+                    controls
+                    playsInline
+                    title={modalVideo.title}
+                  />
+                ) : (
+                  <iframe
+                    className="modal-iframe"
+                    src={`https://drive.google.com/file/d/${modalVideo.id}/preview?autoplay=1`}
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                    allowFullScreen
+                    title={modalVideo.title}
+                  />
+                )}
               </div>
               <div className="modal-info">
                 <h3 className="modal-title">{modalVideo.title}</h3>
